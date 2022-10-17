@@ -19,8 +19,8 @@ public class Timetable {
 		currDate = DateTime.now();
 		
 		try { return schedule.stream()
-				.filter(group -> group.getGroupDate().getStartDate().compareTo(currDate) < 0)
-				.filter(group -> group.getGroupDate().getEndDate().compareTo(currDate) > 0)
+				.filter(group -> group.getGroupDate().getStartDate().isBefore(currDate))
+				.filter(group -> group.getGroupDate().getEndDate().isAfter(currDate))
 				.collect(Collectors.toList()).get(0); }
 		catch (NullPointerException e) {
 			return null;
