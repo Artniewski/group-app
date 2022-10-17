@@ -23,7 +23,7 @@ public class AuthService {
             return buildAuthProperties(form);
 
         } catch (IOException | NoSuchFieldException e) {
-            throw new RuntimeException("Cannot connect to " + JSOS_AUTH_URL); //TODO: Custom exception
+            throw new RuntimeException("Cannot connect to " + JSOS_AUTH_URL);    //TODO: Custom exception
         }
     }
 
