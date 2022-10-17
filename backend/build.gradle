@@ -25,6 +25,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.4'
     implementation 'org.jsoup:jsoup:1.15.3'
     implementation 'net.sourceforge.htmlunit:htmlunit:2.65.1'
+    implementation 'joda-time:joda-time:2.12.0'
 
 }
 
