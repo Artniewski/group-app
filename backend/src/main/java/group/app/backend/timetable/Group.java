@@ -10,9 +10,6 @@ public class Group {
 	private String groupName;
 	private String lecturerName;
 	private String groupCode;
-	private WeekDay weekDay;
-	private String startHour;
-	private String endHour;
-	private String classroom;
+	private GroupDate groupDate;
 	
 }
