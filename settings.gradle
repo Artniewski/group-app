@@ -8,4 +8,4 @@
  */
 
 rootProject.name = 'group-app'
-include 'backend'
+include 'java-backend'
