@@ -1,0 +1,15 @@
+{
+  "type": "module",
+  "name": "authentication_poc",
+  "version": "1.0.0",
+  "description": "Proof of concept for jsos authentication.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "Marcin Wilk",
+  "license": "ISC",
+  "dependencies": {
+    "node-fetch": "^3.2.10"
+  }
+}
