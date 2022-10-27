@@ -10,6 +10,8 @@
   "author": "Marcin Wilk",
   "license": "ISC",
   "dependencies": {
+    "ical": "^0.8.0",
+    "jsdom": "^20.0.1",
     "node-fetch": "^3.2.10"
   }
 }
