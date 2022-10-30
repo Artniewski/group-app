@@ -44,3 +44,4 @@ build
 node_modules/
 .expo/
 .expo-shared/
+dist/

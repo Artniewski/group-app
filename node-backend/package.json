@@ -5,7 +5,7 @@
   "description": "Proof of concept for jsos authentication.",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "start": "npx tsc && node dist/index.js"
   },
   "author": "Marcin Wilk",
   "license": "ISC",
@@ -13,5 +13,11 @@
     "ical": "^0.8.0",
     "jsdom": "^20.0.1",
     "node-fetch": "^3.2.10"
+  },
+  "devDependencies": {
+    "@types/ical": "^0.8.0",
+    "@types/jsdom": "^20.0.0",
+    "@types/node": "^18.11.7",
+    "typescript": "^4.8.4"
   }
 }
