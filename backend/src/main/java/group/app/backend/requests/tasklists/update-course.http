@@ -1,0 +1,7 @@
+###
+PUT http://localhost:8080/api/tasklists/1/course/1
+###
+PUT http://localhost:8080/api/tasklists/2/course/1
+###
+PUT http://localhost:8080/api/tasklists/3/course/2
+

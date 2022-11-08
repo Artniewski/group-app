@@ -1,0 +1,8 @@
+POST http://localhost:8080/api/tasklists
+Content-Type: application/json
+
+{
+  "listNumber": 3
+}
+
+###

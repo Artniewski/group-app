@@ -1,0 +1,13 @@
+PUT http://localhost:8080/api/tasks/1/tasklist/1
+###
+PUT http://localhost:8080/api/tasks/2/tasklist/1
+###
+PUT http://localhost:8080/api/tasks/3/tasklist/1
+###
+PUT http://localhost:8080/api/tasks/4/tasklist/2
+###
+PUT http://localhost:8080/api/tasks/5/tasklist/2
+###
+PUT http://localhost:8080/api/tasks/6/tasklist/3
+###
+PUT http://localhost:8080/api/tasks/7/tasklist/3

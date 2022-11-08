@@ -1,0 +1,14 @@
+###
+PUT http://localhost:8080/api/users/1/offeredTasks/1
+###
+PUT http://localhost:8080/api/users/1/offeredTasks/2
+###
+PUT http://localhost:8080/api/users/1/offeredTasks/3
+###
+PUT http://localhost:8080/api/users/2/offeredTasks/4
+###
+PUT http://localhost:8080/api/users/2/offeredTasks/5
+###
+PUT http://localhost:8080/api/users/3/offeredTasks/6
+###
+PUT http://localhost:8080/api/users/3/offeredTasks/7
