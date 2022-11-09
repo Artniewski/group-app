@@ -1,6 +1,5 @@
+import { JSOS_MAIN_PAGE_URL } from "./index.js";
 import fetch, { Response as NFResponse } from "node-fetch";
-
-const JSOS_MAIN_PAGE_URL = "https://jsos.pwr.edu.pl/";
 
 const setCookieParser = (response: NFResponse) => {
   return response.headers
@@ -71,16 +70,12 @@ const getAuthCookies = async (username: string, password: string) => {
     redirect: "manual",
   });
 
-  const idSluchacza = getSetCookie(
-    setCookieParser(loginAsStudentAuth),
-    "idSluchacza"
-  );
   const JSOSSESSID = getSetCookie(
     setCookieParser(loginAsStudentAuth),
     "JSOSSESSID"
   );
 
-  return [YII_CSRF_TOKEN, idSluchacza, JSOSSESSID];
+  return [YII_CSRF_TOKEN, JSOSSESSID];
 };
 
 export default getAuthCookies;
