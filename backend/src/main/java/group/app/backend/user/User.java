@@ -23,7 +23,7 @@ public class User {
     private String nickname;
     private Double rating;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
             name = "user_courses",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -31,7 +31,7 @@ public class User {
     )
     private Set<Course> courses = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
             name = "user_offered_tasks",
             joinColumns = @JoinColumn(name = "user_id"),
@@ -39,7 +39,7 @@ public class User {
     )
     private Set<Task> offeredTasks = new HashSet<>();
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany
     @JoinTable(
             name = "user_requested_tasks",
             joinColumns = @JoinColumn(name = "user_id"),
