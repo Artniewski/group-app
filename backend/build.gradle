@@ -19,18 +19,18 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-web:2.7.4'
+    implementation 'org.springframework.boot:spring-boot-starter-web:2.7.5'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.7.5'
-    implementation 'mysql:mysql-connector-java:8.0.15'
-
-
+    implementation 'mysql:mysql-connector-java:8.0.30'
+    implementation 'org.jgrapht:jgrapht:1.5.1'
+    implementation 'org.jgrapht:jgrapht-core:1.5.1'
     compileOnly 'org.projectlombok:lombok:1.18.24'
 
-    runtimeOnly 'com.h2database:h2:1.4.200'
+    runtimeOnly 'com.h2database:h2:2.1.214'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.4'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.5'
 
 
 }
