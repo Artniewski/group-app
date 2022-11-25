@@ -2,7 +2,7 @@ import { JSDOM } from "jsdom";
 import { JSOS_CLASSES_PAGE_URL } from "./index.js";
 import fetch from "node-fetch";
 
-const getIdSluchacza = async (
+const getCourseIdList = async (
   YII_CSRF_TOKEN: string,
   JSOSSESSID: string
 ) => {
@@ -16,10 +16,13 @@ const getIdSluchacza = async (
   const dom = new JSDOM(zajeciaPageText);
   const document = dom.window.document;
 
-  const idSluchacza = (document.querySelector("#wyborPK") as HTMLSelectElement)
-    .value;
+  const courseIdList = new Set<string>()
 
-  return idSluchacza;
+  document.querySelectorAll("tr.kliknij>td:first-child").forEach((course) => {
+    courseIdList.add(course.innerHTML.split("<")[0].slice(0, -1))
+  });
+
+  return Array.from(courseIdList);
 };
 
-export default getIdSluchacza;
+export default getCourseIdList;
