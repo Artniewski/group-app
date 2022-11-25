@@ -3,6 +3,8 @@ import { Button, FlatList, StyleSheet, Text, Touchable, TouchableOpacity, View }
 import { StatusBar } from 'expo-status-bar';
 import {ExerciseSelectionScreen} from '../exercise_exchange_module/ExerciseScreen'
 import {useNavigation, NavigationContainer} from '@react-navigation/native'
+import { ExerciseAddScreen} from "../exercise_exchange_module/AddListScreen"
+
 
 //In futre module names should be injected as dependancy depending on language.
 interface ModuleData {
@@ -18,7 +20,8 @@ interface ModuleListProps {
 export function HomeScreen({navigation}) {
   const moduleNames : ModuleData[] = [{moduleName: "Wybierz starostę", jumpTarget: ExerciseSelectionScreen, navigationName : "ExerciseSelection"},
                                       {moduleName: "Giełda zadań", jumpTarget: ExerciseSelectionScreen, navigationName : "ExerciseSelection"},
-                                      {moduleName: "Kalendarz", jumpTarget: ExerciseSelectionScreen, navigationName : "ExerciseSelection"}]
+                                      //Roboczo do testowania dodawania zadań
+                                      {moduleName: "Kalendarz", jumpTarget: ExerciseAddScreen, navigationName : "AddExercise"}]
   return (
     <View style={style.container}>
       <ModuleList moduleData={moduleNames}/>

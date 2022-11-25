@@ -1,4 +1,4 @@
-import {ICourseData} from "../common/commonDataTypes"
+import {ICourseData} from "../common/CommonDataTypes"
 
 export interface IExercise {
   course : ICourseData

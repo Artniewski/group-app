@@ -1,5 +1,5 @@
 import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { IExercise } from './commonDataTypes';
+import { IExercise } from './CommonDataTypes';
 import {StatusBar} from 'expo-status-bar';
 
 export const ExerciseSelectionScreen = () => {
