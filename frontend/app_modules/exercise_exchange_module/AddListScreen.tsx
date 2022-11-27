@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import React, { useState, useContext } from "react";
+import { StyleSheet, View, Text } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Form, FormItem, Picker } from "react-native-form-component";
 import { ICourseData } from "../common/CommonDataTypes";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
+import { AppContext } from "../../store/AppContextProvider";
 
 type Props = NativeStackScreenProps<RootStackParamList, "AddExercise">;
 
@@ -16,6 +17,8 @@ interface IExerciseCreationFormData {
 }
 
 export const ExerciseAddScreen: React.FC<Props> = () => {
+  const myContext = useContext(AppContext);
+
   //Replace with something useful
   const [courses, setCourses] = useState<ICourseData[]>([
     { courseCode: "312", courseName: "Kikd" },
@@ -37,42 +40,45 @@ export const ExerciseAddScreen: React.FC<Props> = () => {
 
   return (
     <View style={styles.container}>
-      <Form onButtonPress={onSubmit}>
-        <FormItem
-          label="Nr listy"
-          textInputStyle={styles.input}
-          isRequired
-          onChangeText={(exerciseList) => {
-            const newListCopy = { ...newList };
-            newListCopy.exerciseList = parseInt(exerciseList);
-            setNewList(newListCopy);
-          }}
-          value={newList.exerciseList.toString()}
-        />
-        <FormItem
-          label="Nr zadania"
-          textInputStyle={styles.input}
-          isRequired
-          onChangeText={(exerciseNumbers) => {
-            const newListCopy = { ...newList };
-            newListCopy.exerciseNumbers = exerciseNumbers;
-            setNewList(newListCopy);
-          }}
-          value={newList.exerciseNumbers}
-        />
-        <Picker
-          items={courses.map((x) => {
-            return { label: x.courseName, value: x.courseCode };
-          })}
-          label="Kurs"
-          selectedValue={newList.courseCode}
-          onSelection={(item) => {
-            const newListCopy = { ...newList };
-            newListCopy.courseCode = item.value.toString();
-            setNewList(newListCopy);
-          }}
-        />
-      </Form>
+      {myContext.courseData == null && <Text>Loading data...</Text>}
+      {myContext.courseData != null && (
+        <Form onButtonPress={onSubmit}>
+          <FormItem
+            label="Nr listy"
+            textInputStyle={styles.input}
+            isRequired
+            onChangeText={(exerciseList) => {
+              const newListCopy = { ...newList };
+              newListCopy.exerciseList = parseInt(exerciseList);
+              setNewList(newListCopy);
+            }}
+            value={newList.exerciseList.toString()}
+          />
+          <FormItem
+            label="Nr zadania"
+            textInputStyle={styles.input}
+            isRequired
+            onChangeText={(exerciseNumbers) => {
+              const newListCopy = { ...newList };
+              newListCopy.exerciseNumbers = exerciseNumbers;
+              setNewList(newListCopy);
+            }}
+            value={newList.exerciseNumbers}
+          />
+          <Picker
+            items={myContext.courseData.map((data) => {
+              return { label: data.courseName, value: data.courseCode };
+            })}
+            label="Kurs"
+            selectedValue={newList.courseCode}
+            onSelection={(item) => {
+              const newListCopy = { ...newList };
+              newListCopy.courseCode = item.value.toString();
+              setNewList(newListCopy);
+            }}
+          />
+        </Form>
+      )}
       <StatusBar style="auto" />
     </View>
   );
