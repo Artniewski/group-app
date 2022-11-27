@@ -1,5 +1,8 @@
-import { JSOS_MAIN_PAGE_URL } from "./index.js";
+import { JSOS_MAIN_PAGE_URL } from "../index.js";
 import fetch, { Response as NFResponse } from "node-fetch";
+
+import { JsosError } from "../index.js";
+import { AuthError } from "../controllers/authController.js";
 
 const setCookieParser = (response: NFResponse) => {
   return response.headers
@@ -31,10 +34,11 @@ const getAuthCookies = async (username: string, password: string) => {
     JSOS_MAIN_PAGE_URL + "index.php/site/loginAsStudent";
 
   const jsosMainPage = await fetch(JSOS_MAIN_PAGE_URL);
-  const YII_CSRF_TOKEN = getSetCookie(
-    setCookieParser(jsosMainPage),
-    "YII_CSRF_TOKEN"
-  );
+
+  if (!jsosMainPage.ok) {
+    throw new JsosError("JSOS is not available");
+  }
+
   const TMP_JSOSSESSID = getSetCookie(
     setCookieParser(jsosMainPage),
     "JSOSSESSID"
@@ -42,9 +46,13 @@ const getAuthCookies = async (username: string, password: string) => {
 
   const loginAsStudent = await fetch(loginAsStudentUrl, {
     headers: {
-      cookie: `JSOSSESSID=${TMP_JSOSSESSID}; YII_CSRF_TOKEN=${YII_CSRF_TOKEN};`,
+      cookie: `JSOSSESSID=${TMP_JSOSSESSID};`,
     },
   });
+
+  if (!loginAsStudent.ok) {
+    throw new JsosError("JSOS is not available");
+  }
 
   const oauthUrlSearchParams = new URL(loginAsStudent.url).searchParams;
   const oauth_token = oauthUrlSearchParams.get("oauth_token");
@@ -61,21 +69,33 @@ const getAuthCookies = async (username: string, password: string) => {
     redirect: "manual",
   });
 
+  if (authPage.ok) {
+    throw new AuthError("Wrong username or password");
+  }
+
+  if (authPage.status != 302) {
+    throw new JsosError("JSOS is not available");
+  }
+
   const loginAsStudentAuthUrl = authPage.headers.get("location");
 
   const loginAsStudentAuth = await fetch(loginAsStudentAuthUrl, {
     headers: {
-      cookie: `JSOSSESSID=${TMP_JSOSSESSID}; YII_CSRF_TOKEN=${YII_CSRF_TOKEN};`,
+      cookie: `JSOSSESSID=${TMP_JSOSSESSID};`,
     },
     redirect: "manual",
   });
+
+  if (authPage.status != 302) {
+    throw new JsosError("JSOS is not available");
+  }
 
   const JSOSSESSID = getSetCookie(
     setCookieParser(loginAsStudentAuth),
     "JSOSSESSID"
   );
 
-  return [YII_CSRF_TOKEN, JSOSSESSID];
+  return JSOSSESSID;
 };
 
 export default getAuthCookies;
