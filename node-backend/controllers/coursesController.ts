@@ -8,9 +8,14 @@ import getCourseIdList from "../services/coursesService.js";
 
 type CourseListRequest = AuthResponse;
 
+export interface ICourseData {
+  courseCode : string
+  courseName : string
+}
+
 interface CourseListResponse {
   idSluchacza: string;
-  courseIdList: string[];
+  courseList: ICourseData[];
 }
 
 const coursesEndpoint = async (req: Request, res: Response) => {
@@ -23,11 +28,11 @@ const coursesEndpoint = async (req: Request, res: Response) => {
 
   try {
     const idSluchacza = await getIdSluchacza(JSOSSESSID);
-    const courseIdList = await getCourseIdList(JSOSSESSID);
+    const courseList = await getCourseIdList(JSOSSESSID);
 
     const responseBody: CourseListResponse = {
       idSluchacza,
-      courseIdList,
+      courseList,
     };
 
     res.status(200).json(responseBody);

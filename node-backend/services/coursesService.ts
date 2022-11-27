@@ -1,11 +1,10 @@
 import { JSDOM } from "jsdom";
 import fetch from "node-fetch";
 
+import { ICourseData } from "../controllers/coursesController.js";
 import { JSOS_CLASSES_PAGE_URL, JsosError } from "../index.js";
 
-const getCourseIdList = async (
-  JSOSSESSID: string
-) => {
+const getCourseIdList = async (JSOSSESSID: string) => {
   const zajeciaPage = await fetch(JSOS_CLASSES_PAGE_URL, {
     headers: {
       cookie: `JSOSSESSID=${JSOSSESSID}`,
@@ -20,10 +19,22 @@ const getCourseIdList = async (
   const dom = new JSDOM(zajeciaPageText);
   const document = dom.window.document;
 
-  const courseIdList = new Set<string>()
+  const courseIdList: ICourseData[] = [];
 
   document.querySelectorAll("tr.kliknij>td:first-child").forEach((course) => {
-    courseIdList.add(course.innerHTML.split("<")[0].slice(0, -1))
+    const [courseCode, courseName] = course.innerHTML.split("<br>");
+
+    let onList = false;
+
+    for (const courseData of courseIdList) {
+      if (courseData.courseCode === courseCode.slice(0, -1)) {
+        onList = true;
+      }
+    }
+
+    if (!onList) {
+      courseIdList.push({ courseCode: courseCode.slice(0, -1), courseName });
+    }
   });
 
   return Array.from(courseIdList);
