@@ -2,7 +2,7 @@ import { FlatList, StyleSheet, Text, View } from 'react-native';
 import { IExercise } from './CommonDataTypes';
 import {StatusBar} from 'expo-status-bar';
 
-export const ExerciseSelectionScreen = () => {
+export const ExerciseSelectionScreen = ({navigation}) => {
   return (
     <View style={style.container}>
       <ExerciseList exercises={[{course: {courseCode: "siema", courseName: "Kikd"}, exerciseList: 1, exerciseNumber : 1},

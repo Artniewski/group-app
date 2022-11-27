@@ -4,12 +4,11 @@ import { StatusBar } from 'expo-status-bar';
 import {ExerciseSelectionScreen} from '../exercise_exchange_module/ExerciseScreen'
 import {useNavigation, NavigationContainer} from '@react-navigation/native'
 import { ExerciseAddScreen} from "../exercise_exchange_module/AddListScreen"
-
+import {VoteOldMan} from "../vote_oldman_module/VoteOldMan"
 
 //In futre module names should be injected as dependancy depending on language.
 interface ModuleData {
   moduleName : string;
-  jumpTarget : (props : any) => JSX.Element;
   navigationName : string
 }
 
@@ -18,10 +17,9 @@ interface ModuleListProps {
 }
 
 export function HomeScreen({navigation}) {
-  const moduleNames : ModuleData[] = [{moduleName: "Wybierz starostę", jumpTarget: ExerciseSelectionScreen, navigationName : "ExerciseSelection"},
-                                      {moduleName: "Giełda zadań", jumpTarget: ExerciseSelectionScreen, navigationName : "ExerciseSelection"},
-                                      //Roboczo do testowania dodawania zadań
-                                      {moduleName: "Kalendarz", jumpTarget: ExerciseAddScreen, navigationName : "AddExercise"}]
+  const moduleNames : ModuleData[] = [{moduleName: "Giełda zadań", navigationName : "ExerciseSelection"},
+                                      {moduleName: "Wybór starosty", navigationName : "VoteOldMan"}
+                                     ]
   return (
     <View style={style.container}>
       <ModuleList moduleData={moduleNames}/>

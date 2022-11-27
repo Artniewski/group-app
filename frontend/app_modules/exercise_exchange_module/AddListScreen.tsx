@@ -40,15 +40,6 @@ export const ExerciseAddScreen = () => {
           setNewList(newListCopy);}}
           value={newList.exerciseNumbers}
         />
-         <Picker
-          items={[
-            { label: 'Male', value: 'male' },
-            { label: 'Female', value: 'female' },
-          ]}
-          label="Gender"
-          selectedValue={gender}
-          onSelection={(item) => setGender(item.value)}
-        />
         <Picker
           items={courses.map(x => {return {label: x.courseName, value: x.courseCode}})}
           label="Kurs"
