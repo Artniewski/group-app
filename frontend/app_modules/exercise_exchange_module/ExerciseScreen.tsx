@@ -1,92 +1,114 @@
-import { FlatList, StyleSheet, Text, View } from 'react-native';
-import { IExercise } from './CommonDataTypes';
-import {StatusBar} from 'expo-status-bar';
+import React from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
+import { IExercise } from "./CommonDataTypes";
+import { StatusBar } from "expo-status-bar";
 
-export const ExerciseSelectionScreen = ({navigation}) => {
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { RootStackParamList } from "../../App";
+
+type Props = NativeStackScreenProps<RootStackParamList, "ExerciseSelection">;
+
+export const ExerciseSelectionScreen: React.FC<Props> = () => {
   return (
     <View style={style.container}>
-      <ExerciseList exercises={[{course: {courseCode: "siema", courseName: "Kikd"}, exerciseList: 1, exerciseNumber : 1},
-                                {course: {courseCode: "siema", courseName: "Kikd"}, exerciseList: 1, exerciseNumber : 2}]}/>
+      <ExerciseList
+        exercises={[
+          {
+            course: { courseCode: "siema", courseName: "Kikd" },
+            exerciseList: 1,
+            exerciseNumber: 1,
+          },
+          {
+            course: { courseCode: "siema", courseName: "Kikd" },
+            exerciseList: 1,
+            exerciseNumber: 2,
+          },
+        ]}
+      />
       <StatusBar style="auto" />
     </View>
   );
-}
+};
 
 interface TaskPanelProps {
-  courseName : string
-  listNumber : number
-  exerciseNumber : number
+  courseName: string;
+  listNumber: number;
+  exerciseNumber: number;
 }
 
-const ExercisePanel = (props : TaskPanelProps) => {
-    return (
-      <View style={style.taskPanel}>
-        <Text style={style.taskName}>Kurs: {props.courseName}</Text>
-        <Text style={style.taskDescription}>Nr listy: {props.listNumber}</Text>
-        <Text style={style.taskDate}>Nr zadania: {props.exerciseNumber}</Text>        
-      </View>
-    );
-}
+const ExercisePanel = (props: TaskPanelProps) => {
+  return (
+    <View style={style.taskPanel}>
+      <Text style={style.taskName}>Kurs: {props.courseName}</Text>
+      <Text style={style.taskDescription}>Nr listy: {props.listNumber}</Text>
+      <Text style={style.taskDate}>Nr zadania: {props.exerciseNumber}</Text>
+    </View>
+  );
+};
 
 interface TaskListPanelProps {
-  exercises : IExercise[]
+  exercises: IExercise[];
 }
 
-const ExerciseList = (props : TaskListPanelProps) => {
+const ExerciseList = (props: TaskListPanelProps) => {
   return (
     <FlatList
       style={style.taskListPanel}
-      horizontal={false} 
+      horizontal={false}
       numColumns={2}
       data={props.exercises}
-      renderItem={({item}) => <ExercisePanel courseName={item.course.courseName}
-                              listNumber={item.exerciseList}
-                              exerciseNumber={item.exerciseNumber}/>}
+      renderItem={({ item }) => (
+        <ExercisePanel
+          courseName={item.course.courseName}
+          listNumber={item.exerciseList}
+          exerciseNumber={item.exerciseNumber}
+        />
+      )}
     />
   );
-}
+};
 
 const style = StyleSheet.create({
-    taskPanel: {
-      flex: 1.0,
-      backgroundColor: 'white',
-      borderColor: 'black',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderWidth: 2,
-    },
-    taskDescription: {
-      flex: 0.3,
-      backgroundColor: 'white',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderWidth: 2,
-      borderColor: "white",
-    },
-    taskName: {
-      flex: 0.3,
-      backgroundColor: 'white',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderColor: "white",
-    },
-    taskDate: {
-      flex: 0.4,
-      backgroundColor: 'white',
-      alignItems: 'center',
-      justifyContent: 'center',
-      borderColor: "white",
-    },
-    taskListPanel: {
-      height: '100%',
-      width: '100%',
-      backgroundColor: "white",
-    },
-    container: {
-      height: '100%',
-      width: '100%',
-      backgroundColor: '#fff',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-  });
+  taskPanel: {
+    flex: 1.0,
+    backgroundColor: "white",
+    borderColor: "black",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+  },
+  taskDescription: {
+    flex: 0.3,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderColor: "white",
+  },
+  taskName: {
+    flex: 0.3,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "white",
+  },
+  taskDate: {
+    flex: 0.4,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    borderColor: "white",
+  },
+  taskListPanel: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: "white",
+  },
+  container: {
+    height: "100%",
+    width: "100%",
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});

@@ -1,7 +1,7 @@
-import {ICourseData} from "../common/CommonDataTypes"
+import { ICourseData } from "../common/CommonDataTypes";
 
 export interface IExercise {
-  course : ICourseData
-  exerciseList : number
-  exerciseNumber : number
+  course: ICourseData;
+  exerciseList: number;
+  exerciseNumber: number;
 }
