@@ -1,18 +1,15 @@
 import { Request, Response } from "express";
 
-import { JsosError } from "../index.js";
-import { AuthResponse } from "./authController.js";
-
 import getIdSluchacza from "../services/idService.js";
 
-type IDRequest = AuthResponse;
-
-interface IDResponse {
-  idSluchacza: string;
-}
+import {
+  JsosError,
+  IIdRequest,
+  IIdResponse,
+} from "../common/CommonDataTypes.js";
 
 const idEndpoint = async (req: Request, res: Response) => {
-  const { JSOSSESSID } = req.body as IDRequest;
+  const { JSOSSESSID } = req.body as IIdRequest;
 
   if (!JSOSSESSID) {
     res.status(400).json({ message: "Missing JSOSSESSID" });
@@ -22,7 +19,7 @@ const idEndpoint = async (req: Request, res: Response) => {
   try {
     const idSluchacza = await getIdSluchacza(JSOSSESSID);
 
-    const responseBody: IDResponse = {
+    const responseBody: IIdResponse = {
       idSluchacza,
     };
 

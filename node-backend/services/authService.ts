@@ -1,8 +1,7 @@
 import { JSOS_MAIN_PAGE_URL } from "../index.js";
 import fetch, { Response as NFResponse } from "node-fetch";
 
-import { JsosError } from "../index.js";
-import { AuthError } from "../controllers/authController.js";
+import { JsosError, AuthError } from "../common/CommonDataTypes.js";
 
 const setCookieParser = (response: NFResponse) => {
   return response.headers

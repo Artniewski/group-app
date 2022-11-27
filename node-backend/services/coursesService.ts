@@ -1,8 +1,9 @@
 import { JSDOM } from "jsdom";
 import fetch from "node-fetch";
 
-import { ICourseData } from "../controllers/coursesController.js";
-import { JSOS_CLASSES_PAGE_URL, JsosError } from "../index.js";
+import { JSOS_CLASSES_PAGE_URL } from "../index.js";
+
+import { ICourseData, JsosError } from "../common/CommonDataTypes.js";
 
 const getCourseIdList = async (JSOSSESSID: string) => {
   const zajeciaPage = await fetch(JSOS_CLASSES_PAGE_URL, {

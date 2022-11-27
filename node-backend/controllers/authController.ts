@@ -1,27 +1,16 @@
 import { Request, Response } from "express";
 
-import { JsosError } from "../index.js";
 import getAuthCookies from "../services/authService.js";
 
-export class AuthError extends Error {
-  constructor(message: string) {
-    super(message);
-
-    this.name = "AuthError";
-  }
-}
-
-interface AuthRequest {
-  username: string;
-  password: string;
-}
-
-export interface AuthResponse {
-  JSOSSESSID: string;
-}
+import {
+  JsosError,
+  IAuthRequest,
+  IAuthResponse,
+  AuthError,
+} from "../common/CommonDataTypes.js";
 
 const authEndpoint = async (req: Request, res: Response) => {
-  const { username, password } = req.body as AuthRequest;
+  const { username, password } = req.body as IAuthRequest;
 
   if (!username) {
     res.status(400).json({ message: "Missing username" });
@@ -36,7 +25,7 @@ const authEndpoint = async (req: Request, res: Response) => {
   try {
     const JSOSSESSID = await getAuthCookies(username, password);
 
-    const responseBody: AuthResponse = {
+    const responseBody: IAuthResponse = {
       JSOSSESSID,
     };
 

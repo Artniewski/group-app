@@ -1,7 +1,9 @@
 import { JSDOM } from "jsdom";
 import fetch from "node-fetch";
 
-import { JSOS_CLASSES_PAGE_URL, JsosError } from "../index.js";
+import { JSOS_CLASSES_PAGE_URL } from "../index.js";
+
+import { JsosError } from "../common/CommonDataTypes.js";
 
 const getIdSluchacza = async (JSOSSESSID: string) => {
   const zajeciaPage = await fetch(JSOS_CLASSES_PAGE_URL, {

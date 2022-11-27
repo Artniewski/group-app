@@ -6,14 +6,6 @@ import authEndpoint from "./controllers/authController.js";
 import idEndpoint from "./controllers/idController.js";
 import coursesEndpoint from "./controllers/coursesController.js";
 
-export class JsosError extends Error {
-  constructor(message: string) {
-    super(message);
-
-    this.name = "JsosError";
-  }
-}
-
 const SERVER_PORT = 8080;
 
 export const JSOS_MAIN_PAGE_URL = "https://jsos.pwr.edu.pl/";
