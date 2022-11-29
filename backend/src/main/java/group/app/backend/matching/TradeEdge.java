@@ -16,6 +16,9 @@ public class TradeEdge extends DefaultEdge {
     public TradeEdge(String taskId) {
         this.taskId = taskId;
     }
+    public Object getSource() {
+        return super.getSource();
+    }
 
     public String getTaskId() {
         return taskId;
