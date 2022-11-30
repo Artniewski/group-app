@@ -44,3 +44,11 @@ export type IIdRequest = IAuthResponse;
 export interface IIdResponse {
   idSluchacza: string;
 }
+
+export type IMajorRequest = IAuthResponse;
+
+export interface IMajorResponse {
+  idSluchacza: string;
+  major: string;
+  semester: number;
+}

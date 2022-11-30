@@ -22,21 +22,23 @@ const getCourseIdList = async (JSOSSESSID: string) => {
 
   const courseIdList: ICourseData[] = [];
 
-  document.querySelectorAll("tr.kliknij>td:first-child").forEach((course) => {
-    const [courseCode, courseName] = course.innerHTML.split("<br>");
+  document
+    .querySelectorAll("tr.kliknij>td:first-child")
+    .forEach((course: HTMLTableCellElement) => {
+      const [courseCode, courseName] = course.innerHTML.split("<br>");
 
-    let onList = false;
+      let onList = false;
 
-    for (const courseData of courseIdList) {
-      if (courseData.courseCode === courseCode.slice(0, -1)) {
-        onList = true;
+      for (const courseData of courseIdList) {
+        if (courseData.courseCode === courseCode.slice(0, -1)) {
+          onList = true;
+        }
       }
-    }
 
-    if (!onList) {
-      courseIdList.push({ courseCode: courseCode.slice(0, -1), courseName });
-    }
-  });
+      if (!onList) {
+        courseIdList.push({ courseCode: courseCode.slice(0, -1), courseName });
+      }
+    });
 
   return Array.from(courseIdList);
 };
