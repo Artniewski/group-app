@@ -16,12 +16,21 @@ public class TradeEdge extends DefaultEdge {
     public TradeEdge(String taskId) {
         this.taskId = taskId;
     }
+
     public Object getSource() {
         return super.getSource();
     }
 
+    public Object getTarget() {
+        return super.getTarget();
+    }
+
     public String getTaskId() {
         return taskId;
+    }
+
+    public boolean equalTrade(TradeEdge edge) {
+        return taskId.equals(edge.taskId) && Objects.equals(getTarget(), edge.getTarget());
     }
 
     @Override

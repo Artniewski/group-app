@@ -11,14 +11,14 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.jgrapht.GraphPath;
-import org.jgrapht.alg.cycle.SzwarcfiterLauerSimpleCycles;
+import org.jgrapht.alg.cycle.HawickJamesSimpleCycles;
 import org.jgrapht.alg.shortestpath.AllDirectedPaths;
 import org.jgrapht.graph.DirectedMultigraph;
 
 public class PathsCyclesUtil {
 
     public static List<List<String>> getSimpleCycles(DirectedMultigraph<String, TradeEdge> graph) {
-        return new SzwarcfiterLauerSimpleCycles<>(graph).findSimpleCycles();
+        return new HawickJamesSimpleCycles<>(graph).findSimpleCycles();
     }
 
     public static Set<GraphPath<String, TradeEdge>> mapCyclesToPaths(DirectedMultigraph<String, TradeEdge> graph, List<List<String>> cycles) {
@@ -50,15 +50,21 @@ public class PathsCyclesUtil {
     private static List<GraphPath<String, TradeEdge>> getDistinctPaths(GraphPath<String, TradeEdge> currentPath, List<GraphPath<String, TradeEdge>> paths) {
         return paths.stream()
                 .filter(path -> path.getLength() <= currentPath.getLength())
+                .filter(path -> !path.equals(currentPath))
                 .filter(path -> path
                         .getEdgeList()
                         .stream()
                         .noneMatch(currentPath.getEdgeList()::contains))
+                .filter(path -> path
+                        .getEdgeList()
+                        .stream()
+                        .noneMatch(edge -> currentPath.getEdgeList().stream().anyMatch(edge::equalTrade))
+                )
                 .toList();
     }
 
     public static Set<GraphPath<String, TradeEdge>> getOptimalCycles(Set<GraphPath<String, TradeEdge>> currentCycles,
-                                                               List<GraphPath<String, TradeEdge>> remainingCycles) {
+                                                                     List<GraphPath<String, TradeEdge>> remainingCycles) {
         if (remainingCycles.isEmpty()) {
             return currentCycles;
         }

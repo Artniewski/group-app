@@ -10,12 +10,10 @@ import java.util.Set;
 
 import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DirectedMultigraph;
-import org.springframework.stereotype.Service;
 
-@Service
-public class TradeMatcherService {
+public class TradeMatcher {
 
-    public List<GraphPath<String, TradeEdge>> findCyclesAsPaths(List<User> users) {
+    public static List<GraphPath<String, TradeEdge>> findCyclesAsPaths(List<User> users) {
         DirectedMultigraph<String, TradeEdge> graph = buildGraph(users);
         List<List<String>> cycles = getSimpleCycles(graph);
         Set<GraphPath<String, TradeEdge>> graphPaths = mapCyclesToPaths(graph, cycles);
