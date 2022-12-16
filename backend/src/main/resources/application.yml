@@ -15,6 +15,13 @@ spring:
       enabled: true
       path: /h2-console
       settings.web-allow-others: false
+  cloud.discovery.client.simple.instances:
+    auth-app:
+      - instanceId: instance1
+        serviceId: auth-app
+        uri: http://localhost:2137
+
+
 #spring:
 #  datasource:
 #    driverClassName: com.mysql.jdbc.Driver

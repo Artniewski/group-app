@@ -1,12 +1,13 @@
 package group.app.backend.user;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import group.app.backend.course.CourseService;
 import group.app.backend.exceptions.ResourceNotFoundException;
 import group.app.backend.task.TaskService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor
