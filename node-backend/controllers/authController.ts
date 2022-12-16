@@ -36,7 +36,7 @@ const authEndpoint = async (req: Request, res: Response) => {
     } else if (error instanceof AuthError) {
       res.status(401).json({ message: "Invalid credentials" });
     } else {
-      res.status(500).json({ message: "Unexpected server error" });
+      res.status(500).json({ message: "Unexpected server error: "+error });
     }
   }
 };

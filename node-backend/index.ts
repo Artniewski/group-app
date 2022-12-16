@@ -7,7 +7,7 @@ import idEndpoint from "./controllers/idController.js";
 import coursesEndpoint from "./controllers/coursesController.js";
 import majorEndpoint from "./controllers/majorController.js";
 
-const SERVER_PORT = 8080;
+const SERVER_PORT = 2137;
 
 export const JSOS_MAIN_PAGE_URL = "https://jsos.pwr.edu.pl/";
 
