@@ -13,7 +13,7 @@ import org.jgrapht.graph.DirectedMultigraph;
 
 public class TradeMatcher {
 
-    public static List<GraphPath<String, TradeEdge>> findCyclesAsPaths(List<User> users) {
+    public static List<GraphPath<String, TradeEdge>> findCyclesAsPaths(List<UserVertex> users) {
         DirectedMultigraph<String, TradeEdge> graph = buildGraph(users);
         List<List<String>> cycles = getSimpleCycles(graph);
         Set<GraphPath<String, TradeEdge>> graphPaths = mapCyclesToPaths(graph, cycles);

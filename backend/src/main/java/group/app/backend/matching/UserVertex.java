@@ -6,11 +6,12 @@ import java.util.Set;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Data
-@Builder
+@NoArgsConstructor
 @EqualsAndHashCode(exclude = {"ownedTasks","wantedTasks"})
-public class User {
+public class UserVertex {
 
     String userId;
     Set<String> ownedTasks = new HashSet<>();
