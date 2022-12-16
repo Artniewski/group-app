@@ -2,20 +2,12 @@ package group.app.backend.mappers;
 
 import group.app.backend.user.User;
 import group.app.backend.matching.UserVertex;
-import group.app.backend.user.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.experimental.UtilityClass;
 
 import java.util.stream.Collectors;
 
+@UtilityClass
 public class UserMapper {
-
-	
-	private final UserService us;
-	
-	@Autowired
-	public UserMapper(UserService us) {
-		this.us = us;
-	}
 	
 	public static UserVertex mapToVertex(User user){
 		

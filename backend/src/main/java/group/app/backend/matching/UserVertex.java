@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@Builder
 @EqualsAndHashCode(exclude = {"ownedTasks","wantedTasks"})
 public class UserVertex {
 
