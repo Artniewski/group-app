@@ -15,7 +15,12 @@ import lombok.NoArgsConstructor;
 public class UserVertex {
 
     String userId;
-    Set<String> ownedTasks = new HashSet<>();
-    Set<String> wantedTasks = new HashSet<>();
-
+    Set<String> ownedTasks;
+    Set<String> wantedTasks;
+    
+    public UserVertex(String userId, Set<String> ownedTasks, Set<String> wantedTasks) {
+        this.userId = userId;
+        this.ownedTasks = ownedTasks;
+        this.wantedTasks = wantedTasks;
+    }
 }
