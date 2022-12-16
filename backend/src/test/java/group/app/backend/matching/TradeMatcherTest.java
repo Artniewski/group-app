@@ -13,19 +13,19 @@ public class TradeMatcherTest {
 
     @Test
     public void shouldFindPair() {
-        User user1 = User.builder()
+        UserVertex user1 = UserVertex.builder()
                 .userId("A")
                 .ownedTasks(Set.of("1"))
                 .wantedTasks(Set.of("2"))
                 .build();
 
-        User user2 = User.builder()
+        UserVertex user2 = UserVertex.builder()
                 .userId("B")
                 .ownedTasks(Set.of("2", "3"))
                 .wantedTasks(Set.of("1"))
                 .build();
 
-        User user3 = User.builder()
+        UserVertex user3 = UserVertex.builder()
                 .userId("C")
                 .ownedTasks(Set.of("1"))
                 .wantedTasks(Set.of("3"))
@@ -40,24 +40,24 @@ public class TradeMatcherTest {
 
     @Test
     public void shouldFindTriple() {
-        User user1 = User.builder()
+        UserVertex user1 = UserVertex.builder()
                 .userId("A")
                 .ownedTasks(Set.of("1", "8"))
                 .wantedTasks(Set.of("2", "3", "5", "9"))
                 .build();
 
-        User user2 = User.builder()
+        UserVertex user2 = UserVertex.builder()
                 .userId("B")
                 .ownedTasks(Set.of("2", "3", "4"))
                 .wantedTasks(Set.of("1", "8"))
                 .build();
 
-        User user3 = User.builder()
+        UserVertex user3 = UserVertex.builder()
                 .userId("C")
                 .ownedTasks(Set.of("5", "6"))
                 .wantedTasks(Set.of("4", "7"))
                 .build();
-        User user4 = User.builder()
+        UserVertex user4 = UserVertex.builder()
                 .userId("D")
                 .ownedTasks(Set.of("7", "9"))
                 .wantedTasks(Set.of("4", "6"))

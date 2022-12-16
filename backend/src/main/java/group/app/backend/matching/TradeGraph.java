@@ -11,14 +11,14 @@ import org.jgrapht.graph.DirectedMultigraph;
 
 public class TradeGraph {
 
-    public static DirectedMultigraph<String, TradeEdge> buildGraph(List<User> users) {
+    public static DirectedMultigraph<String, TradeEdge> buildGraph(List<UserVertex> users) {
         DirectedMultigraph<String, TradeEdge> graph = new DirectedMultigraph<>(TradeEdge.class);
         addUserVertices(users, graph);
         addEdges(graph, users, getAvailableTasks(users));
         return graph;
     }
 
-    private static void addEdges(DirectedMultigraph<String, TradeEdge> graph, List<User> users, Set<String> availableTasks) {
+    private static void addEdges(DirectedMultigraph<String, TradeEdge> graph, List<UserVertex> users, Set<String> availableTasks) {
         availableTasks.forEach(task -> {
             Set<String> requesters = new HashSet<>();
             Set<String> owners = new HashSet<>();
@@ -34,14 +34,14 @@ public class TradeGraph {
         });
     }
 
-    private static Set<String> getAvailableTasks(List<User> users) {
+    private static Set<String> getAvailableTasks(List<UserVertex> users) {
         Set<String> allOwnedTasks = users.stream()
-                .map(User::getOwnedTasks)
+                .map(UserVertex::getOwnedTasks)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
 
         Set<String> allWantedTasks = users.stream()
-                .map(User::getWantedTasks)
+                .map(UserVertex::getWantedTasks)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
 
@@ -50,9 +50,9 @@ public class TradeGraph {
                 .collect(Collectors.toSet());
     }
 
-    private static void addUserVertices(List<User> users, Graph<String, TradeEdge> graph) {
+    private static void addUserVertices(List<UserVertex> users, Graph<String, TradeEdge> graph) {
         users.stream()
-                .map(User::getUserId)
+                .map(UserVertex::getUserId)
                 .forEach(graph::addVertex);
     }
 
