@@ -1,5 +1,5 @@
 export interface IAuthCookies {
-  JSOSSESSID: string;
+  jsossessid: string;
 }
 
 export class AuthError extends Error {
@@ -23,15 +23,13 @@ export interface IAuthRequest {
   password: string;
 }
 
-export interface IAuthResponse {
-  JSOSSESSID: string;
-}
+export type IAuthResponse = IAuthCookies;
 
 export type ICourseListRequest = IAuthResponse;
 
 export interface ICourseData {
-  courseCode : string
-  courseName : string
+  courseCode: string;
+  courseName: string;
 }
 
 export interface ICourseListResponse {
