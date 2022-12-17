@@ -10,16 +10,16 @@ import {
 } from "../common/CommonDataTypes.js";
 
 const coursesEndpoint = async (req: Request, res: Response) => {
-  const { JSOSSESSID } = req.body as ICourseListRequest;
+  const { jsossessid } = req.body as ICourseListRequest;
 
-  if (!JSOSSESSID) {
+  if (!jsossessid) {
     res.status(400).json({ message: "Missing JSOSSESSID" });
     return;
   }
 
   try {
-    const idSluchacza = await getIdSluchacza(JSOSSESSID);
-    const courseList = await getCourseIdList(JSOSSESSID);
+    const idSluchacza = await getIdSluchacza(jsossessid);
+    const courseList = await getCourseIdList(jsossessid);
 
     const responseBody: ICourseListResponse = {
       idSluchacza,
