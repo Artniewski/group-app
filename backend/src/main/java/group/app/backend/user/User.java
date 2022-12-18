@@ -18,10 +18,10 @@ import java.util.Set;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
     private String nickname;
     private Double rating;
+    private boolean isOldMan;
 
     @ManyToMany
     @JoinTable(

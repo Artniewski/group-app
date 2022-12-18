@@ -17,7 +17,7 @@ public class UserMapperTest {
         user = new User();
 
         //Dodanie Id
-        user.setId(1L);
+        user.setId("1");
 
         //Dodanie oferowanych tasków
         Task task1 = new Task();

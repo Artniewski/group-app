@@ -17,7 +17,7 @@ public class UserService {
     private final CourseService courseService;
     private final TaskService taskService;
 
-    public User getUserById(Long id) {
+    public User getUserById(String id) {
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
@@ -25,41 +25,39 @@ public class UserService {
         return userRepository.findAll();
     }
 
-    public User createUser(User user) {
+    public User saveUser(User user) {
         return userRepository.save(user);
     }
 
-    public void deleteUser(Long id) {
+    public void deleteUser(String id) {
         userRepository.deleteById(id);
     }
 
-    public User addCourseToUser(Long userId, Long courseId) {
+    public User addCourseToUser(String userId, Long courseId) {
         User user = getUserById(userId);
         user.enrollCourse(courseService.getCourseById(courseId));
         return userRepository.save(user);
     }
 
-    public User addOfferedTaskToUser(Long userId, Long taskId) {
+    public User addOfferedTaskToUser(String userId, Long taskId) {
         User user = getUserById(userId);
         user.addOfferedTask(taskService.getTaskById(taskId));
         return userRepository.save(user);
     }
 
-    public User addRequestedTaskToUser(Long userId, Long taskId) {
+    public User addRequestedTaskToUser(String userId, Long taskId) {
         User user = getUserById(userId);
         user.addRequestedTask(taskService.getTaskById(taskId));
         return userRepository.save(user);
     }
 
-    public void removeRequestedTasksFromUser(Long userId, List<Long> taskIds){
-        User user = getUserById(userId);
-        taskIds.forEach(task -> user.removeRequestedTask(taskService.getTaskById(task)));
-        userRepository.save(user);
-    }
-
-    public void removeRequestedTaskFromUser(Long userId, Long taskId){
+    public void removeRequestedTaskFromUser(String userId, Long taskId) {
         User user = getUserById(userId);
         user.removeRequestedTask(taskService.getTaskById(taskId));
         userRepository.save(user);
+    }
+
+    public boolean exists(String userId) {
+        return userRepository.existsById(userId);
     }
 }
