@@ -1,11 +1,14 @@
 package group.app.backend.user;
 
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
+import group.app.backend.course.Course;
 import group.app.backend.course.CourseService;
 import group.app.backend.exceptions.ResourceNotFoundException;
+import group.app.backend.task.Task;
 import group.app.backend.task.TaskService;
 import lombok.RequiredArgsConstructor;
 
@@ -49,6 +52,21 @@ public class UserService {
         User user = getUserById(userId);
         user.addRequestedTask(taskService.getTaskById(taskId));
         return userRepository.save(user);
+    }
+
+    public Set<Task> getUserRequestedTasks(String userId) {
+        User user = getUserById(userId);
+        return user.getRequestedTasks();
+    }
+
+    public Set<Task> getUserOfferedTasks(String userId) {
+        User user = getUserById(userId);
+        return user.getOfferedTasks();
+    }
+
+    public Set<Course> getUserCourses(String userId) {
+        User user = getUserById(userId);
+        return user.getCourses();
     }
 
     public void removeRequestedTaskFromUser(String userId, Long taskId) {

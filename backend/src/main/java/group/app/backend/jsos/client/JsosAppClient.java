@@ -25,5 +25,5 @@ public interface JsosAppClient {
     CourseListDTO getCourseList(@RequestBody SessionRequestDTO authRequest);
     @RequestMapping(method = RequestMethod.POST, value = "/major")
     UserMajorDTO getUserMajor(@RequestBody SessionRequestDTO authRequest);
-
+//TODO: add AdviceController and try catch around jsos request to catch and rethrow error when problem during auth process
 }

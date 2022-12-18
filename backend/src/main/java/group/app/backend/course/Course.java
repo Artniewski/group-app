@@ -1,15 +1,23 @@
 package group.app.backend.course;
 
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import group.app.backend.jsos.dto.CourseDTO;
 import group.app.backend.tasklist.TaskList;
 import group.app.backend.user.User;
-import lombok.*;
-
-import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "courses")
@@ -37,6 +45,13 @@ public class Course {
         return Course.builder()
                 .id(dto.getCourseCode())
                 .name(dto.getCourseName())
+                .build();
+    }
+
+    public CourseDTO toDto() {
+        return CourseDTO.builder()
+                .courseCode(id)
+                .courseName(name)
                 .build();
     }
 }
