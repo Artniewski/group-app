@@ -12,5 +12,5 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
 public class AuthResponseDTO {
-    String JSOSSESSID;
+    String jsossessid;
 }
