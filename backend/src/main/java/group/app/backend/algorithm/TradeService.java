@@ -1,5 +1,7 @@
-package group.app.backend.matching;
+package group.app.backend.algorithm;
 
+import group.app.backend.algorithm.models.TradeEdge;
+import group.app.backend.algorithm.models.UserVertex;
 import group.app.backend.mappers.UserMapper;
 import group.app.backend.user.User;
 import group.app.backend.user.UserService;
@@ -11,7 +13,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
-import static group.app.backend.matching.TradeMatcher.findOptimalCycles;
+import static group.app.backend.algorithm.utils.TradeMatcher.findOptimalCycles;
 
 @Service
 @RequiredArgsConstructor

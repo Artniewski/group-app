@@ -1,7 +1,7 @@
-package group.app.backend.matching;
+package group.app.backend.algorithm.utils;
 
-import static group.app.backend.matching.PathsCyclesUtil.*;
-import static group.app.backend.matching.TradeGraph.buildGraph;
+import static group.app.backend.algorithm.utils.PathsCyclesUtil.*;
+import static group.app.backend.algorithm.models.TradeGraph.buildGraph;
 
 import java.util.Comparator;
 import java.util.List;
@@ -9,6 +9,9 @@ import java.util.Set;
 
 import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DirectedMultigraph;
+
+import group.app.backend.algorithm.models.TradeEdge;
+import group.app.backend.algorithm.models.UserVertex;
 
 public class TradeMatcher {
 

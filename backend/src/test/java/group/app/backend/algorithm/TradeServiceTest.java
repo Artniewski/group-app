@@ -1,4 +1,4 @@
-package group.app.backend.matching;
+package group.app.backend.algorithm;
 
 import group.app.backend.BackendApplication;
 import group.app.backend.task.Task;
@@ -10,11 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
 import java.util.Set;
-
-import static group.app.backend.matching.TradeMatcher.findOptimalCycles;
-import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest(classes = BackendApplication.class)
 @RunWith(SpringRunner.class)

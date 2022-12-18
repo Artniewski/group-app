@@ -1,4 +1,4 @@
-package group.app.backend.matching;
+package group.app.backend.algorithm.models;
 
 import java.util.Collection;
 import java.util.HashSet;

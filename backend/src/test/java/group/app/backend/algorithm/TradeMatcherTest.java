@@ -1,13 +1,13 @@
-package group.app.backend.matching;
+package group.app.backend.algorithm;
 
-import static group.app.backend.matching.PathsCyclesUtil.getOptimalCycles;
-import static group.app.backend.matching.TradeMatcher.findOptimalCycles;
+import static group.app.backend.algorithm.utils.TradeMatcher.findOptimalCycles;
 
 import java.util.List;
 import java.util.Set;
 
-import org.jgrapht.GraphPath;
 import org.junit.jupiter.api.Test;
+
+import group.app.backend.algorithm.models.UserVertex;
 
 public class TradeMatcherTest {
 

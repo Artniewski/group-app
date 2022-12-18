@@ -1,7 +1,7 @@
 package group.app.backend.mappers;
 
 import group.app.backend.user.User;
-import group.app.backend.matching.UserVertex;
+import group.app.backend.algorithm.models.UserVertex;
 import lombok.experimental.UtilityClass;
 
 import java.util.stream.Collectors;

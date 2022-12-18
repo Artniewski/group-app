@@ -1,6 +1,5 @@
-package group.app.backend.matching;
+package group.app.backend.algorithm.models;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import lombok.*;
