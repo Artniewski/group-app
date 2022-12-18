@@ -1,1 +1,1 @@
-PUT http://localhost:8080/api/users/1/courses/3
+PUT http://localhost:8080/api/user/1/courses/3
