@@ -9,11 +9,13 @@ import { HomeScreen } from "./app_modules/home_module.tsx/HomeScreen";
 import { ExerciseSelectionScreen } from "./app_modules/exercise_exchange_module/ExerciseScreen";
 import { ExerciseAddScreen } from "./app_modules/exercise_exchange_module/AddListScreen";
 import { VoteOldManScreen } from "./app_modules/vote_oldman_module/VoteOldManScreen";
+import { CalendarScreen } from "./app_modules/calendar_module/CalendarScreen";
+
 import LoginForm from "./app_modules/login_module/LoginForm";
 
 import AppContextProvider from "./store/AppContextProvider";
 
-export const SERVER_ADDRESS = "http://192.168.2.53:8080";
+export const SERVER_ADDRESS = "http://192.168.1.46:8080";
 
 export type RootStackParamList = {
   LoginForm: undefined;
@@ -21,6 +23,7 @@ export type RootStackParamList = {
   ExerciseSelection: undefined;
   AddExercise: undefined;
   VoteOldMan: undefined;
+  CalendarScreen: undefined;
 };
 
 const App: React.FC = () => {
@@ -30,7 +33,7 @@ const App: React.FC = () => {
     <AppContextProvider>
       <StatusBar style="auto" />
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="LoginForm">
+        <Stack.Navigator initialRouteName="HomeScreen">
           <Stack.Screen
             name="LoginForm"
             component={LoginForm}
@@ -40,6 +43,13 @@ const App: React.FC = () => {
             name="HomeScreen"
             component={HomeScreen}
             options={{ title: "Wybierz moduł" }}
+          />
+          <Stack.Screen
+            name="CalendarScreen"
+            component={CalendarScreen}
+            options={() => ({
+              title: "Twój plan"
+            })}
           />
           <Stack.Screen
             name="ExerciseSelection"

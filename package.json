@@ -1,0 +1,5 @@
+{
+  "dependencies": {
+    "@freakycoder/react-native-header-view": "^1.2.0"
+  }
+}
