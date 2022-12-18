@@ -1,10 +1,9 @@
-package group.app.backend.mappers;
-
-import group.app.backend.user.User;
-import group.app.backend.algorithm.models.UserVertex;
-import lombok.experimental.UtilityClass;
+package group.app.backend.user;
 
 import java.util.stream.Collectors;
+
+import group.app.backend.algorithm.models.UserVertex;
+import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class UserMapper {

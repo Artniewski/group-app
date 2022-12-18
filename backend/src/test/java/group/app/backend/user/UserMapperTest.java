@@ -1,12 +1,11 @@
-package group.app.backend.mappers;
-
-import group.app.backend.algorithm.models.UserVertex;
-import group.app.backend.task.Task;
-import group.app.backend.user.User;
+package group.app.backend.user;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import group.app.backend.algorithm.models.UserVertex;
+import group.app.backend.task.Task;
 
 public class UserMapperTest {
 

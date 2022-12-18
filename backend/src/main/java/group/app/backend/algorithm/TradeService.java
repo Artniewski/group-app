@@ -2,7 +2,7 @@ package group.app.backend.algorithm;
 
 import group.app.backend.algorithm.models.TradeEdge;
 import group.app.backend.algorithm.models.UserVertex;
-import group.app.backend.mappers.UserMapper;
+import group.app.backend.user.UserMapper;
 import group.app.backend.user.User;
 import group.app.backend.user.UserService;
 import lombok.RequiredArgsConstructor;
