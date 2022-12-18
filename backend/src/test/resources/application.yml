@@ -21,7 +21,7 @@ spring:
   cloud.discovery.client.simple.instances:
     auth-app:
       - instanceId: instance1
-        serviceId: auth-app
+        serviceId: jsos-app
         uri: http://localhost:2137
 
 

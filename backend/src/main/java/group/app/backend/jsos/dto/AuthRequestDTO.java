@@ -1,4 +1,4 @@
-package group.app.backend.auth.dto;
+package group.app.backend.jsos.dto;
 
 import static lombok.AccessLevel.PRIVATE;
 
