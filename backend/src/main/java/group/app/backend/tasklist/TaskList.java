@@ -26,7 +26,7 @@ public class TaskList {
     @OneToMany(mappedBy = "taskList")
     private Set<Task> tasks = new HashSet<>();
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "course_id", referencedColumnName = "id")
     private Course course;
 }

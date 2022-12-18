@@ -10,6 +10,7 @@ import group.app.backend.jsos.dto.AuthResponseDTO;
 import group.app.backend.jsos.dto.CourseListDTO;
 import group.app.backend.jsos.dto.SessionRequestDTO;
 import group.app.backend.jsos.dto.JsosUserDTO;
+import group.app.backend.jsos.dto.UserMajorDTO;
 
 @FeignClient(value = "jsos-app", url = "localhost:2137")
 public interface JsosAppClient {
@@ -22,5 +23,7 @@ public interface JsosAppClient {
 
     @RequestMapping(method = RequestMethod.POST, value = "/courseList")
     CourseListDTO getCourseList(@RequestBody SessionRequestDTO authRequest);
+    @RequestMapping(method = RequestMethod.POST, value = "/major")
+    UserMajorDTO getUserMajor(@RequestBody SessionRequestDTO authRequest);
 
 }

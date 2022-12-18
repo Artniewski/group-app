@@ -1,6 +1,8 @@
 package group.app.backend.course;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import group.app.backend.jsos.dto.CourseDTO;
 import group.app.backend.tasklist.TaskList;
 import group.app.backend.user.User;
 import lombok.*;
@@ -19,11 +21,9 @@ import java.util.Set;
 public class Course {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     private String name;
-    private String code;
 
     @JsonIgnore
     @ManyToMany(mappedBy = "courses")
@@ -33,4 +33,10 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private Set<TaskList> taskLists = new HashSet<>();
 
+    public static Course fromDto(CourseDTO dto) {
+        return Course.builder()
+                .id(dto.getCourseCode())
+                .name(dto.getCourseName())
+                .build();
+    }
 }

@@ -7,9 +7,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import group.app.backend.jsos.client.JsosAppClient;
 import group.app.backend.jsos.dto.AuthRequestDTO;
-import group.app.backend.jsos.dto.AuthResponseDTO;
-import group.app.backend.jsos.dto.CourseListDTO;
-import group.app.backend.jsos.dto.SessionRequestDTO;
+import group.app.backend.jsos.dto.LoginDTO;
+import group.app.backend.jsos.services.LoginService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -18,11 +17,10 @@ import lombok.RequiredArgsConstructor;
 public class AuthController {
 
     private final JsosAppClient jsosAppClient;
+    private final LoginService loginService;
 
     @GetMapping("/test")
-    public CourseListDTO getCourseById(@RequestBody AuthRequestDTO authRequestDTO) {
-        AuthResponseDTO response = jsosAppClient.authenticate(authRequestDTO);
-//        return jsosAppClient.getUserId(SessionRequestDTO.builder().jsossessid(response.getJsossessid()).build());
-        return jsosAppClient.getCourseList(SessionRequestDTO.builder().jsossessid(response.getJsossessid()).build());
+    public LoginDTO getCourseById(@RequestBody AuthRequestDTO authRequestDTO) {
+        return loginService.login(authRequestDTO);
     }
 }

@@ -14,17 +14,17 @@ public class CourseController {
     private final CourseService courseService;
 
     @GetMapping("/{id}")
-    public Course getCourseById(@PathVariable Long id) {
+    public Course getCourseById(@PathVariable String id) {
         return courseService.getCourseById(id);
     }
 
     @PostMapping
     public Course createCourse(@RequestBody Course course) {
-        return courseService.createCourse(course);
+        return courseService.saveCourse(course);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteCourse(@PathVariable Long id) {
+    public void deleteCourse(@PathVariable String id) {
         courseService.deleteCourse(id);
     }
 

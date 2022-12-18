@@ -2,5 +2,13 @@ POST http://localhost:8080/api/tasks
 Content-Type: application/json
 
 {
-  "taskNumber": "2137"
+  "taskNumber": 1,
+  "taskList": {
+    "id": 1,
+    "listNumber": 1,
+    "course": {
+      "id": "1",
+      "name": "course"
+    }
+  }
 }

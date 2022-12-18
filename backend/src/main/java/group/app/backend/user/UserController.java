@@ -34,7 +34,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}/courses/{courseId}")
-    public User addCourseToUser(@PathVariable String userId, @PathVariable Long courseId) {
+    public User addCourseToUser(@PathVariable String userId, @PathVariable String courseId) {
         return userService.addCourseToUser(userId, courseId);
     }
 

@@ -33,7 +33,7 @@ public class UserService {
         userRepository.deleteById(id);
     }
 
-    public User addCourseToUser(String userId, Long courseId) {
+    public User addCourseToUser(String userId, String courseId) {
         User user = getUserById(userId);
         user.enrollCourse(courseService.getCourseById(courseId));
         return userRepository.save(user);

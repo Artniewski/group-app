@@ -1,7 +1,6 @@
 package group.app.backend.course;
 
 import group.app.backend.exceptions.ResourceNotFoundException;
-import group.app.backend.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +12,7 @@ public class CourseService {
 
     private final CourseRepository courseRepository;
 
-    public Course getCourseById(Long id) {
+    public Course getCourseById(String id) {
         return courseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
@@ -21,11 +20,11 @@ public class CourseService {
         return courseRepository.findAll();
     }
 
-    public Course createCourse(Course course) {
+    public Course saveCourse(Course course) {
         return courseRepository.save(course);
     }
 
-    public void deleteCourse(Long id) {
+    public void deleteCourse(String id) {
         courseRepository.deleteById(id);
     }
 }

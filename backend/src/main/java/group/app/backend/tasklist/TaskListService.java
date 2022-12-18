@@ -30,7 +30,7 @@ public class TaskListService {
         taskListRepository.deleteById(id);
     }
 
-    public TaskList addCourseToTaskList(Long taskListId, Long courseId) {
+    public TaskList addCourseToTaskList(Long taskListId, String courseId) {
         TaskList taskList = getTaskListById(taskListId);
         taskList.setCourse(courseService.getCourseById(courseId));
         return taskListRepository.save(taskList);

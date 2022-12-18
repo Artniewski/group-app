@@ -2,5 +2,6 @@ POST http://localhost:8080/api/courses
 Content-Type: application/json
 
 {
-  "name": "sztos"
+"name": "JavaScript",
+"id": "c10"
 }

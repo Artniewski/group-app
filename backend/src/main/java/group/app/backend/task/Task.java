@@ -1,6 +1,7 @@
 package group.app.backend.task;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import group.app.backend.tasklist.TaskList;
 import group.app.backend.user.User;
 import lombok.*;
@@ -10,7 +11,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
-@Table(name = "tasks")
+@Table(name = "tasks",
+        uniqueConstraints = {@UniqueConstraint(name = "UniqueTaskNumberAndList", columnNames = {"taskNumber", "tasklist_id"})})
 @Data
 @EqualsAndHashCode(exclude = {"taskList", "owners", "requesters"})
 @NoArgsConstructor
@@ -24,7 +26,7 @@ public class Task {
 
     private Integer taskNumber;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "tasklist_id", referencedColumnName = "id")
     private TaskList taskList;
 
@@ -35,6 +37,5 @@ public class Task {
     @JsonIgnore
     @ManyToMany(mappedBy = "requestedTasks")
     private Set<User> requesters = new HashSet<>();
-
 
 }

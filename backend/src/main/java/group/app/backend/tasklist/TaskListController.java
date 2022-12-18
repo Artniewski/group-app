@@ -34,7 +34,7 @@ public class TaskListController {
     }
 
     @PutMapping("/{taskListId}/course/{courseId}")
-    public TaskList addCourseToTaskList(@PathVariable Long taskListId, @PathVariable Long courseId) {
+    public TaskList addCourseToTaskList(@PathVariable Long taskListId, @PathVariable String courseId) {
         return taskListService.addCourseToTaskList(taskListId, courseId);
     }
 
