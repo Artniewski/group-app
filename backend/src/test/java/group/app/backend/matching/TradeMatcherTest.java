@@ -1,7 +1,7 @@
 package group.app.backend.matching;
 
 import static group.app.backend.matching.PathsCyclesUtil.getOptimalCycles;
-import static group.app.backend.matching.TradeMatcher.findCyclesAsPaths;
+import static group.app.backend.matching.TradeMatcher.findOptimalCycles;
 
 import java.util.List;
 import java.util.Set;
@@ -30,10 +30,7 @@ public class TradeMatcherTest {
                 .ownedTasks(Set.of("1"))
                 .wantedTasks(Set.of("3"))
                 .build();
-        var paths = findCyclesAsPaths(List.of(user1, user2, user3));
-        paths.forEach(System.out::println);
-        System.out.println("#########");
-        Set<GraphPath<String, TradeEdge>> optimalCycles = getOptimalCycles(Set.of(), paths);
+        var optimalCycles = findOptimalCycles(List.of(user1, user2, user3));
         System.out.println("Optimal cycles: " + optimalCycles);
         optimalCycles.forEach(System.out::println);
     }
@@ -63,10 +60,7 @@ public class TradeMatcherTest {
                 .wantedTasks(Set.of("4", "6"))
                 .build();
 
-        var paths = findCyclesAsPaths(List.of(user1, user2, user3, user4));
-        paths.forEach(System.out::println);
-        System.out.println("#########");
-        Set<GraphPath<String, TradeEdge>> optimalCycles = getOptimalCycles(Set.of(), paths);
+        var optimalCycles = findOptimalCycles(List.of(user1, user2, user3, user4));
         System.out.println("Optimal cycles: " + optimalCycles);
         optimalCycles.forEach(System.out::println);
     }

@@ -2,9 +2,7 @@ package group.app.backend.user;
 
 import group.app.backend.course.Course;
 import group.app.backend.task.Task;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -15,6 +13,8 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(exclude = {"courses", "offeredTasks", "requestedTasks"})
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class User {
 
     @Id
@@ -57,5 +57,8 @@ public class User {
 
     public void addRequestedTask(Task task) {
         requestedTasks.add(task);
+    }
+    public void removeRequestedTask(Task task){
+        requestedTasks.remove(task);
     }
 }

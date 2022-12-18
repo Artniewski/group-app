@@ -10,17 +10,17 @@ import {
 } from "../common/CommonDataTypes.js";
 
 const majorEndpoint = async (req: Request, res: Response) => {
-  const { JSOSSESSID } = req.body as IMajorRequest;
+  const { jsossessid } = req.body as IMajorRequest;
 
-  if (!JSOSSESSID) {
+  if (!jsossessid) {
     res.status(400).json({ message: "Missing JSOSSESSID" });
     return;
   }
 
   try {
-    const idSluchacza = await getIdSluchacza(JSOSSESSID);
-    const major = await getMajor(JSOSSESSID);
-    const semester = await getSemester(JSOSSESSID);
+    const idSluchacza = await getIdSluchacza(jsossessid);
+    const major = await getMajor(jsossessid);
+    const semester = await getSemester(jsossessid);
 
     const responseBody: IMajorResponse = {
       idSluchacza,

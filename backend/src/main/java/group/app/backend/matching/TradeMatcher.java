@@ -1,7 +1,6 @@
 package group.app.backend.matching;
 
-import static group.app.backend.matching.PathsCyclesUtil.getSimpleCycles;
-import static group.app.backend.matching.PathsCyclesUtil.mapCyclesToPaths;
+import static group.app.backend.matching.PathsCyclesUtil.*;
 import static group.app.backend.matching.TradeGraph.buildGraph;
 
 import java.util.Comparator;
@@ -13,14 +12,13 @@ import org.jgrapht.graph.DirectedMultigraph;
 
 public class TradeMatcher {
 
-    public static List<GraphPath<String, TradeEdge>> findCyclesAsPaths(List<UserVertex> users) {
+    public static Set<GraphPath<String, TradeEdge>> findOptimalCycles(List<UserVertex> users) {
         DirectedMultigraph<String, TradeEdge> graph = buildGraph(users);
         List<List<String>> cycles = getSimpleCycles(graph);
         Set<GraphPath<String, TradeEdge>> graphPaths = mapCyclesToPaths(graph, cycles);
-        return graphPaths.stream()
+        List<GraphPath<String, TradeEdge>> sortedGraphPaths = graphPaths.stream()
                 .sorted(Comparator.comparingInt(GraphPath::getLength))
                 .toList();
-
+        return getOptimalCycles(Set.of(), sortedGraphPaths);
     }
-
 }

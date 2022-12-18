@@ -9,15 +9,15 @@ import {
 } from "../common/CommonDataTypes.js";
 
 const idEndpoint = async (req: Request, res: Response) => {
-  const { JSOSSESSID } = req.body as IIdRequest;
+  const { jsossessid } = req.body as IIdRequest;
 
-  if (!JSOSSESSID) {
+  if (!jsossessid) {
     res.status(400).json({ message: "Missing JSOSSESSID" });
     return;
   }
 
   try {
-    const idSluchacza = await getIdSluchacza(JSOSSESSID);
+    const idSluchacza = await getIdSluchacza(jsossessid);
 
     const responseBody: IIdResponse = {
       idSluchacza,

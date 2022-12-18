@@ -26,6 +26,7 @@ dependencies {
     implementation 'mysql:mysql-connector-java:8.0.30'
     implementation 'org.jgrapht:jgrapht:1.5.1'
     implementation 'org.jgrapht:jgrapht-core:1.5.1'
+    implementation 'junit:junit:4.13.1'
     compileOnly 'org.projectlombok:lombok:1.18.24'
 
     runtimeOnly 'com.h2database:h2:2.1.214'

@@ -50,4 +50,16 @@ public class UserService {
         user.addRequestedTask(taskService.getTaskById(taskId));
         return userRepository.save(user);
     }
+
+    public void removeRequestedTasksFromUser(Long userId, List<Long> taskIds){
+        User user = getUserById(userId);
+        taskIds.forEach(task -> user.removeRequestedTask(taskService.getTaskById(task)));
+        userRepository.save(user);
+    }
+
+    public void removeRequestedTaskFromUser(Long userId, Long taskId){
+        User user = getUserById(userId);
+        user.removeRequestedTask(taskService.getTaskById(taskId));
+        userRepository.save(user);
+    }
 }

@@ -3,9 +3,7 @@ package group.app.backend.task;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import group.app.backend.tasklist.TaskList;
 import group.app.backend.user.User;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
@@ -16,6 +14,8 @@ import java.util.Set;
 @Data
 @EqualsAndHashCode(exclude = {"taskList", "owners", "requesters"})
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
 public class Task {
 
     @Id

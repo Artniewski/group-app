@@ -23,10 +23,10 @@ const authEndpoint = async (req: Request, res: Response) => {
   }
 
   try {
-    const JSOSSESSID = await getAuthCookies(username, password);
+    const jsossessid = await getAuthCookies(username, password);
 
     const responseBody: IAuthResponse = {
-      JSOSSESSID,
+      jsossessid,
     };
 
     res.status(200).json(responseBody);
@@ -36,6 +36,7 @@ const authEndpoint = async (req: Request, res: Response) => {
     } else if (error instanceof AuthError) {
       res.status(401).json({ message: "Invalid credentials" });
     } else {
+      console.log(error)
       res.status(500).json({ message: "Unexpected server error: "+error });
     }
   }
