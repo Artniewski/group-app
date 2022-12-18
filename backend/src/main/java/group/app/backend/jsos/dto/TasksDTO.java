@@ -4,7 +4,7 @@ import static lombok.AccessLevel.PRIVATE;
 
 import java.util.Set;
 
-import group.app.backend.task.Task;
+import group.app.backend.user.entity.Task;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

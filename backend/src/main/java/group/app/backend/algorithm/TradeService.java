@@ -2,9 +2,9 @@ package group.app.backend.algorithm;
 
 import group.app.backend.algorithm.models.TradeEdge;
 import group.app.backend.algorithm.models.UserVertex;
-import group.app.backend.user.UserMapper;
-import group.app.backend.user.User;
-import group.app.backend.user.UserService;
+import group.app.backend.user.utils.UserMapper;
+import group.app.backend.user.entity.User;
+import group.app.backend.user.services.UserService;
 import lombok.RequiredArgsConstructor;
 
 import org.jgrapht.GraphPath;

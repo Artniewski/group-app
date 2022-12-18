@@ -1,15 +1,15 @@
-package group.app.backend.user;
+package group.app.backend.user.services;
 
 import java.util.List;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import group.app.backend.course.Course;
-import group.app.backend.course.CourseService;
+import group.app.backend.user.entity.Course;
 import group.app.backend.exceptions.ResourceNotFoundException;
-import group.app.backend.task.Task;
-import group.app.backend.task.TaskService;
+import group.app.backend.user.entity.Task;
+import group.app.backend.user.entity.User;
+import group.app.backend.user.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service

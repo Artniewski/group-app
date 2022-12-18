@@ -1,8 +1,7 @@
-package group.app.backend.tasklist;
+package group.app.backend.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import group.app.backend.course.Course;
-import group.app.backend.task.Task;
+
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;

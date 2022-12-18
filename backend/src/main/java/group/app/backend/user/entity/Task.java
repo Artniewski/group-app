@@ -1,9 +1,7 @@
-package group.app.backend.task;
+package group.app.backend.user.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import group.app.backend.tasklist.TaskList;
-import group.app.backend.user.User;
 import lombok.*;
 
 import javax.persistence.*;

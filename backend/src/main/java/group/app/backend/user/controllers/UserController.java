@@ -1,6 +1,8 @@
-package group.app.backend.user;
+package group.app.backend.user.controllers;
 
 
+import group.app.backend.user.services.UserService;
+import group.app.backend.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

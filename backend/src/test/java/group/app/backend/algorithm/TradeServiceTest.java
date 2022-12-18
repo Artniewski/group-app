@@ -1,9 +1,9 @@
 package group.app.backend.algorithm;
 
 import group.app.backend.BackendApplication;
-import group.app.backend.task.Task;
-import group.app.backend.user.User;
-import group.app.backend.user.UserService;
+import group.app.backend.user.entity.Task;
+import group.app.backend.user.entity.User;
+import group.app.backend.user.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

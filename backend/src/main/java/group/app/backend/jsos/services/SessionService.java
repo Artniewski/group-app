@@ -5,11 +5,11 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import group.app.backend.course.Course;
+import group.app.backend.user.entity.Course;
 import group.app.backend.jsos.dto.CourseDTO;
 import group.app.backend.jsos.dto.TasksDTO;
-import group.app.backend.task.Task;
-import group.app.backend.user.UserService;
+import group.app.backend.user.entity.Task;
+import group.app.backend.user.services.UserService;
 import lombok.RequiredArgsConstructor;
 
 @Service

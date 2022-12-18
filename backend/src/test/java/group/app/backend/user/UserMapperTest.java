@@ -5,7 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import group.app.backend.algorithm.models.UserVertex;
-import group.app.backend.task.Task;
+import group.app.backend.user.entity.Task;
+import group.app.backend.user.entity.User;
+import group.app.backend.user.utils.UserMapper;
 
 public class UserMapperTest {
 

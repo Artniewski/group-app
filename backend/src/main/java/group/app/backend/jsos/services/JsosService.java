@@ -5,7 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
-import group.app.backend.course.Course;
+import group.app.backend.user.entity.Course;
 import group.app.backend.jsos.client.JsosAppClient;
 import group.app.backend.jsos.dto.AuthRequestDTO;
 import group.app.backend.jsos.dto.SessionRequestDTO;

@@ -1,7 +1,8 @@
-package group.app.backend.tasklist;
+package group.app.backend.user.services;
 
-import group.app.backend.course.CourseService;
 import group.app.backend.exceptions.ResourceNotFoundException;
+import group.app.backend.user.entity.TaskList;
+import group.app.backend.user.repos.TaskListRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

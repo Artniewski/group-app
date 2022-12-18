@@ -1,6 +1,8 @@
-package group.app.backend.course;
+package group.app.backend.user.controllers;
 
 
+import group.app.backend.user.services.CourseService;
+import group.app.backend.user.entity.Course;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

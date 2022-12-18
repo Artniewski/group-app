@@ -1,4 +1,4 @@
-package group.app.backend.course;
+package group.app.backend.user.entity;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -11,8 +11,6 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import group.app.backend.jsos.dto.CourseDTO;
-import group.app.backend.tasklist.TaskList;
-import group.app.backend.user.User;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

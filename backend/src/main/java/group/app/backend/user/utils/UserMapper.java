@@ -1,9 +1,10 @@
-package group.app.backend.user;
+package group.app.backend.user.utils;
 
 import java.util.stream.Collectors;
 
 import group.app.backend.algorithm.models.UserVertex;
-import group.app.backend.task.Task;
+import group.app.backend.user.entity.Task;
+import group.app.backend.user.entity.User;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass

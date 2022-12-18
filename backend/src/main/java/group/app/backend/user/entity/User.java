@@ -1,7 +1,5 @@
-package group.app.backend.user;
+package group.app.backend.user.entity;
 
-import group.app.backend.course.Course;
-import group.app.backend.task.Task;
 import lombok.*;
 
 import javax.persistence.*;

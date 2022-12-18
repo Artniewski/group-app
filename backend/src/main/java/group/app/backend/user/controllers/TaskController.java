@@ -1,6 +1,8 @@
-package group.app.backend.task;
+package group.app.backend.user.controllers;
 
 
+import group.app.backend.user.services.TaskService;
+import group.app.backend.user.entity.Task;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

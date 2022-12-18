@@ -5,12 +5,12 @@ import java.util.Set;
 import org.hibernate.PersistentObjectException;
 import org.springframework.stereotype.Service;
 
-import group.app.backend.course.Course;
-import group.app.backend.course.CourseService;
+import group.app.backend.user.entity.Course;
+import group.app.backend.user.services.CourseService;
 import group.app.backend.jsos.dto.AuthRequestDTO;
 import group.app.backend.jsos.dto.LoginDTO;
-import group.app.backend.user.User;
-import group.app.backend.user.UserService;
+import group.app.backend.user.entity.User;
+import group.app.backend.user.services.UserService;
 import lombok.RequiredArgsConstructor;
 
 @Service
