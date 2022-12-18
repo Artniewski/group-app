@@ -6,6 +6,7 @@ import group.app.backend.user.UserMapper;
 import group.app.backend.user.User;
 import group.app.backend.user.UserService;
 import lombok.RequiredArgsConstructor;
+
 import org.jgrapht.GraphPath;
 import org.springframework.stereotype.Service;
 
@@ -21,7 +22,7 @@ public class TradeService {
 
     private final UserService userService;
 
-    public Set<GraphPath<String, TradeEdge>> makeTrades(){
+    public Set<GraphPath<String, TradeEdge>> makeTrades() {
         List<User> allUsers = userService.getAllUsers();
         List<UserVertex> userVertices = allUsers.stream().map(UserMapper::mapToVertex).toList();
         Set<GraphPath<String, TradeEdge>> optimalCycles = findOptimalCycles(userVertices);
@@ -29,20 +30,15 @@ public class TradeService {
         return optimalCycles;
     }
 
-    private void removeTasksFromUsers(Set<GraphPath<String, TradeEdge>> optimalCycles){
+    private void removeTasksFromUsers(Set<GraphPath<String, TradeEdge>> optimalCycles) {
         optimalCycles
                 .stream()
                 .map(GraphPath::getEdgeList)
                 .flatMap(Collection::stream)
                 .forEach(tradeEdge -> userService.
                         removeRequestedTaskFromUser(
-                                targetToUserId(tradeEdge.getTarget()),
+                                String.valueOf(tradeEdge.getTarget()),
                                 Long.parseLong(tradeEdge.getTaskId()))
                 );
-    }
-
-    private Long targetToUserId(Object target){
-        String stringToConvert = String.valueOf(target);
-        return Long.parseLong(stringToConvert);
     }
 }
