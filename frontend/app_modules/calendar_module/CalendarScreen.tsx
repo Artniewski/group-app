@@ -7,6 +7,7 @@ import {
   AgendaSchedule,
   LocaleConfig,
 } from "react-native-calendars";
+import { getDayMock } from "./Mocks";
 
 const testIDs = {
   menu: {
@@ -39,6 +40,8 @@ interface State {
   items?: AgendaSchedule;
 }
 
+
+
 export const CalendarScreen: React.FC = () => {
   const [myState, setMyState] = useState<State>(undefined);
 
@@ -52,14 +55,14 @@ export const CalendarScreen: React.FC = () => {
 
         if (!items[strTime]) {
           items[strTime] = [];
+          const courseEntries = getDayMock(new Date(time).getDay() + 1 ,strTime);
+          if (courseEntries == undefined) {
+            continue;
+          }
+          const numItems = courseEntries.length;
 
-          const numItems = Math.floor(Math.random() * 3 + 1);
           for (let j = 0; j < numItems; j++) {
-            items[strTime].push({
-              name: "Item for " + strTime + " #" + j,
-              height: Math.max(50, Math.floor(Math.random() * 150)),
-              day: strTime,
-            });
+            items[strTime].push(courseEntries[j]);
           }
         }
       }
@@ -92,7 +95,7 @@ export const CalendarScreen: React.FC = () => {
   const renderEmptyDate = () => {
     return (
       <View style={styles.emptyDate}>
-        <Text>This is empty date!</Text>
+        <Text>Dzisiaj wolne!</Text>
       </View>
     );
   };
@@ -111,7 +114,7 @@ export const CalendarScreen: React.FC = () => {
       testID={testIDs.agenda.CONTAINER}
       items={myState?.items || {}}
       loadItemsForMonth={loadItems}
-      selected={formatDate(new Date(Date.now()))}
+      selected={timeToString(Date.now())}
       renderItem={renderItem}
       renderEmptyDate={renderEmptyDate}
       rowHasChanged={rowHasChanged}
