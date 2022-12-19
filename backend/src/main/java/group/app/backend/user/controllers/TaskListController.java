@@ -22,7 +22,7 @@ public class TaskListController {
 
     @PostMapping
     public TaskList createTaskList(@RequestBody TaskList taskList) {
-        return taskListService.createTaskList(taskList);
+        return taskListService.saveTaskList(taskList);
     }
 
     @DeleteMapping("/{id}")

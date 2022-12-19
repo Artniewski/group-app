@@ -22,7 +22,7 @@ public class TaskController {
 
     @PostMapping
     public Task createTask(@RequestBody Task task) {
-        return taskService.createTask(task);
+        return taskService.saveTask(task);
     }
 
     @DeleteMapping("/{id}")

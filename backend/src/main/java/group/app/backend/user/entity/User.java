@@ -19,7 +19,7 @@ public class User {
     private String id;
     private String nickname;
     private Double rating;
-    private boolean isOldMan = false;
+    private boolean isOldMan = true;
 //    TODO: ADD Major class ? or maybe oldman per course
 
     @ManyToMany

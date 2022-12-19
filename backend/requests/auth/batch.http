@@ -1,0 +1,8 @@
+GET http://localhost:8080/api/session/{{sessionId}}/tasks
+Content-Type: application/json
+
+{
+  "courseCode":"INP002289",
+  "taskListNumber": 1,
+  "taskCount": 20
+}

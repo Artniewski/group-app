@@ -5,8 +5,8 @@ import java.util.Set;
 
 import org.springframework.stereotype.Service;
 
-import group.app.backend.user.entity.Course;
 import group.app.backend.exceptions.ResourceNotFoundException;
+import group.app.backend.user.entity.Course;
 import group.app.backend.user.entity.Task;
 import group.app.backend.user.entity.User;
 import group.app.backend.user.repos.UserRepository;
@@ -77,5 +77,11 @@ public class UserService {
 
     public boolean exists(String userId) {
         return userRepository.existsById(userId);
+    }
+
+    public void makeOldMan(String userId) {
+        User user = getUserById(userId);
+        user.setOldMan(true);
+        userRepository.save(user);
     }
 }
