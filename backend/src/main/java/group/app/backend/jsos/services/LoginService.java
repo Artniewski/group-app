@@ -32,7 +32,7 @@ public class LoginService {
             user = userService.getUserById(userId);
         }
         return LoginDTO.builder()
-                .jsossesid(jsosSessionId)
+                .jsossessid(jsosSessionId)
                 .isOldMan(user.isOldMan())
                 .build();
     }

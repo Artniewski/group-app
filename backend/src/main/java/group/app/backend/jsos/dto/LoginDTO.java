@@ -16,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
 public class LoginDTO {
-    String jsossesid;
+    String jsossessid;
     @JsonProperty("isStarosta")
     boolean isOldMan;
 }
