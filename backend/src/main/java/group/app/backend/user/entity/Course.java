@@ -54,4 +54,12 @@ public class Course {
                 .courseName(name)
                 .build();
     }
+
+    public TaskList getTaskListByNumber(int number){
+        for (TaskList taskList: taskLists) {
+            if (taskList.getListNumber() == number) return taskList;
+        }
+        // TODO jakis throw exception czy cos
+        return null;
+    }
 }

@@ -55,4 +55,9 @@ public class SessionController {
     public Set<Task> getAllTasks(@PathVariable("sessionId") String sessionId) {
         return sessionService.getAllTasks(sessionId);
     }
+
+    @PostMapping("/{sessionId}/ontasks")
+    public boolean addOwnedAndNeededTasks(@PathVariable("sessionId") String sessionId, @RequestBody TasksDTO tasksDTO) {
+        return sessionService.addOwnedAndNeededTasks(sessionId, tasksDTO);
+    }
 }

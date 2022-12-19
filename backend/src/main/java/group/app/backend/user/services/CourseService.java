@@ -2,6 +2,7 @@ package group.app.backend.user.services;
 
 import group.app.backend.exceptions.ResourceNotFoundException;
 import group.app.backend.user.entity.Course;
+import group.app.backend.user.entity.TaskList;
 import group.app.backend.user.repos.CourseRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,4 +30,5 @@ public class CourseService {
     public void deleteCourse(String id) {
         courseRepository.deleteById(id);
     }
+
 }

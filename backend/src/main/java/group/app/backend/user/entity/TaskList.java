@@ -31,4 +31,12 @@ public class TaskList {
     public void addTask(Task task) {
         tasks.add(task);
     }
+
+    public Task getTaskByNumber(int number){
+        for (Task task: tasks) {
+            if (task.getTaskNumber() == number) return task;
+        }
+        // TODO jakis throw exception czy cos
+        return null;
+    }
 }

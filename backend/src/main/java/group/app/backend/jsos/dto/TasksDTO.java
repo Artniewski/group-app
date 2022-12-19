@@ -1,6 +1,5 @@
 package group.app.backend.jsos.dto;
 
-import group.app.backend.user.entity.Task;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +18,6 @@ import static lombok.AccessLevel.PRIVATE;
 @AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
 public class TasksDTO {
-    Set<Task> offeredTasks;
-    Set<Task> requestedTasks;
+    Set<TaskDTO> offeredTasks;
+    Set<TaskDTO> requestedTasks;
 }

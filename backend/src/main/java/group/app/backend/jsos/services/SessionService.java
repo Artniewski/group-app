@@ -1,14 +1,12 @@
 package group.app.backend.jsos.services;
 
-import group.app.backend.jsos.dto.AddTaskListRequestDTO;
-import group.app.backend.jsos.dto.CourseDTO;
-import group.app.backend.jsos.dto.StudentDTO;
-import group.app.backend.jsos.dto.UserTasksDTO;
+import group.app.backend.jsos.dto.*;
 import group.app.backend.jsos.validator.OldManValidator;
 import group.app.backend.user.entity.Course;
 import group.app.backend.user.entity.Task;
 import group.app.backend.user.entity.TaskList;
 import group.app.backend.user.entity.User;
+import group.app.backend.user.services.CourseService;
 import group.app.backend.user.services.TaskListService;
 import group.app.backend.user.services.TaskService;
 import group.app.backend.user.services.UserService;
@@ -30,6 +28,7 @@ public class SessionService {
     private final UserService userService;
     private final TaskListService taskListService;
     private final TaskService taskService;
+    private final CourseService courseService;
 
     public UserTasksDTO getTasksBySession(String sessionId) {
         String userId = jsosService.getUserId(sessionId);
@@ -97,5 +96,35 @@ public class SessionService {
                 .map(TaskList::getTasks)
                 .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
+    }
+
+    public boolean addOwnedAndNeededTasks(String sessionId, TasksDTO tasksDTO) {
+        String userId = jsosService.getUserId(sessionId);
+        User user = userService.getUserById(userId);
+        Set<TaskDTO> ownedTasks = tasksDTO.getOfferedTasks();
+        Set<TaskDTO> requestedTasks = tasksDTO.getRequestedTasks();
+        for (TaskDTO task: ownedTasks){
+            int taskNumber = task.getTaskNumber();
+            int taskListNumber = task.getTaskListNumber();
+            String courseId = task.getCourse().getCourseCode();
+            Course course = courseService.getCourseById(courseId);
+
+            Task taskByNumber = course.getTaskListByNumber(taskListNumber).getTaskByNumber(taskNumber);
+            user.addOfferedTask(taskByNumber);
+        }
+
+        for (TaskDTO task: requestedTasks){
+            int taskNumber = task.getTaskNumber();
+            int taskListNumber = task.getTaskListNumber();
+            String courseId = task.getCourse().getCourseCode();
+            Course course = courseService.getCourseById(courseId);
+
+            Task taskByNumber = course.getTaskListByNumber(taskListNumber).getTaskByNumber(taskNumber);
+            user.addRequestedTask(taskByNumber);
+        }
+
+        userService.saveUser(user);
+
+        return true;
     }
 }
