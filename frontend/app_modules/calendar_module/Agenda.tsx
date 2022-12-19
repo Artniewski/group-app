@@ -111,7 +111,7 @@ export const CalendarScreen: React.FC = () => {
       testID={testIDs.agenda.CONTAINER}
       items={myState?.items || {}}
       loadItemsForMonth={loadItems}
-      selected={formatDate(new Date(Date.now()))}
+      selected={"2017-05-16"}
       renderItem={renderItem}
       renderEmptyDate={renderEmptyDate}
       rowHasChanged={rowHasChanged}
