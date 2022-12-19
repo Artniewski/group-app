@@ -4,6 +4,7 @@ import group.app.backend.jsos.dto.*;
 import group.app.backend.jsos.dto.StudentDTO;
 import group.app.backend.jsos.services.LoginService;
 import group.app.backend.jsos.services.SessionService;
+import group.app.backend.user.entity.Task;
 import group.app.backend.user.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -48,5 +49,10 @@ public class SessionController {
     @GetMapping("/{sessionId}/students")
     public Set<StudentDTO> getStudents(@PathVariable("sessionId") String sessionId) {
         return sessionService.getStudents(sessionId);
+    }
+
+    @GetMapping("/{sessionId}/tasks/all")
+    public Set<Task> getAllTasks(@PathVariable("sessionId") String sessionId) {
+        return sessionService.getAllTasks(sessionId);
     }
 }

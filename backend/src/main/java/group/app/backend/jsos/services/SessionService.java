@@ -16,9 +16,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+
 
 @Slf4j
 @Service
@@ -82,6 +84,18 @@ public class SessionService {
         return user.getMajor().getUsers()
                 .stream()
                 .map(User::toStudentDTO)
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Task> getAllTasks(String sessionId) {
+        String userId = jsosService.getUserId(sessionId);
+        User user = userService.getUserById(userId);
+        return user.getCourses()
+                .stream()
+                .map(Course::getTaskLists)
+                .flatMap(Collection::stream)
+                .map(TaskList::getTasks)
+                .flatMap(Collection::stream)
                 .collect(Collectors.toSet());
     }
 }
