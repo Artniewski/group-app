@@ -49,5 +49,9 @@ public class UserController {
     public User addRequestedTaskToUser(@PathVariable String userId, @PathVariable Long taskId) {
         return userService.addRequestedTaskToUser(userId, taskId);
     }
-
+    
+    @PostMapping("/{userId}/vote/{voteId}")
+    public void voteForOldman(@PathVariable String userId, @PathVariable String voteId) {
+        userService.voteForOldman(userId, voteId);
+    }
 }

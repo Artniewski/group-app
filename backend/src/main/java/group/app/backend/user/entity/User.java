@@ -20,6 +20,7 @@ public class User {
     private String id;
     private String nickname;
     private Double rating;
+    private int votes;
     private boolean isOldMan = true;
 //    TODO: ADD Major class ? or maybe oldman per course
 
