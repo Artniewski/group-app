@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { StyleSheet, Text, View, Button, FlatList } from "react-native";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
+import { AppContext } from "../../store/AppContextProvider";
 
 type Props = NativeStackScreenProps<RootStackParamList, "VoteOldMan">;
 
@@ -14,14 +15,16 @@ interface OldmanCandidateData {
 }
 
 export const VoteOldManScreen: React.FC<Props> = () => {
-  const [candidates, setCandidates] = useState<OldmanCandidateData[]>([
-    {
-      studentId: "123",
-      studentName: "Kamil Ślimak",
+  const myContext = useContext(AppContext);
+
+  const candidates = myContext.votableUsers.map((user) => {
+    return {
+      studentId: user.userId,
+      studentName: user.name,
       numberOfVotes: 0,
       selected: false,
-    },
-  ]);
+    };
+  });
 
   return (
     <View style={style.container}>

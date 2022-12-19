@@ -7,6 +7,7 @@ import {
   ICourseData,
   ICourseListResponse,
   IExerciseData,
+  IExercisesReponse,
   IUsersResponse,
   IUserData,
 } from "../app_modules/common/CommonDataTypes";
@@ -18,6 +19,7 @@ interface IAppContext {
   exercises: IExerciseData[] | null;
   votableUsers: IUserData[] | null;
   isStarosta: boolean;
+  refreshStudentData: () => void;
 }
 
 export const AppContext = createContext<IAppContext>({
@@ -29,6 +31,9 @@ export const AppContext = createContext<IAppContext>({
   exercises: null,
   votableUsers: null,
   isStarosta: false,
+  refreshStudentData: () => {
+    return;
+  },
 });
 
 interface Props {
@@ -47,59 +52,68 @@ const AppContextProvider: React.FC<Props> = ({ children }) => {
     setIsStarosta(loginResponse.isStarosta);
   };
 
+  const fetchCourseData = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+    const coursesResult = await fetch(
+      SERVER_ADDRESS + "/api/session/" + jsossessid + "/courses",
+      {
+        headers,
+      }
+    );
+
+    const courseList = (await coursesResult.json()) as ICourseListResponse;
+
+    console.log(courseList);
+
+    setCourseData(courseList);
+  };
+
+  const fetchExercises = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    const exercisesResult = await fetch(
+      SERVER_ADDRESS + "/api/session/" + jsossessid + "/tasks/all",
+      {
+        headers,
+      }
+    );
+
+    const exerciseList = (await exercisesResult.json()) as IExercisesReponse;
+
+    console.log(exerciseList);
+
+    setExercises(exerciseList);
+  };
+
+  const fetchVotableUsers = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    const votableUsersResult = await fetch(
+      SERVER_ADDRESS + "/api/session/" + jsossessid + "/students",
+      {
+        headers,
+      }
+    );
+
+    const votableUsers = (await votableUsersResult.json()) as IUsersResponse;
+
+    console.log(votableUsers);
+
+    setVotableUsers(votableUsers);
+  };
+
+  const refreshStudentData = async () => {
+    fetchCourseData();
+    fetchExercises();
+    fetchVotableUsers();
+  };
+
   useEffect(() => {
-    const fetchCourseData = async () => {
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-      const coursesResult = await fetch(
-        SERVER_ADDRESS + "/api/session/" + jsossessid + "/courses",
-        {
-          headers,
-        }
-      );
-
-      const courseList = (await coursesResult.json()) as ICourseListResponse;
-
-      setCourseData(courseList);
-    };
-
-    const fetchExercises = async () => {
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-
-      const exercisesResult = await fetch(
-        SERVER_ADDRESS + "/api/session/" + jsossessid + "/tasks/all",
-        {
-          headers,
-        }
-      );
-
-      const exerciseList =
-        (await exercisesResult.json()) as ICourseListResponse;
-
-      setExercises(exerciseList);
-    };
-
-    const fetchVotableUsers = async () => {
-      const headers = new Headers();
-      headers.append("Content-Type", "application/json");
-
-      const votableUsersResult = await fetch(
-        SERVER_ADDRESS + "/api/session/" + jsossessid + "/students",
-        {
-          headers,
-        }
-      );
-
-      const votableUsers = (await votableUsersResult.json()) as IUsersResponse;
-
-      setVotableUsers(votableUsers);
-    };
-
     if (jsossessid) {
-      fetchCourseData();
-      fetchExercises();
-      fetchVotableUsers();
+      refreshStudentData();
     }
   }, [jsossessid, setCourseData, setVotableUsers]);
 
@@ -112,6 +126,7 @@ const AppContextProvider: React.FC<Props> = ({ children }) => {
         exercises,
         votableUsers,
         isStarosta,
+        refreshStudentData,
       }}
     >
       {children}

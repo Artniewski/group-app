@@ -16,6 +16,8 @@ export interface IAddTasksRequest {
 
 export type ICourseListResponse = ICourseData[];
 
+export type IExercisesReponse = IExerciseData[];
+
 export type IUsersResponse = IUserData[];
 
 /**
@@ -34,10 +36,20 @@ export interface ICourseData {
   courseName: string;
 }
 
+export interface IExerciseListData {
+  id: number;
+  listNumber: number;
+  course: {
+    id: string;
+    name: string;
+  };
+}
+
 /**
- * Interface prototype for course.
+ * Interface prototype for exercise.
  */
 export interface IExerciseData {
-  courseCode: string;
-  courseName: string;
+  id: number;
+  taskNumber: number;
+  taskList: IExerciseListData;
 }

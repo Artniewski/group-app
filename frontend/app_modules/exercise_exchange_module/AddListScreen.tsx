@@ -37,6 +37,7 @@ export const ExerciseAddScreen: React.FC<Props> = ({ navigation }) => {
     );
 
     if (addTaskResult.ok) {
+      myContext.refreshStudentData();
       navigation.navigate("ExerciseSelection");
     } else {
       console.log("Adding list failed");

@@ -1,30 +1,31 @@
-import React from "react";
+import React, { useContext } from "react";
 import { FlatList, StyleSheet, Text, View } from "react-native";
 import { IExercise } from "./CommonDataTypes";
 import { StatusBar } from "expo-status-bar";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
+import { AppContext } from "../../store/AppContextProvider";
 
 type Props = NativeStackScreenProps<RootStackParamList, "ExerciseSelection">;
 
 export const ExerciseSelectionScreen: React.FC<Props> = () => {
+  const myContext = useContext(AppContext);
+
+  const exercises = myContext.exercises.map((exercise) => {
+    return {
+      course: {
+        courseCode: exercise.taskList.course.id,
+        courseName: exercise.taskList.course.name,
+      },
+      exerciseList: exercise.taskList.listNumber,
+      exerciseNumber: exercise.taskNumber,
+    };
+  });
+
   return (
     <View style={style.container}>
-      <ExerciseList
-        exercises={[
-          {
-            course: { courseCode: "siema", courseName: "Kikd" },
-            exerciseList: 1,
-            exerciseNumber: 1,
-          },
-          {
-            course: { courseCode: "siema", courseName: "Kikd" },
-            exerciseList: 1,
-            exerciseNumber: 2,
-          },
-        ]}
-      />
+      <ExerciseList exercises={exercises} />
       <StatusBar style="auto" />
     </View>
   );
