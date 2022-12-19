@@ -1,6 +1,7 @@
 package group.app.backend.jsos.controller;
 
 import group.app.backend.jsos.dto.*;
+import group.app.backend.jsos.dto.StudentDTO;
 import group.app.backend.jsos.services.LoginService;
 import group.app.backend.jsos.services.SessionService;
 import group.app.backend.user.services.UserService;
@@ -44,4 +45,8 @@ public class SessionController {
         sessionService.makeOldMan(sessionId);
     }
 
+    @GetMapping("/{sessionId}/students")
+    public Set<StudentDTO> getStudents(@PathVariable("sessionId") String sessionId) {
+        return sessionService.getStudents(sessionId);
+    }
 }

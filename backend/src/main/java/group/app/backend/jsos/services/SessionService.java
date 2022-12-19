@@ -1,13 +1,8 @@
 package group.app.backend.jsos.services;
 
-import java.util.Set;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
-
-import org.springframework.stereotype.Service;
-
 import group.app.backend.jsos.dto.AddTaskListRequestDTO;
 import group.app.backend.jsos.dto.CourseDTO;
+import group.app.backend.jsos.dto.StudentDTO;
 import group.app.backend.jsos.dto.TasksDTO;
 import group.app.backend.jsos.validator.OldManValidator;
 import group.app.backend.user.entity.Course;
@@ -19,6 +14,11 @@ import group.app.backend.user.services.TaskService;
 import group.app.backend.user.services.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Slf4j
 @Service
@@ -74,5 +74,14 @@ public class SessionService {
         User user = userService.getUserById(userId);
         user.setOldMan(true);
         userService.saveUser(user);
+    }
+
+    public Set<StudentDTO> getStudents(String sessionId) {
+        String userId = jsosService.getUserId(sessionId);
+        User user = userService.getUserById(userId);
+        return user.getMajor().getUsers()
+                .stream()
+                .map(User::toStudentDTO)
+                .collect(Collectors.toSet());
     }
 }

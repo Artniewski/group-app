@@ -1,5 +1,6 @@
 package group.app.backend.user.entity;
 
+import group.app.backend.jsos.dto.StudentDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -21,6 +22,10 @@ public class User {
     private Double rating;
     private boolean isOldMan = true;
 //    TODO: ADD Major class ? or maybe oldman per course
+
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "major_id", referencedColumnName = "id")
+    private Major major;
 
     @ManyToMany
     @JoinTable(
@@ -59,5 +64,12 @@ public class User {
     }
     public void removeRequestedTask(Task task){
         requestedTasks.remove(task);
+    }
+
+    public static StudentDTO toStudentDTO(User user) {
+        return StudentDTO.builder()
+                .userId(user.getId())
+                .name(user.getNickname())
+                .build();
     }
 }

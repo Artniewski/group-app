@@ -17,5 +17,5 @@ public class UserMajorDTO {
     @JsonProperty("idSluchacza")
     String userId;
     String major;
-    Integer semester;
+    String semester;
 }

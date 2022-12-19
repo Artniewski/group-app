@@ -3,6 +3,8 @@ package group.app.backend.jsos.services;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import group.app.backend.jsos.dto.UserMajorDTO;
+import group.app.backend.user.entity.Major;
 import org.springframework.stereotype.Service;
 
 import group.app.backend.user.entity.Course;
@@ -34,6 +36,12 @@ public class JsosService {
                 .stream()
                 .map(Course::fromDto)
                 .collect(Collectors.toSet());
+    }
+
+    public Major getMajor(String jsosSessionId) {
+        SessionRequestDTO sessionRequest = buildSessionRequest(jsosSessionId);
+        UserMajorDTO dto = jsosAppClient.getMajor(sessionRequest);
+        return Major.fromDto(dto);
     }
 
     private static SessionRequestDTO buildSessionRequest(String jsosSessionId) {
