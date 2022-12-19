@@ -27,7 +27,7 @@ public class SessionController {
     }
 
     @GetMapping("/{sessionId}/tasks")
-    public TasksDTO getTasks(@PathVariable("sessionId") String sessionId) {
+    public UserTasksDTO getTasks(@PathVariable("sessionId") String sessionId) {
         return sessionService.getTasksBySession(sessionId);
     }
 

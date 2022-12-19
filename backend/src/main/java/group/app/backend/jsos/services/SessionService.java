@@ -3,7 +3,7 @@ package group.app.backend.jsos.services;
 import group.app.backend.jsos.dto.AddTaskListRequestDTO;
 import group.app.backend.jsos.dto.CourseDTO;
 import group.app.backend.jsos.dto.StudentDTO;
-import group.app.backend.jsos.dto.TasksDTO;
+import group.app.backend.jsos.dto.UserTasksDTO;
 import group.app.backend.jsos.validator.OldManValidator;
 import group.app.backend.user.entity.Course;
 import group.app.backend.user.entity.Task;
@@ -31,11 +31,11 @@ public class SessionService {
     private final TaskListService taskListService;
     private final TaskService taskService;
 
-    public TasksDTO getTasksBySession(String sessionId) {
+    public UserTasksDTO getTasksBySession(String sessionId) {
         String userId = jsosService.getUserId(sessionId);
         Set<Task> offeredTasks = userService.getUserOfferedTasks(userId);
         Set<Task> requestedTasks = userService.getUserRequestedTasks(userId);
-        return TasksDTO.builder()
+        return UserTasksDTO.builder()
                 .offeredTasks(offeredTasks)
                 .requestedTasks(requestedTasks)
                 .build();

@@ -16,7 +16,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = PRIVATE)
-public class TasksDTO {
+public class UserTasksDTO {
     Set<Task> offeredTasks;
     Set<Task> requestedTasks;
 }
