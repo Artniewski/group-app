@@ -9,6 +9,10 @@ import { RootStackParamList, SERVER_ADDRESS } from "../../App";
 
 import { AppContext } from "../../store/AppContextProvider";
 
+interface IAuthResponse extends IAuthCookies {
+  isStarosta: boolean;
+}
+
 type Props = NativeStackScreenProps<RootStackParamList, "LoginForm">;
 
 const LoginForm: React.FC<Props> = ({ navigation }) => {
@@ -26,14 +30,18 @@ const LoginForm: React.FC<Props> = ({ navigation }) => {
       password,
     });
 
-    const loginResult = await fetch(SERVER_ADDRESS + "/auth", {
+    const loginResult = await fetch(SERVER_ADDRESS + "/api/session/login", {
       method: "POST",
       headers,
       body,
     });
 
     if (loginResult.ok) {
-      const authCookies = (await loginResult.json()) as IAuthCookies;
+      const authResponse = (await loginResult.json()) as IAuthResponse;
+
+      const authCookies: IAuthCookies = {
+        jsossessid: authResponse.jsossessid,
+      };
 
       logIn(authCookies);
       navigation.navigate("HomeScreen");

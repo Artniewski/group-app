@@ -2,7 +2,11 @@ import React, { useState, createContext, useEffect } from "react";
 
 import { SERVER_ADDRESS } from "../App";
 
-import { IAuthCookies, ICourseData, ICourseListResponse } from "../app_modules/common/CommonDataTypes";
+import {
+  IAuthCookies,
+  ICourseData,
+  ICourseListResponse,
+} from "../app_modules/common/CommonDataTypes";
 
 interface IAppContext {
   authCookies: IAuthCookies | null;
@@ -35,17 +39,14 @@ const AppContextProvider: React.FC<Props> = ({ children }) => {
       const headers = new Headers();
       headers.append("Content-Type", "application/json");
 
-      const body = JSON.stringify({
-        JSOSSESSID: authCookies.JSOSSESSID,
-      });
+      const loginResult = await fetch(
+        SERVER_ADDRESS + "/api/session/" + authCookies.jsossessid + "/courses",
+        {
+          headers,
+        }
+      );
 
-      const loginResult = await fetch(SERVER_ADDRESS + "/courseList", {
-        method: "POST",
-        headers,
-        body,
-      });
-
-      const { courseList } = (await loginResult.json()) as ICourseListResponse;
+      const courseList = (await loginResult.json()) as ICourseListResponse;
 
       setCourseData(courseList);
     };

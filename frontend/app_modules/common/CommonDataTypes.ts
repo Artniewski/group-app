@@ -1,31 +1,27 @@
 export interface IAuthCookies {
-  JSOSSESSID: string;
+  jsossessid: string;
 }
 
-export interface ICourseListResponse {
-  idSluchacza: string;
-  courseList: ICourseData[];
-}
+export type ICourseListResponse = ICourseData[];
 
 /**
  * Interface for user. For now only one field is requiered. Feel free to expand it.
  */
 export interface IUserData {
-  isOldMan : boolean
+  isOldMan: boolean;
 }
 
 /**
  * Interface prototype for course.
  */
 export interface ICourseData {
-  courseCode : string
-  courseName : string
+  courseCode: string;
+  courseName: string;
 }
 
 /**
  * Concrete implementation.
  */
-export class UserData implements IUserData{
+export class UserData implements IUserData {
   isOldMan = false;
 }
- 
