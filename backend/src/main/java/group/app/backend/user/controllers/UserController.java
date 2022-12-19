@@ -54,4 +54,9 @@ public class UserController {
     public void voteForOldman(@PathVariable String userId, @PathVariable String voteId) {
         userService.voteForOldman(userId, voteId);
     }
+    
+    @GetMapping("/{userId}/oldman")
+    public User getOldman(@PathVariable String userId) {
+        return userService.getOldMan(userId);
+    }
 }
