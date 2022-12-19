@@ -66,7 +66,7 @@ public class SessionService {
     private void addTasks(TaskList taskList, AddTaskListRequestDTO addTaskListRequestDTO) {
         Integer taskCount = addTaskListRequestDTO.getTaskCount();
         IntStream.rangeClosed(1, taskCount)
-                .mapToObj(taskService::createTask)
+                .mapToObj(num -> taskService.createTask(num, taskList))
                 .forEach(taskList::addTask);
         taskListService.saveTaskList(taskList);
     }
