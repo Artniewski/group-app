@@ -4,7 +4,6 @@ import group.app.backend.exceptions.ResourceNotFoundException;
 import group.app.backend.user.entity.Task;
 import group.app.backend.user.repos.TaskRepository;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,11 +28,9 @@ public class TaskService {
     }
 
     public Task createTask(Integer taskNumber) {
-        Task task = Task.builder()
+        return taskRepository.save(Task.builder()
                 .taskNumber(taskNumber)
-                .build();
-        taskRepository.save(task);
-        return task;
+                .build());
     }
 
     public void deleteTask(Long id) {

@@ -55,6 +55,7 @@ public class SessionService {
 
         OldManValidator.validate(user, courseCode);
         TaskList taskList = taskListService.createTaskList(addTaskListRequestDTO.getTaskListNumber(), courseCode);
+        log.info("Adding task list: {}", (long) taskList.getTasks().size());
         addTasks(taskList, addTaskListRequestDTO);
         taskListService.saveTaskList(taskList);
         return true;
@@ -65,5 +66,13 @@ public class SessionService {
         IntStream.rangeClosed(1, taskCount)
                 .mapToObj(taskService::createTask)
                 .forEach(taskList::addTask);
+        taskListService.saveTaskList(taskList);
+    }
+
+    public void makeOldMan(String sessionId) {
+        String userId = jsosService.getUserId(sessionId);
+        User user = userService.getUserById(userId);
+        user.setOldMan(true);
+        userService.saveUser(user);
     }
 }

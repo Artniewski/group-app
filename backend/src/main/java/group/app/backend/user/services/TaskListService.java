@@ -1,13 +1,13 @@
 package group.app.backend.user.services;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import group.app.backend.exceptions.ResourceNotFoundException;
 import group.app.backend.user.entity.TaskList;
 import group.app.backend.user.repos.TaskListRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.HashSet;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -32,6 +32,7 @@ public class TaskListService {
         TaskList taskList = TaskList.builder()
                 .listNumber(listNumber)
                 .course(courseService.getCourseById(courseId))
+                .tasks(new HashSet<>())
                 .build();
         return taskListRepository.save(taskList);
     }

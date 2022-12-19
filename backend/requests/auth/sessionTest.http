@@ -1,8 +1,8 @@
-GET http://localhost:8080/api/session/{{sessionId}}/courses
+GET http://localhost:8080/api/session/d0nki6ujsbueu9gqjch3vdrk27/courses
 Content-Type: application/json
 
 ###
-GET http://localhost:8080/api/session/{{sessionId}}/tasks
+GET http://localhost:8080/api/session/d0nki6ujsbueu9gqjch3vdrk27/tasks
 
 ###
 POST http://localhost:8080/api/session/login

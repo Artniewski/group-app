@@ -34,23 +34,23 @@ public class SessionController {
     }
 
     @GetMapping("/{sessionId}/tasks")
-    public TasksDTO getTasks(@PathVariable String sessionId) {
+    public TasksDTO getTasks(@PathVariable("sessionId") String sessionId) {
         return sessionService.getTasksBySession(sessionId);
     }
 
     @GetMapping("/{sessionId}/courses")
-    public Set<CourseDTO> getCourses(@PathVariable String sessionId) {
+    public Set<CourseDTO> getCourses(@PathVariable("sessionId") String sessionId) {
         return sessionService.getCoursesBySession(sessionId);
     }
 
     @PostMapping("/{sessionId}/tasks")
-    public boolean addList(@PathVariable String sessionId, @RequestBody AddTaskListRequestDTO addTaskListRequestDTO) {
+    public boolean addList(@PathVariable("sessionId") String sessionId, @RequestBody AddTaskListRequestDTO addTaskListRequestDTO) {
         return sessionService.addList(sessionId, addTaskListRequestDTO);
     }
 
     @PostMapping("/{sessionId}/oldman")
-    public void makeOldMan(@PathVariable String sessionId) {
-        userService.makeOldMan(sessionId);
+    public void makeOldMan(@PathVariable("sessionId") String sessionId) {
+        sessionService.makeOldMan(sessionId);
     }
 
 }

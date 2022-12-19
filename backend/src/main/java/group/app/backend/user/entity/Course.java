@@ -39,6 +39,7 @@ public class Course {
     @OneToMany(mappedBy = "course")
     private Set<TaskList> taskLists = new HashSet<>();
 
+    @JsonIgnore
     public static Course fromDto(CourseDTO dto) {
         return Course.builder()
                 .id(dto.getCourseCode())
@@ -46,6 +47,7 @@ public class Course {
                 .build();
     }
 
+    @JsonIgnore
     public CourseDTO toDto() {
         return CourseDTO.builder()
                 .courseCode(id)
