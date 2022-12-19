@@ -2,6 +2,8 @@ package group.app.backend.jsos.services;
 
 import java.util.Set;
 
+import group.app.backend.user.entity.Major;
+import group.app.backend.user.services.MajorService;
 import org.hibernate.PersistentObjectException;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +22,7 @@ public class LoginService {
     private final JsosService jsosService;
     private final UserService userService;
     private final CourseService courseService;
+    private final MajorService majorService;
 
     public LoginDTO login(AuthRequestDTO authRequestDTO) {
         String jsosSessionId = jsosService.authenticate(authRequestDTO);
@@ -38,14 +41,25 @@ public class LoginService {
     }
 
     private User saveNewUser(String jsosSessionId, String userId) {
+        Major major = jsosService.getMajor(jsosSessionId);
+        saveMajor(major);
         Set<Course> courses = jsosService.getCourseList(jsosSessionId);
         saveCourses(courses);
         User user = User.builder()
                 .id(userId)
                 .courses(courses)
+                .major(major)
                 .build();
         userService.saveUser(user);
         return user;
+    }
+
+    private void saveMajor(Major major) {
+        try {
+            majorService.saveMajor(major);
+        } catch (Exception e) {
+            // ignore
+        }
     }
 
     private void saveCourses(Set<Course> courses) {

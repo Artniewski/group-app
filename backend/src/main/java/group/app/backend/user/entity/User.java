@@ -24,7 +24,6 @@ public class User {
 //    TODO: ADD Major class ? or maybe oldman per course
 
     @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "major_id", referencedColumnName = "id")
     private Major major;
 
     @ManyToMany
@@ -62,7 +61,8 @@ public class User {
     public void addRequestedTask(Task task) {
         requestedTasks.add(task);
     }
-    public void removeRequestedTask(Task task){
+
+    public void removeRequestedTask(Task task) {
         requestedTasks.remove(task);
     }
 
