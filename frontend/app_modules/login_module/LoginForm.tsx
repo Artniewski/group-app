@@ -2,16 +2,12 @@ import React, { useState, useContext } from "react";
 import { StyleSheet, View } from "react-native";
 import { Form, FormItem } from "react-native-form-component";
 
-import { IAuthCookies } from "../common/CommonDataTypes";
+import { ILoginRequest, ILoginResponse } from "../common/CommonDataTypes";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList, SERVER_ADDRESS } from "../../App";
 
 import { AppContext } from "../../store/AppContextProvider";
-
-interface IAuthResponse extends IAuthCookies {
-  isStarosta: boolean;
-}
 
 type Props = NativeStackScreenProps<RootStackParamList, "LoginForm">;
 
@@ -25,25 +21,21 @@ const LoginForm: React.FC<Props> = ({ navigation }) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
-    const body = JSON.stringify({
+    const body: ILoginRequest = {
       username,
       password,
-    });
+    };
 
     const loginResult = await fetch(SERVER_ADDRESS + "/api/session/login", {
       method: "POST",
       headers,
-      body,
+      body: JSON.stringify(body),
     });
 
     if (loginResult.ok) {
-      const authResponse = (await loginResult.json()) as IAuthResponse;
+      const loginResponse = (await loginResult.json()) as ILoginResponse;
 
-      const authCookies: IAuthCookies = {
-        jsossessid: authResponse.jsossessid,
-      };
-
-      logIn(authCookies);
+      logIn(loginResponse);
       navigation.navigate("HomeScreen");
     } else {
       console.log("Login failed");

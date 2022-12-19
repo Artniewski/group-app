@@ -2,41 +2,46 @@ import React, { useState, useContext } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Form, FormItem, Picker } from "react-native-form-component";
-import { ICourseData } from "../common/CommonDataTypes";
+import { IAddTasksRequest } from "../common/CommonDataTypes";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../App";
+import { RootStackParamList, SERVER_ADDRESS } from "../../App";
 import { AppContext } from "../../store/AppContextProvider";
 
 type Props = NativeStackScreenProps<RootStackParamList, "AddExercise">;
 
-interface IExerciseCreationFormData {
-  exerciseNumbers: string;
-  exerciseList: number;
-  courseCode: string;
-}
-
-export const ExerciseAddScreen: React.FC<Props> = () => {
+export const ExerciseAddScreen: React.FC<Props> = ({ navigation }) => {
   const myContext = useContext(AppContext);
 
-  //Replace with something useful
-  const [courses, setCourses] = useState<ICourseData[]>([
-    { courseCode: "312", courseName: "Kikd" },
-    { courseCode: "123", courseName: "Akiso" },
-  ]);
+  const [taskListNumber, setTaskListNumber] = useState<number>(1);
+  const [taskCount, setTaskCount] = useState<number>(1);
+  const [courseCode, setCourseCode] = useState<string>("");
 
-  //TODO: verify if useRef would work here in place of state.
-  const [newList, setNewList] = useState<IExerciseCreationFormData>({
-    exerciseNumbers: "",
-    exerciseList: -1,
-    courseCode: "",
-  });
+  const onSubmit = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
 
-  const onSubmit = () => console.log(newList);
+    const body: IAddTasksRequest = {
+      courseCode,
+      taskListNumber,
+      taskCount,
+    };
 
-  courses.map((x) => {
-    return { label: x.courseName, value: x.courseCode };
-  });
+    const addTaskResult = await fetch(
+      SERVER_ADDRESS + "/api/session/" + myContext.jsossessid + "/tasks",
+      {
+        method: "POST",
+        headers,
+        body: JSON.stringify(body),
+      }
+    );
+
+    if (addTaskResult.ok) {
+      navigation.navigate("ExerciseSelection");
+    } else {
+      console.log("Adding list failed");
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -44,38 +49,26 @@ export const ExerciseAddScreen: React.FC<Props> = () => {
       {myContext.courseData != null && (
         <Form onButtonPress={onSubmit}>
           <FormItem
-            label="Nr listy"
+            label="Numer listy"
             textInputStyle={styles.input}
             isRequired
-            onChangeText={(exerciseList) => {
-              const newListCopy = { ...newList };
-              newListCopy.exerciseList = parseInt(exerciseList);
-              setNewList(newListCopy);
-            }}
-            value={newList.exerciseList.toString()}
+            onChangeText={(number) => setTaskListNumber(parseInt(number))}
+            value={taskListNumber.toString()}
           />
           <FormItem
-            label="Nr zadania"
+            label="Liczba zadań"
             textInputStyle={styles.input}
             isRequired
-            onChangeText={(exerciseNumbers) => {
-              const newListCopy = { ...newList };
-              newListCopy.exerciseNumbers = exerciseNumbers;
-              setNewList(newListCopy);
-            }}
-            value={newList.exerciseNumbers}
+            onChangeText={(count) => setTaskCount(parseInt(count))}
+            value={taskCount.toString()}
           />
           <Picker
             items={myContext.courseData.map((data) => {
               return { label: data.courseName, value: data.courseCode };
             })}
             label="Kurs"
-            selectedValue={newList.courseCode}
-            onSelection={(item) => {
-              const newListCopy = { ...newList };
-              newListCopy.courseCode = item.value.toString();
-              setNewList(newListCopy);
-            }}
+            selectedValue={courseCode}
+            onSelection={(item) => setCourseCode(item.value.toString())}
           />
         </Form>
       )}

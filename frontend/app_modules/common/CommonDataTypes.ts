@@ -1,14 +1,29 @@
-export interface IAuthCookies {
+export interface ILoginRequest {
+  username: string;
+  password: string;
+}
+
+export interface ILoginResponse {
   jsossessid: string;
+  isStarosta: boolean;
+}
+
+export interface IAddTasksRequest {
+  courseCode: string;
+  taskListNumber: number;
+  taskCount: number;
 }
 
 export type ICourseListResponse = ICourseData[];
+
+export type IUsersResponse = IUserData[];
 
 /**
  * Interface for user. For now only one field is requiered. Feel free to expand it.
  */
 export interface IUserData {
-  isOldMan: boolean;
+  userId: string;
+  name: string;
 }
 
 /**
@@ -20,8 +35,9 @@ export interface ICourseData {
 }
 
 /**
- * Concrete implementation.
+ * Interface prototype for course.
  */
-export class UserData implements IUserData {
-  isOldMan = false;
+export interface IExerciseData {
+  courseCode: string;
+  courseName: string;
 }
