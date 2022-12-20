@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import group.app.backend.user.repos.VoteRepository;
 import org.springframework.stereotype.Service;
 
 import group.app.backend.exceptions.ResourceNotFoundException;
@@ -21,6 +22,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final CourseService courseService;
     private final TaskService taskService;
+    private final VoteService voteService;
 
     public User getUserById(String id) {
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
@@ -82,63 +84,15 @@ public class UserService {
     }
     
     public User getOldMan(String userId) {
-        return userRepository.findAll().stream()
-            .filter(user -> user.getMajor().equals(getUserById(userId).getMajor()))
-            .filter(User::isOldMan).collect(Collectors.toList()).get(0);
+        return voteService.getOldMan(userRepository.findById(userId).get());
     }
     
     public User voteForOldman(String userId, String voteId) {
-    
-        List<User> currOldmen = userRepository.findAll().stream()
-            .filter(user -> user.getMajor().equals(getUserById(userId).getMajor()))
-            .filter(User::isOldMan).collect(Collectors.toList());
-        
-        User currOldman;
-        if(currOldmen.size() >= 1) {
-            currOldman = currOldmen.get(0);
-        } else {
-            currOldman = null;
-        }
-            
-        Optional<User> votedForOpt = userRepository.findById(voteId);
-        
-        if (votedForOpt.isEmpty()) {
-            throw new NullPointerException("Voted user not found");
-        }
-        
-        User votedFor = votedForOpt.get();
-        
-        if (!votedFor.getMajor().equals(getUserById(userId).getMajor())) {
-            throw new IllegalArgumentException("Vote for someone from your major!");
-        }
-        
-        votedFor.setVotes(votedFor.getVotes() + 1);
-    
-        if (currOldman != null) {
-            if (votedFor.getVotes() > currOldman.getVotes()) {
-                userRepository.findAll().forEach(user -> makeYoungMan(user.getId()));
-                makeOldMan(votedFor.getId());
-            }
-    
-            userRepository.save(currOldman);
-        } else {
-            makeOldMan(votedFor.getId());
-        }
-        userRepository.save(votedFor);
-    
-    
+        voteService.addVote(userId, voteId);
         return getUserById(voteId);
     }
-
-    public void makeOldMan(String userId) {
-        User user = getUserById(userId);
-        user.setOldMan(true);
-        userRepository.save(user);
-    }
     
-    public void makeYoungMan(String userId) {
-        User user = getUserById(userId);
-        user.setOldMan(false);
-        userRepository.save(user);
+    public Long getVotes(String userId) {
+        return voteService.getVotes(userId);
     }
 }
