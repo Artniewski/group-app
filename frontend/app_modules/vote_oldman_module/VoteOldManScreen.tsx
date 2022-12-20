@@ -2,8 +2,9 @@ import React, { useState, useContext } from "react";
 import { StyleSheet, Text, View, Button, FlatList } from "react-native";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { RootStackParamList } from "../../App";
+import { RootStackParamList, SERVER_ADDRESS } from "../../App";
 import { AppContext } from "../../store/AppContextProvider";
+import { IUserData } from "../common/CommonDataTypes";
 
 type Props = NativeStackScreenProps<RootStackParamList, "VoteOldMan">;
 
@@ -17,14 +18,34 @@ interface OldmanCandidateData {
 export const VoteOldManScreen: React.FC<Props> = () => {
   const myContext = useContext(AppContext);
 
-  const candidates = myContext.votableUsers.map((user) => {
+  const maxVotesId = () => {
+    let maxVotes = 0;
+    let maxId = "";
+
+    for (const user of myContext.votableUsers) {
+      if (user.votes > maxVotes) {
+        maxVotes = user.votes;
+        maxId = user.idSluchacza;
+      }
+    }
+
+    return maxId;
+  };
+
+  const maxId = maxVotesId();
+
+  console.log(myContext.votableUsers);
+
+  const candidates: OldmanCandidateData[] = myContext.votableUsers.map((user) => {
     return {
-      studentId: user.userId,
+      studentId: user.idSluchacza,
       studentName: user.name,
-      numberOfVotes: 0,
-      selected: false,
+      numberOfVotes: user.votes,
+      selected: user.idSluchacza === maxId,
     };
   });
+
+  console.log(candidates);
 
   return (
     <View style={style.container}>
@@ -56,8 +77,28 @@ interface OldmanCandidateProps {
   data: OldmanCandidateData;
 }
 
-const OldmanCandidate = (props: OldmanCandidateProps) => {
+const OldmanCandidate= (props: OldmanCandidateProps) => {
+  const myContext = useContext(AppContext);
+
+  console.log(props);
+
   const [selected, setSelected] = useState<boolean>(false);
+
+  const voteForCandidate = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    const voteResult = await fetch(SERVER_ADDRESS + "/api/user/" + myContext.jsossessid + "/vote/" + props.data.studentId, {
+      method: "POST",
+      headers,
+    });
+
+    if (voteResult.ok) {
+      console.log("Vote succesfull");
+    } else {
+      console.log("Voting failed");
+    }
+  };
 
   return (
     <View style={style.candidate}>
@@ -70,9 +111,7 @@ const OldmanCandidate = (props: OldmanCandidateProps) => {
       >
         <Button
           title={selected ? "Usuń głos" : "Oddaj głos"}
-          onPress={() => {
-            setSelected(!selected);
-          }}
+          onPress={voteForCandidate}
         />
       </View>
     </View>

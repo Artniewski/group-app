@@ -24,8 +24,9 @@ export type IUsersResponse = IUserData[];
  * Interface for user. For now only one field is requiered. Feel free to expand it.
  */
 export interface IUserData {
-  userId: string;
+  idSluchacza: string;
   name: string;
+  votes: number;
 }
 
 /**
