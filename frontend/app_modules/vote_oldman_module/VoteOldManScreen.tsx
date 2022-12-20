@@ -88,7 +88,7 @@ const OldmanCandidate= (props: OldmanCandidateProps) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
-    const voteResult = await fetch(SERVER_ADDRESS + "/api/user/" + myContext.jsossessid + "/vote/" + props.data.studentId, {
+    const voteResult = await fetch(SERVER_ADDRESS + "/api/session/" + myContext.jsossessid + "/vote/" + props.data.studentId, {
       method: "POST",
       headers,
     });
