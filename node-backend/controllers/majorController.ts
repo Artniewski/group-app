@@ -1,20 +1,41 @@
-// type MajorRequest = AuthResponse;
+import { Request, Response } from "express";
 
-// interface MajorResponse {
-//   idSluchacza: string;
-//   major: string;
-// }
+import getIdSluchacza from "../services/idService.js";
+import { getMajor, getSemester } from "../services/majorService.js";
 
-// app.post("/major", async (req, res) => {
-//   const { YII_CSRF_TOKEN, JSOSSESSID } = req.body as MajorRequest;
+import {
+  JsosError,
+  IMajorRequest,
+  IMajorResponse,
+} from "../common/CommonDataTypes.js";
 
-//   const idSluchacza = await getIdSluchacza(YII_CSRF_TOKEN, JSOSSESSID);
-//   const major = await getMajor(YII_CSRF_TOKEN, JSOSSESSID);
+const majorEndpoint = async (req: Request, res: Response) => {
+  const { jsossessid } = req.body as IMajorRequest;
 
-//   const responseBody: MajorResponse = {
-//     idSluchacza,
-//     major,
-//   };
+  if (!jsossessid) {
+    res.status(400).json({ message: "Missing JSOSSESSID" });
+    return;
+  }
 
-//   res.status(200).json(responseBody);
-// });
+  try {
+    const idSluchacza = await getIdSluchacza(jsossessid);
+    const major = await getMajor(jsossessid);
+    const semester = await getSemester(jsossessid);
+
+    const responseBody: IMajorResponse = {
+      idSluchacza,
+      major,
+      semester,
+    };
+
+    res.status(200).json(responseBody);
+  } catch (error) {
+    if (error instanceof JsosError) {
+      res.status(500).json({ message: "JSOS is not available currently" });
+    } else {
+      res.status(500).json({ message: "Unexpected server error" });
+    }
+  }
+};
+
+export default majorEndpoint;

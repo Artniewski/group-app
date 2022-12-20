@@ -1,0 +1,23 @@
+GET http://localhost:8080/api/session/d0nki6ujsbueu9gqjch3vdrk27/courses
+Content-Type: application/json
+
+###
+GET http://localhost:8080/api/session/d0nki6ujsbueu9gqjch3vdrk27/tasks
+
+###
+POST http://localhost:8080/api/session/login
+Content-Type: application/json
+
+{
+  "username": "{{username}}",
+  "password": "{{password}}"
+}
+
+###
+POST http://localhost:2137/major
+Content-Type: application/json
+
+{
+  "jsossessid": "iat0374rgaoq7o6nsank52u7s5"
+}
+

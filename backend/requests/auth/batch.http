@@ -1,0 +1,8 @@
+POST http://localhost:8080/api/session/d0nki6ujsbueu9gqjch3vdrk27/tasks
+content-type: application/json
+
+{
+  "courseCode":"INP002289",
+  "taskListNumber": 1,
+  "taskCount": 20
+}

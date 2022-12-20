@@ -1,0 +1,21 @@
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "id": "1",
+   "nickname": "John",
+   "rating": 5.0,
+  "courses": [
+    {
+      "id": "c1",
+      "name": "Java"
+    },
+    {
+      "id": "c10",
+      "name": "JavaScript"
+    }
+  ]
+
+}
+
+###
