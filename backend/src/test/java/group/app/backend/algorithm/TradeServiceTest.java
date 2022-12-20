@@ -1,67 +1,72 @@
 package group.app.backend.algorithm;
 
 import group.app.backend.BackendApplication;
-import group.app.backend.user.entity.Task;
-import group.app.backend.user.entity.User;
-import group.app.backend.user.services.TaskService;
-import group.app.backend.user.services.UserService;
+import group.app.backend.algorithm.models.TradeEdge;
+import group.app.backend.algorithm.models.UserVertex;
+import org.jgrapht.GraphPath;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.Set;
+import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
+import static group.app.backend.algorithm.TradeService.getFinalEdges;
+import static group.app.backend.algorithm.utils.TradeMatcher.findOptimalCycles;
+
 
 @SpringBootTest(classes = BackendApplication.class)
 @RunWith(SpringRunner.class)
 class TradeServiceTest {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private TradeService tradeService;
-    @Autowired
-    private TaskService taskService;
 
     @Test
     public void optimalCyclesTest() {
 
-        for (long i = 0L; i < 100L; i++) {
-            taskService.saveTask(
-                    Task.builder()
-                            .id(i)
-                            .build()
-            );
+
+        List<UserVertex> userVertices = IntStream.rangeClosed(1, 200)
+                .mapToObj(i ->
+                        UserVertex.builder()
+                                .userId(String.valueOf(i))
+                                .wantedTasks(new HashSet<>())
+                                .ownedTasks(new HashSet<>())
+                                .build())
+                .toList();
+
+        List<String> taskIds = new ArrayList<>(IntStream.rangeClosed(1, 2000)
+                .mapToObj(String::valueOf)
+                .toList());
+
+        AtomicInteger edgeCounter = new AtomicInteger();
+
+        for (UserVertex userVertex : userVertices) {
+            Collections.shuffle(taskIds);
+            Set<String> ownedTask = taskIds.stream()
+                    .limit(10)
+                    .collect(Collectors.toSet());
+            userVertex.getOwnedTasks().addAll(ownedTask);
+            Collections.shuffle(taskIds);
+            Set<String> filteredTaskIds = taskIds.stream()
+                    .filter(taskId -> !userVertex.getOwnedTasks().contains(taskId))
+                    .limit(10)
+                    .collect(Collectors.toSet());
+            userVertex.getWantedTasks().addAll(filteredTaskIds);
+            Set<GraphPath<String, TradeEdge>> graphPaths = findOptimalCycles(userVertices);
+            getFinalEdges(graphPaths)
+                    .forEach(tradeEdge -> {
+                        edgeCounter.getAndIncrement();
+                        System.out.println(userVertex.getUserId() + " Removed edge: " + tradeEdge);
+                        String target = (String) tradeEdge.getTarget();
+                        String taskId = tradeEdge.getTaskId();
+                        UserVertex targetVertex = userVertices.stream()
+                                .filter(userVertex1 -> userVertex1.getUserId().equals(target))
+                                .findFirst()
+                                .orElseThrow();
+                        targetVertex.getWantedTasks().remove(taskId);
+                    });
         }
-
-
-        userService.saveUser(User.builder()
-                .id("1").offeredTasks(Set.of(Task.builder().id(1L).build()))
-                .requestedTasks(Set.of(Task.builder().id(2L).build()))
-                .build()
-        );
-        userService.saveUser(User.builder()
-                .id("2").offeredTasks(Set.of(Task.builder().id(2L).build(), Task.builder().id(3L).build()))
-                .requestedTasks(Set.of(Task.builder().id(1L).build()))
-                .build()
-        );
-        userService.saveUser(User.builder()
-                .id("3").offeredTasks(Set.of(Task.builder().id(1L).build()))
-                .requestedTasks(Set.of(Task.builder().id(3L).build(), Task.builder().id(4L).build()))
-                .build()
-        );
-        var optimalCycles = tradeService.makeTrades();
-        System.out.println("Optimal cycles round 1:" + optimalCycles);
-        optimalCycles.forEach(System.out::println);
-
-        userService.saveUser(User.builder()
-                .id("4").offeredTasks(Set.of(Task.builder().id(4L).build()))
-                .requestedTasks(Set.of(Task.builder().id(1L).build()))
-                .build()
-        );
-
-        optimalCycles = tradeService.makeTrades();
-        System.out.println("Optimal cycles round 2:" + optimalCycles);
-        optimalCycles.forEach(System.out::println);
+        System.out.println("Total edges: " + edgeCounter.get());
     }
 }

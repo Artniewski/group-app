@@ -31,14 +31,19 @@ public class TradeService {
     }
 
     private void removeTasksFromUsers(Set<GraphPath<String, TradeEdge>> optimalCycles) {
-        optimalCycles
-                .stream()
-                .map(GraphPath::getEdgeList)
-                .flatMap(Collection::stream)
+        getFinalEdges(optimalCycles)
                 .forEach(tradeEdge -> userService.
                         removeRequestedTaskFromUser(
                                 String.valueOf(tradeEdge.getTarget()),
                                 Long.parseLong(tradeEdge.getTaskId()))
                 );
+    }
+
+    public static List<TradeEdge> getFinalEdges(Set<GraphPath<String, TradeEdge>> optimalCycles) {
+        return optimalCycles
+                .stream()
+                .map(GraphPath::getEdgeList)
+                .flatMap(Collection::stream)
+                .toList();
     }
 }
