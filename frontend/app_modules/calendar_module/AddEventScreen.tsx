@@ -37,7 +37,7 @@ export const AddEventScreen: React.FC<Props> = () => {
 
   return (
     <View style={styles.container}>
-        <Form onButtonPress={onSubmit}>
+        <Form style={styles.container} onButtonPress={onSubmit}>
           <FormItem
             label="Data"
             textInputStyle={styles.input}
@@ -48,6 +48,14 @@ export const AddEventScreen: React.FC<Props> = () => {
               setNewList(newListCopy);
             }}
             value={event.date}
+            customValidation= {
+              () => {
+                const pattern = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/;
+                const valRes = pattern.test(event.date);
+                const result = {status: valRes, message: "Validation failed (yyyy-mm-dd required)"};
+                return result;
+              }
+            }
           />
           <FormItem
             label="Godzina"
@@ -59,6 +67,14 @@ export const AddEventScreen: React.FC<Props> = () => {
               setNewList(newListCopy);
             }}
             value={event.hour}
+            customValidation= {
+              () => {
+                const pattern = /^([0-9]{1,2})|(2[0-4]):[0-5][0-9]$/;
+                const valRes = pattern.test(event.date);
+                const result = {status: valRes, message: "Validation failed (hh:mm requiered)"};
+                return result;
+              }
+            }
           />
           <FormItem
             label="Nazwa"
@@ -101,7 +117,7 @@ const styles = StyleSheet.create({
     borderColor: "black",
     borderWidth: 1,
     height: 40,
-    width: 300,
+    width: 500,
     padding: 10,
     borderRadius: 4,
   },
