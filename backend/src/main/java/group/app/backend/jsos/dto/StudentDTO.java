@@ -18,5 +18,6 @@ public class StudentDTO {
     @JsonProperty("idSluchacza")
     String userId;
     String name;
+    int votes;
 
 }

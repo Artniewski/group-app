@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Entity
@@ -69,8 +70,9 @@ public class User {
 
     public static StudentDTO toStudentDTO(User user) {
         return StudentDTO.builder()
-                .userId(user.getId())
+                .userId(Optional.ofNullable(user.getId()).orElse("no_name"))
                 .name(user.getNickname())
+                .votes(user.getVotes())
                 .build();
     }
 }
