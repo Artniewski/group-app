@@ -49,5 +49,14 @@ public class UserController {
     public User addRequestedTaskToUser(@PathVariable String userId, @PathVariable Long taskId) {
         return userService.addRequestedTaskToUser(userId, taskId);
     }
-
+    
+    @PostMapping("/{userId}/vote/{voteId}")
+    public User voteForOldman(@PathVariable String userId, @PathVariable String voteId) {
+        return userService.voteForOldman(userId, voteId);
+    }
+    
+    @GetMapping("/{userId}/oldman")
+    public User getOldman(@PathVariable String userId) {
+        return userService.getOldMan(userId);
+    }
 }
