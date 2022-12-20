@@ -13,7 +13,7 @@ import LoginForm from "./app_modules/login_module/LoginForm";
 
 import AppContextProvider from "./store/AppContextProvider";
 
-export const SERVER_ADDRESS = "http://172.24.90.109:8080";
+export const SERVER_ADDRESS = "http://192.168.174.126:8080";
 
 export type RootStackParamList = {
   LoginForm: undefined;

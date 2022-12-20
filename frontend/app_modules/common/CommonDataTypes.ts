@@ -36,6 +36,11 @@ export interface ICourseData {
   courseName: string;
 }
 
+export interface IUserTasks {
+  offeredTasks: IExerciseData[];
+  requestedTasks: IExerciseData[];
+}
+
 export interface IExerciseListData {
   id: number;
   listNumber: number;
@@ -52,4 +57,15 @@ export interface IExerciseData {
   id: number;
   taskNumber: number;
   taskList: IExerciseListData;
+}
+
+export interface ISendExerciseData {
+  taskNumber: number;
+  taskListNumber: number;
+  course: ICourseData;
+}
+
+export interface ISendExercisesReq {
+  offeredTasks: ISendExerciseData[];
+  requestedTasks: ISendExerciseData[];
 }

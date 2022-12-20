@@ -10,6 +10,7 @@ import {
   IExercisesReponse,
   IUsersResponse,
   IUserData,
+  IUserTasks,
 } from "../app_modules/common/CommonDataTypes";
 
 interface IAppContext {
@@ -18,6 +19,7 @@ interface IAppContext {
   courseData: ICourseData[] | null;
   exercises: IExerciseData[] | null;
   votableUsers: IUserData[] | null;
+  userTasks: IUserTasks | null;
   isStarosta: boolean;
   refreshStudentData: () => void;
 }
@@ -31,6 +33,7 @@ export const AppContext = createContext<IAppContext>({
   exercises: null,
   votableUsers: null,
   isStarosta: false,
+  userTasks: null,
   refreshStudentData: () => {
     return;
   },
@@ -45,6 +48,7 @@ const AppContextProvider: React.FC<Props> = ({ children }) => {
   const [isStarosta, setIsStarosta] = useState<boolean>(false);
   const [courseData, setCourseData] = useState<ICourseData[] | null>(null);
   const [exercises, setExercises] = useState<IExerciseData[] | null>(null);
+  const [userTasks, setUserTasks] = useState<IUserTasks | null>(null);
   const [votableUsers, setVotableUsers] = useState<IUserData[] | null>(null);
 
   const logIn = (loginResponse: ILoginResponse) => {
@@ -105,17 +109,36 @@ const AppContextProvider: React.FC<Props> = ({ children }) => {
     setVotableUsers(votableUsers);
   };
 
+  const fetchUserTasks = async () => {
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    const userTasksResult = await fetch(
+      SERVER_ADDRESS + "/api/session/" + jsossessid + "/tasks",
+      {
+        headers,
+      }
+    );
+
+    const userTasks = (await userTasksResult.json()) as IUserTasks;
+
+    console.log(userTasks);
+
+    setUserTasks(userTasks);
+  };
+
   const refreshStudentData = async () => {
     fetchCourseData();
     fetchExercises();
     fetchVotableUsers();
+    fetchUserTasks();
   };
 
   useEffect(() => {
     if (jsossessid) {
       refreshStudentData();
     }
-  }, [jsossessid, setCourseData, setVotableUsers]);
+  }, [jsossessid, setCourseData, setVotableUsers, setUserTasks]);
 
   return (
     <AppContext.Provider
@@ -126,6 +149,7 @@ const AppContextProvider: React.FC<Props> = ({ children }) => {
         exercises,
         votableUsers,
         isStarosta,
+        userTasks,
         refreshStudentData,
       }}
     >
