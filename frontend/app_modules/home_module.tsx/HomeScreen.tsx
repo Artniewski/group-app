@@ -28,6 +28,7 @@ export const HomeScreen: React.FC<Props> = () => {
   const moduleNames: ModuleData[] = [
     { moduleName: "Giełda zadań", navigationName: "ExerciseSelection" },
     { moduleName: "Wybór starosty", navigationName: "VoteOldMan" },
+    { moduleName: "Plan zajęć", navigationName: "CalendarScreen"}
   ];
   return (
     <View style={style.container}>
