@@ -15,7 +15,9 @@ const getCourseIdList = async (JSOSSESSID) => {
     const dom = new JSDOM(zajeciaPageText);
     const document = dom.window.document;
     const courseIdList = [];
-    document.querySelectorAll("tr.kliknij>td:first-child").forEach((course) => {
+    document
+        .querySelectorAll("tr.kliknij>td:first-child")
+        .forEach((course) => {
         const [courseCode, courseName] = course.innerHTML.split("<br>");
         let onList = false;
         for (const courseData of courseIdList) {

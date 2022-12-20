@@ -11,9 +11,9 @@ const authEndpoint = async (req, res) => {
         return;
     }
     try {
-        const JSOSSESSID = await getAuthCookies(username, password);
+        const jsossessid = await getAuthCookies(username, password);
         const responseBody = {
-            JSOSSESSID,
+            jsossessid,
         };
         res.status(200).json(responseBody);
     }

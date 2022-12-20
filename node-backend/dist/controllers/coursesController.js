@@ -2,14 +2,14 @@ import getIdSluchacza from "../services/idService.js";
 import getCourseIdList from "../services/coursesService.js";
 import { JsosError, } from "../common/CommonDataTypes.js";
 const coursesEndpoint = async (req, res) => {
-    const { JSOSSESSID } = req.body;
-    if (!JSOSSESSID) {
+    const { jsossessid } = req.body;
+    if (!jsossessid) {
         res.status(400).json({ message: "Missing JSOSSESSID" });
         return;
     }
     try {
-        const idSluchacza = await getIdSluchacza(JSOSSESSID);
-        const courseList = await getCourseIdList(JSOSSESSID);
+        const idSluchacza = await getIdSluchacza(jsossessid);
+        const courseList = await getCourseIdList(jsossessid);
         const responseBody = {
             idSluchacza,
             courseList,

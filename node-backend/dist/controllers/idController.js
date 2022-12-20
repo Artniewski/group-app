@@ -1,13 +1,13 @@
 import getIdSluchacza from "../services/idService.js";
 import { JsosError, } from "../common/CommonDataTypes.js";
 const idEndpoint = async (req, res) => {
-    const { JSOSSESSID } = req.body;
-    if (!JSOSSESSID) {
+    const { jsossessid } = req.body;
+    if (!jsossessid) {
         res.status(400).json({ message: "Missing JSOSSESSID" });
         return;
     }
     try {
-        const idSluchacza = await getIdSluchacza(JSOSSESSID);
+        const idSluchacza = await getIdSluchacza(jsossessid);
         const responseBody = {
             idSluchacza,
         };
