@@ -1,0 +1,549 @@
+GET http://localhost:8080/api/user/1/votes
+
+<> 2022-12-21T001918.200.json
+
+###
+
+POST http://localhost:8080/api/user/1/vote/1
+
+<> 2022-12-21T001914.200.json
+
+###
+
+GET http://localhost:8080/api/user/1/votes
+
+<> 2022-12-21T001904.200.json
+
+###
+
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "id": "1",
+   "nickname": "A",
+   "rating": 5.0,
+   "major":
+   {
+       "semester": 1,
+       "name": "Maths"
+   },
+  "courses": [
+    {
+      "id": "c1",
+      "name": "Java"
+    }
+  ]
+
+}
+
+<> 2022-12-21T001859.200.json
+
+###
+
+POST http://localhost:8080/api/courses
+Content-Type: application/json
+
+{
+"name": "Java",
+"id": "c1"
+}
+
+<> 2022-12-21T001852.200.json
+
+###
+
+GET http://localhost:8080/api/user/1/votes
+
+<> 2022-12-21T001816.404.json
+
+###
+
+GET http://localhost:8080/api/user/1/votes
+
+<> 2022-12-21T001751.404.json
+
+###
+
+GET http://localhost:8080/api/user/all
+
+<> 2022-12-20T235246.200.json
+
+###
+
+POST http://localhost:8080/api/user/2/vote/1
+
+<> 2022-12-20T235240.200.json
+
+###
+
+GET http://localhost:8080/api/user/1/oldman
+
+<> 2022-12-20T235231.200.json
+
+###
+
+POST http://localhost:8080/api/user/1/vote/1
+
+<> 2022-12-20T235225.200.json
+
+###
+
+GET http://localhost:8080/api/user/all
+
+<> 2022-12-20T235215.200.json
+
+###
+
+POST http://localhost:8080/api/user/1/vote/2
+
+<> 2022-12-20T234839.200.json
+
+###
+
+POST http://localhost:8080/api/user/2/vote/2
+
+<> 2022-12-20T234834.200.json
+
+###
+
+POST http://localhost:8080/api/user/2/vote/2
+
+<> 2022-12-20T234832.200.json
+
+###
+
+GET http://localhost:8080/api/user/all
+
+<> 2022-12-20T234825.200.json
+
+###
+
+POST http://localhost:8080/api/user/2/vote/2
+
+<> 2022-12-20T234818.200.json
+
+###
+
+GET http://localhost:8080/api/user/all
+
+<> 2022-12-20T234804.200.json
+
+###
+
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "id": "2",
+   "nickname": "B",
+   "rating": 5.0,
+   "major":
+   {
+       "semester": 1,
+       "name": "Maths"
+   },
+  "courses": [
+    {
+      "id": "c1",
+      "name": "Java"
+    }
+  ]
+
+}
+
+<> 2022-12-20T234758.200.json
+
+###
+
+GET http://localhost:8080/api/user/all
+
+<> 2022-12-20T234743.200.json
+
+###
+
+POST http://localhost:8080/api/user/1/vote/1
+
+<> 2022-12-20T234708.200.json
+
+###
+
+GET http://localhost:8080/api/user/1/oldman
+
+###
+
+GET http://localhost:8080/api/user/all
+
+<> 2022-12-20T234707-1.200.json
+
+###
+
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "id": "1",
+   "nickname": "A",
+   "rating": 5.0,
+   "major":
+   {
+       "semester": 1,
+       "name": "Maths"
+   },
+  "courses": [
+    {
+      "id": "c1",
+      "name": "Java"
+    }
+  ]
+
+}
+
+<> 2022-12-20T234707.200.json
+
+###
+
+POST http://localhost:8080/api/courses
+Content-Type: application/json
+
+{
+"name": "Java",
+"id": "c1"
+}
+
+<> 2022-12-20T234706.200.json
+
+###
+
+POST http://localhost:8080/api/courses
+Content-Type: application/json
+
+{
+"name": "Java",
+"id": "c1"
+}
+
+<> 2022-12-20T234646.200.json
+
+###
+
+GET http://localhost:8080/api/user/1/oldman
+
+<> 2022-12-20T234424.200.json
+
+###
+
+POST http://localhost:8080/api/user/1/vote/1
+
+<> 2022-12-20T234419.200.json
+
+###
+
+GET http://localhost:8080/api/user/1/oldman
+
+<> 2022-12-20T234357.200.json
+
+###
+
+GET http://localhost:8080/api/user/2/oldman
+
+<> 2022-12-20T234351.200.json
+
+###
+
+POST http://localhost:8080/api/user/1/vote/2
+
+<> 2022-12-20T234340.200.json
+
+###
+
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "id": "1",
+   "nickname": "A",
+   "rating": 5.0,
+   "major":
+   {
+       "semester": 1,
+       "name": "Maths"
+   },
+  "courses": [
+    {
+      "id": "c1",
+      "name": "Java"
+    }
+  ]
+
+}
+
+<> 2022-12-20T234337.200.json
+
+###
+
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "id": "2",
+   "nickname": "B",
+   "rating": 5.0,
+   "major":
+   {
+       "semester": 1,
+       "name": "Maths"
+   },
+  "courses": [
+    {
+      "id": "c1",
+      "name": "Java"
+    }
+  ]
+
+}
+
+<> 2022-12-20T234331.200.json
+
+###
+
+POST http://localhost:8080/api/courses
+Content-Type: application/json
+
+{
+"name": "Java",
+"id": "c1"
+}
+
+<> 2022-12-20T234327.200.json
+
+###
+
+GET http://localhost:8080/api/user/2/oldman
+
+<> 2022-12-20T234244.500.json
+
+###
+
+POST http://localhost:8080/api/user/1/vote/2
+
+<> 2022-12-20T234238.200.json
+
+###
+
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "id": "2",
+   "nickname": "B",
+   "rating": 5.0,
+   "major":
+   {
+       "semester": 1,
+       "name": "Maths"
+   },
+  "courses": [
+    {
+      "id": "c1",
+      "name": "Java"
+    }
+  ]
+
+}
+
+<> 2022-12-20T234234.200.json
+
+###
+
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "id": "1",
+   "nickname": "A",
+   "rating": 5.0,
+   "major":
+   {
+       "semester": 1,
+       "name": "Maths"
+   },
+  "courses": [
+    {
+      "id": "c1",
+      "name": "Java"
+    }
+  ]
+
+}
+
+<> 2022-12-20T234228.200.json
+
+###
+
+POST http://localhost:8080/api/courses
+Content-Type: application/json
+
+{
+"name": "Java",
+"id": "c1"
+}
+
+<> 2022-12-20T234224.200.json
+
+###
+
+GET http://localhost:8080/api/user/2/oldman
+
+<> 2022-12-20T234051.500.json
+
+###
+
+POST http://localhost:8080/api/user/1/vote/2
+
+<> 2022-12-20T234044.200.json
+
+###
+
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "id": "1",
+   "nickname": "A",
+   "rating": 5.0,
+   "major":
+   {
+       "semester": 1,
+       "name": "Maths"
+   },
+  "courses": [
+    {
+      "id": "c1",
+      "name": "Java"
+    }
+  ]
+
+}
+
+<> 2022-12-20T234040.200.json
+
+###
+
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "id": "2",
+   "nickname": "B",
+   "rating": 5.0,
+   "major":
+   {
+       "semester": 1,
+       "name": "Maths"
+   },
+  "courses": [
+    {
+      "id": "c1",
+      "name": "Java"
+    }
+  ]
+
+}
+
+<> 2022-12-20T234035.200.json
+
+###
+
+POST http://localhost:8080/api/courses
+Content-Type: application/json
+
+{
+"name": "Java",
+"id": "c1"
+}
+
+<> 2022-12-20T234029.200.json
+
+###
+
+POST http://localhost:8080/api/user/1/vote/2
+
+<> 2022-12-20T233701.500.json
+
+###
+
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "id": "2",
+   "nickname": "B",
+   "rating": 5.0,
+   "major":
+   {
+       "semester": 1,
+       "name": "Maths"
+   },
+  "courses": [
+    {
+      "id": "c1",
+      "name": "Java"
+    }
+  ]
+
+}
+
+<> 2022-12-20T233658.200.json
+
+###
+
+POST http://localhost:8080/api/user
+Content-Type: application/json
+
+{
+  "id": "1",
+   "nickname": "A",
+   "rating": 5.0,
+   "major":
+   {
+       "semester": 1,
+       "name": "Maths"
+   },
+  "courses": [
+    {
+      "id": "c1",
+      "name": "Java"
+    }
+  ]
+
+}
+
+<> 2022-12-20T233651.200.json
+
+###
+
+POST http://localhost:8080/api/courses
+Content-Type: application/json
+
+{
+"name": "Java",
+"id": "c1"
+}
+
+<> 2022-12-20T233645.200.json
+
+###
+
+POST http://localhost:8080/api/user/1/vote/2
+
+<> 2022-12-20T233349.500.json
+
+###
+
+POST http://localhost:8080/api/user/1/vote/2
+
+<> 2022-12-20T233323.500.json
+
+###
+
