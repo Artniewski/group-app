@@ -30,6 +30,7 @@ public class SessionService {
     private final TaskService taskService;
 
     private final TradeService tradeService;
+
     public UserTasksDTO getTasksBySession(String sessionId) {
         String userId = jsosService.getUserId(sessionId);
         Set<Task> offeredTasks = userService.getUserOfferedTasks(userId);
@@ -106,5 +107,15 @@ public class SessionService {
         userService.addNewTasksToUser(user, ownedTasks, requestedTasks);
         tradeService.makeTrades();
         return true;
+    }
+
+    public User voteForOldman(String sessionId, String voteId) {
+        String userId = jsosService.getUserId(sessionId);
+        return userService.voteForOldman(userId, voteId);
+    }
+
+    public User getOldMan(String sessionId) {
+        String userId = jsosService.getUserId(sessionId);
+        return userService.getOldMan(userId);
     }
 }
