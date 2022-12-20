@@ -87,11 +87,18 @@ public class UserService {
             .filter(User::isOldMan).collect(Collectors.toList()).get(0);
     }
     
-    public void voteForOldman(String userId, String voteId) {
+    public User voteForOldman(String userId, String voteId) {
     
-        User currOldman = userRepository.findAll().stream()
+        List<User> currOldmen = userRepository.findAll().stream()
             .filter(user -> user.getMajor().equals(getUserById(userId).getMajor()))
-            .filter(User::isOldMan).collect(Collectors.toList()).get(0);
+            .filter(User::isOldMan).collect(Collectors.toList());
+        
+        User currOldman;
+        if(currOldmen.size() >= 1) {
+            currOldman = currOldmen.get(0);
+        } else {
+            currOldman = null;
+        }
             
         Optional<User> votedForOpt = userRepository.findById(voteId);
         
@@ -106,11 +113,21 @@ public class UserService {
         }
         
         votedFor.setVotes(votedFor.getVotes() + 1);
-        
-        if (votedFor.getVotes() > currOldman.getVotes()) {
-            userRepository.findAll().forEach(user -> makeYoungMan(user.getId()));
+    
+        if (currOldman != null) {
+            if (votedFor.getVotes() > currOldman.getVotes()) {
+                userRepository.findAll().forEach(user -> makeYoungMan(user.getId()));
+                makeOldMan(votedFor.getId());
+            }
+    
+            userRepository.save(currOldman);
+        } else {
             makeOldMan(votedFor.getId());
         }
+        userRepository.save(votedFor);
+    
+    
+        return getUserById(voteId);
     }
 
     public void makeOldMan(String userId) {

@@ -51,8 +51,8 @@ public class UserController {
     }
     
     @PostMapping("/{userId}/vote/{voteId}")
-    public void voteForOldman(@PathVariable String userId, @PathVariable String voteId) {
-        userService.voteForOldman(userId, voteId);
+    public User voteForOldman(@PathVariable String userId, @PathVariable String voteId) {
+        return userService.voteForOldman(userId, voteId);
     }
     
     @GetMapping("/{userId}/oldman")

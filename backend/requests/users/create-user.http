@@ -3,16 +3,17 @@ Content-Type: application/json
 
 {
   "id": "2",
-   "nickname": "John",
+   "nickname": "B",
    "rating": 5.0,
+   "major":
+   {
+       "semester": 1,
+       "name": "Maths"
+   },
   "courses": [
     {
       "id": "c1",
       "name": "Java"
-    },
-    {
-      "id": "c10",
-      "name": "JavaScript"
     }
   ]
 
