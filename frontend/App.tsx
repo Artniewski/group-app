@@ -14,6 +14,8 @@ import { CalendarScreen } from "./app_modules/calendar_module/CalendarScreen";
 import LoginForm from "./app_modules/login_module/LoginForm";
 
 import AppContextProvider from "./store/AppContextProvider";
+import { AddEventScreen } from "./app_modules/calendar_module/AddEventScreen";
+import AgendaMockContextProvider from "./app_modules/calendar_module/Mocks";
 
 export const SERVER_ADDRESS = "http://192.168.1.46:8080";
 
@@ -24,6 +26,7 @@ export type RootStackParamList = {
   AddExercise: undefined;
   VoteOldMan: undefined;
   CalendarScreen: undefined;
+  AddEvent: undefined;
 };
 
 const App: React.FC = () => {
@@ -31,51 +34,64 @@ const App: React.FC = () => {
 
   return (
     <AppContextProvider>
+      <AgendaMockContextProvider>
       <StatusBar style="auto" />
-      <NavigationContainer>
-        <Stack.Navigator initialRouteName="HomeScreen">
-          <Stack.Screen
-            name="LoginForm"
-            component={LoginForm}
-            options={{ title: "Logowanie" }}
-          />
-          <Stack.Screen
-            name="HomeScreen"
-            component={HomeScreen}
-            options={{ title: "Wybierz moduł" }}
-          />
-          <Stack.Screen
-            name="CalendarScreen"
-            component={CalendarScreen}
-            options={() => ({
-              title: "Twój plan"
-            })}
-          />
-          <Stack.Screen
-            name="ExerciseSelection"
-            component={ExerciseSelectionScreen}
-            options={({ navigation }) => ({
-              title: "Wybierz zadanie",
-              headerRight: () => (
-                <Button
-                  title="Dodaj listę"
-                  onPress={() => navigation.navigate("AddExercise")}
-                />
-              ),
-            })}
-          />
-          <Stack.Screen
-            name="AddExercise"
-            component={ExerciseAddScreen}
-            options={{ title: "Dodaj zadanie" }}
-          />
-          <Stack.Screen
-            name="VoteOldMan"
-            component={VoteOldManScreen}
-            options={{ title: "Wybór starosty" }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="HomeScreen">
+            <Stack.Screen
+              name="LoginForm"
+              component={LoginForm}
+              options={{ title: "Logowanie" }}
+            />
+            <Stack.Screen
+              name="HomeScreen"
+              component={HomeScreen}
+              options={{ title: "Wybierz moduł" }}
+            />
+            <Stack.Screen
+              name="CalendarScreen"
+              component={CalendarScreen}
+              options={({navigation}) => ({
+                title: "Twój plan",
+                headerRight: () => (
+                  <Button
+                    title="Dodaj wydarzenie"
+                    onPress={() => navigation.navigate("AddEvent")}
+                  />
+                ),
+              })}
+            />
+            <Stack.Screen
+              name="ExerciseSelection"
+              component={ExerciseSelectionScreen}
+              options={({ navigation }) => ({
+                title: "Wybierz zadanie",
+                headerRight: () => (
+                  <Button
+                    title="Dodaj listę"
+                    onPress={() => navigation.navigate("AddExercise")}
+                  />
+                ),
+              })}
+            />
+            <Stack.Screen
+              name="AddEvent"
+              component={AddEventScreen}
+              options={{title: "Dodaj wydarzenie"}}
+            />
+            <Stack.Screen
+              name="AddExercise"
+              component={ExerciseAddScreen}
+              options={{ title: "Dodaj zadanie" }}
+            />
+            <Stack.Screen
+              name="VoteOldMan"
+              component={VoteOldManScreen}
+              options={{ title: "Wybór starosty" }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AgendaMockContextProvider>
     </AppContextProvider>
   );
 };

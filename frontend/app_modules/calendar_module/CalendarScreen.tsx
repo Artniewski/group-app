@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Alert, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import {
   Agenda,
@@ -7,7 +7,7 @@ import {
   AgendaSchedule,
   LocaleConfig,
 } from "react-native-calendars";
-import { getDayMock } from "./Mocks";
+import { getDayMock, AgendaMockContext } from "./Mocks";
 
 const testIDs = {
   menu: {
@@ -44,6 +44,7 @@ interface State {
 
 export const CalendarScreen: React.FC = () => {
   const [myState, setMyState] = useState<State>(undefined);
+  const {events} = useContext(AgendaMockContext);
 
   const loadItems = (day: DateData) => {
     const items = myState?.items || {};
@@ -65,6 +66,10 @@ export const CalendarScreen: React.FC = () => {
             items[strTime].push(courseEntries[j]);
           }
         }
+      }
+
+      for (let i = 0; i < events.length; i++) {
+        items[events[i].day].push(events[i]);
       }
 
       const newItems: AgendaSchedule = {};
