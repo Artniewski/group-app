@@ -1,18 +1,17 @@
 package group.app.backend.user.services;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.stream.Collectors;
-
-import org.springframework.stereotype.Service;
-
 import group.app.backend.exceptions.ResourceNotFoundException;
+import group.app.backend.jsos.dto.TaskDTO;
 import group.app.backend.user.entity.Course;
 import group.app.backend.user.entity.Task;
 import group.app.backend.user.entity.User;
 import group.app.backend.user.repos.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @Service
 @RequiredArgsConstructor
@@ -80,53 +79,53 @@ public class UserService {
     public boolean exists(String userId) {
         return userRepository.existsById(userId);
     }
-    
+
     public User getOldMan(String userId) {
         return userRepository.findAll().stream()
-            .filter(user -> user.getMajor().equals(getUserById(userId).getMajor()))
-            .filter(User::isOldMan).collect(Collectors.toList()).get(0);
+                .filter(user -> user.getMajor().equals(getUserById(userId).getMajor()))
+                .filter(User::isOldMan).toList().get(0);
     }
-    
+
     public User voteForOldman(String userId, String voteId) {
-    
+
         List<User> currOldmen = userRepository.findAll().stream()
-            .filter(user -> user.getMajor().equals(getUserById(userId).getMajor()))
-            .filter(User::isOldMan).collect(Collectors.toList());
-        
+                .filter(user -> user.getMajor().equals(getUserById(userId).getMajor()))
+                .filter(User::isOldMan).toList();
+
         User currOldman;
-        if(currOldmen.size() >= 1) {
+        if (!currOldmen.isEmpty()) {
             currOldman = currOldmen.get(0);
         } else {
             currOldman = null;
         }
-            
+
         Optional<User> votedForOpt = userRepository.findById(voteId);
-        
+
         if (votedForOpt.isEmpty()) {
             throw new NullPointerException("Voted user not found");
         }
-        
+
         User votedFor = votedForOpt.get();
-        
+
         if (!votedFor.getMajor().equals(getUserById(userId).getMajor())) {
             throw new IllegalArgumentException("Vote for someone from your major!");
         }
-        
+
         votedFor.setVotes(votedFor.getVotes() + 1);
-    
+
         if (currOldman != null) {
             if (votedFor.getVotes() > currOldman.getVotes()) {
                 userRepository.findAll().forEach(user -> makeYoungMan(user.getId()));
                 makeOldMan(votedFor.getId());
             }
-    
+
             userRepository.save(currOldman);
         } else {
             makeOldMan(votedFor.getId());
         }
         userRepository.save(votedFor);
-    
-    
+
+
         return getUserById(voteId);
     }
 
@@ -135,10 +134,34 @@ public class UserService {
         user.setOldMan(true);
         userRepository.save(user);
     }
-    
+
     public void makeYoungMan(String userId) {
         User user = getUserById(userId);
         user.setOldMan(false);
         userRepository.save(user);
+    }
+
+    public void addNewTasksToUser(User user, Set<TaskDTO> ownedTasks, Set<TaskDTO> requestedTasks) {
+        for (TaskDTO task : ownedTasks) {
+            int taskNumber = task.getTaskNumber();
+            int taskListNumber = task.getTaskListNumber();
+            String courseId = task.getCourse().getCourseCode();
+            Course course = courseService.getCourseById(courseId);
+
+            Task taskByNumber = course.getTaskListByNumber(taskListNumber).getTaskByNumber(taskNumber);
+            user.addOfferedTask(taskByNumber);
+        }
+
+        for (TaskDTO task : requestedTasks) {
+            int taskNumber = task.getTaskNumber();
+            int taskListNumber = task.getTaskListNumber();
+            String courseId = task.getCourse().getCourseCode();
+            Course course = courseService.getCourseById(courseId);
+
+            Task taskByNumber = course.getTaskListByNumber(taskListNumber).getTaskByNumber(taskNumber);
+            user.addRequestedTask(taskByNumber);
+        }
+
+        saveUser(user);
     }
 }
