@@ -1,5 +1,6 @@
 package group.app.backend.jsos.services;
 
+import group.app.backend.algorithm.TradeService;
 import group.app.backend.jsos.dto.*;
 import group.app.backend.jsos.validator.OldManValidator;
 import group.app.backend.user.entity.Course;
@@ -27,6 +28,8 @@ public class SessionService {
     private final UserService userService;
     private final TaskListService taskListService;
     private final TaskService taskService;
+
+    private final TradeService tradeService;
     public UserTasksDTO getTasksBySession(String sessionId) {
         String userId = jsosService.getUserId(sessionId);
         Set<Task> offeredTasks = userService.getUserOfferedTasks(userId);
@@ -101,6 +104,7 @@ public class SessionService {
         Set<TaskDTO> ownedTasks = tasksDTO.getOfferedTasks();
         Set<TaskDTO> requestedTasks = tasksDTO.getRequestedTasks();
         userService.addNewTasksToUser(user, ownedTasks, requestedTasks);
+        tradeService.makeTrades();
         return true;
     }
 }

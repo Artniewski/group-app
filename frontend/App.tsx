@@ -36,7 +36,7 @@ const App: React.FC = () => {
       <AgendaMockContextProvider>
         <StatusBar style="auto" />
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="HomeScreen">
+          <Stack.Navigator initialRouteName="LoginForm">
             <Stack.Screen
               name="LoginForm"
               component={LoginForm}
