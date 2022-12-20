@@ -3,6 +3,7 @@ package group.app.backend.algorithm;
 import group.app.backend.BackendApplication;
 import group.app.backend.user.entity.Task;
 import group.app.backend.user.entity.User;
+import group.app.backend.user.services.TaskService;
 import group.app.backend.user.services.UserService;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -19,15 +20,28 @@ class TradeServiceTest {
     private UserService userService;
     @Autowired
     private TradeService tradeService;
+    @Autowired
+    private TaskService taskService;
+
     @Test
     public void optimalCyclesTest() {
+
+        for (long i = 0L; i < 100L; i++) {
+            taskService.saveTask(
+                    Task.builder()
+                            .id(i)
+                            .build()
+            );
+        }
+
+
         userService.saveUser(User.builder()
                 .id("1").offeredTasks(Set.of(Task.builder().id(1L).build()))
-                        .requestedTasks(Set.of(Task.builder().id(2L).build()))
+                .requestedTasks(Set.of(Task.builder().id(2L).build()))
                 .build()
-                );
+        );
         userService.saveUser(User.builder()
-                .id("2").offeredTasks(Set.of(Task.builder().id(2L).build(),Task.builder().id(3L).build()))
+                .id("2").offeredTasks(Set.of(Task.builder().id(2L).build(), Task.builder().id(3L).build()))
                 .requestedTasks(Set.of(Task.builder().id(1L).build()))
                 .build()
         );
