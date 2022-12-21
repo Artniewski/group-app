@@ -17,7 +17,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
 
-  const onSubmit = async () => {
+  const onLogIn = async () => {
     startLogin();
 
     const headers = new Headers();
@@ -73,7 +73,7 @@ export const LoginScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Form onButtonPress={onSubmit} buttonText={buttonText} style={styles.form}>
+      <Form onButtonPress={onLogIn} buttonText={buttonText} style={styles.form}>
         <FormItem
           label="Nazwa użytkownika"
           customValidation={pwrLoginValidator}
@@ -101,5 +101,5 @@ const styles = StyleSheet.create({
     padding: "5%",
     paddingBottom: 0,
     borderRadius: 10,
-  }
+  },
 });

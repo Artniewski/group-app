@@ -1,5 +1,11 @@
-import React, { useState, useContext } from "react";
-import { StyleSheet, Text, View, Button, FlatList } from "react-native";
+import React, { useContext, useState } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import { Form } from "react-native-form-component";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -9,146 +15,144 @@ import { IStudent } from "../../common/DataTypes";
 
 type Props = NativeStackScreenProps<RootStackParamList, "OldMan">;
 
-interface OldmanCandidateData {
-  studentId: string;
-  studentName: string;
-  numberOfVotes: number;
-  selected: boolean;
-}
+export const OldManScreen: React.FC<Props> = ({ navigation }) => {
+  const { loginData, students, chosenOldman, pickedOldman } =
+    useContext(AppContext);
 
-export const OldManScreen: React.FC<Props> = () => {
-  const myContext = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
-  // const maxVotesId = () => {
-  //   let maxVotes = 0;
-  //   let maxId = "";
+  const onVote = async () => {
+    setIsLoading(true);
+    setError(null);
 
-  //   for (const user of myContext.students.content) {
-  //     if (user.votes > maxVotes) {
-  //       maxVotes = user.votes;
-  //       maxId = user.idSluchacza;
-  //     }
-  //   }
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
 
-  //   return maxId;
-  // };
+    try {
+      const voteResult = await fetch(
+        SERVER_ADDRESS +
+          "/api/session/" +
+          loginData.content.jsossessid +
+          "/vote/" +
+          pickedOldman.idSluchacza,
+        {
+          method: "POST",
+          headers,
+        }
+      );
 
-  // const maxId = maxVotesId();
+      setIsLoading(false);
 
-  // const candidates: OldmanCandidateData[] = myContext.students.content.map(
-  //   (user) => {
-  //     return {
-  //       studentId: user.idSluchacza,
-  //       studentName: user.name,
-  //       numberOfVotes: user.votes,
-  //       selected: user.idSluchacza === maxId,
-  //     };
-  //   }
-  // );
+      if (voteResult.ok) {
+        navigation.navigate("Home");
+      } else {
+        setError("Głosowanie nie powiodło się");
+      }
+    } catch (error) {
+      setIsLoading(false);
+      setError(error);
+    }
+  };
 
-  const candidates = [""];
+  const buttonText = isLoading
+    ? "Wysyłanie głosu..."
+    : error
+    ? error
+    : "Wyślij głos";
 
   return (
     <View style={style.container}>
-      <CurrentOldMan data={candidates[0]} />
-      <Form onButtonPress={onSubmit}>
+      <ChosenOldMan oldMan={chosenOldman} />
+      <Form onButtonPress={onVote} buttonText={buttonText}>
         <FlatList
           style={style.candidateList}
-          horizontal={false}
-          numColumns={1}
-          data={candidates}
-          renderItem={({ item }) => <OldmanCandidate data={item} />}
+          data={students.content.array}
+          renderItem={({ item }) => <OldmanCandidate student={item} />}
         />
       </Form>
     </View>
   );
 };
 
-interface CurrentOldManProps {
-  data: OldmanCandidateData;
+interface ChosenOldManProps {
+  oldMan: IStudent;
 }
 
-const CurrentOldMan = (props: CurrentOldManProps) => {
+const ChosenOldMan: React.FC<ChosenOldManProps> = ({ oldMan }) => {
   return (
     <View style={style.currentOldman}>
-      <Text>Twoim starostą jest aktualnie {props.data.studentName}!</Text>
+      <Text style={style.currentOldmanText}>
+        Aktualny starosta: {oldMan?.name || "Nieznany"}
+      </Text>
     </View>
   );
 };
 
 interface OldmanCandidateProps {
-  data: OldmanCandidateData;
+  student: IStudent;
 }
 
-const OldmanCandidate = (props: OldmanCandidateProps) => {
-  const myContext = useContext(AppContext);
+const OldmanCandidate: React.FC<OldmanCandidateProps> = ({ student }) => {
+  const { pickedOldman, pickOldman } = useContext(AppContext);
 
-  console.log(props);
+  const studentStyle = [];
+  studentStyle.push(style.student);
 
-  const [selected, setSelected] = useState<boolean>(false);
+  if (
+    pickedOldman !== null &&
+    student.idSluchacza === pickedOldman.idSluchacza
+  ) {
+    studentStyle.push(style.pickedOldman);
+  }
 
-  const voteForCandidate = async () => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-
-    const voteResult = await fetch(
-      SERVER_ADDRESS +
-        "/api/session/" +
-        myContext.loginData.content.jsossessid +
-        "/vote/" +
-        props.data.studentId,
-      {
-        method: "POST",
-        headers,
-      }
-    );
-
-    if (voteResult.ok) {
-      console.log("Vote succesfull");
-    } else {
-      console.log("Voting failed");
-    }
+  const pickStudent = () => {
+    pickOldman(student);
   };
 
   return (
-    <View style={style.candidate}>
-      <Text>Kandydat: {props.data.studentName}</Text>
-      <Text>Liczba głosów: {props.data.numberOfVotes}</Text>
-      <View
-        style={{
-          flexDirection: "row",
-        }}
-      >
-        <Button
-          title={selected ? "Usuń głos" : "Oddaj głos"}
-          onPress={voteForCandidate}
-        />
-      </View>
-    </View>
+    <TouchableOpacity style={studentStyle} onPress={pickStudent}>
+      <Text style={style.studentText}>{student.name || "Nieznany"}</Text>
+      <Text style={style.studentText}>{student.votes} głosów</Text>
+    </TouchableOpacity>
   );
 };
 
 const style = StyleSheet.create({
-  candidateList: {
-    flex: 0.9,
-    backgroundColor: "white",
-  },
+  candidateList: {},
   currentOldman: {
-    flex: 0.1,
-    backgroundColor: "white",
-    borderColor: "black",
-    borderWidth: 2,
-    margin: 2,
+    padding: "3%",
+    backgroundColor: "lightblue",
+    borderRadius: 5,
   },
-  candidate: {
+  currentOldmanText: {
+    color: "black",
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  student: {
     flex: 1,
-    backgroundColor: "white",
-    borderColor: "black",
-    borderWidth: 2,
-    margin: 2,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    borderColor: "grey",
+    borderWidth: 1,
+    marginTop: 10,
+    padding: 10,
+    borderRadius: 5,
+  },
+  studentText: {
+    fontWeight: "bold",
+    fontSize: 20,
+  },
+  pickedOldman: {
+    backgroundColor: "green",
   },
   container: {
-    flex: 1,
     backgroundColor: "#fff",
+    width: "75%",
+    marginLeft: "auto",
+    marginRight: "auto",
+    padding: "2%",
+    paddingBottom: 0,
   },
 });

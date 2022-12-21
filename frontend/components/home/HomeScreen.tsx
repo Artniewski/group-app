@@ -1,10 +1,5 @@
 import React, { useContext } from "react";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList } from "../../App";
@@ -22,9 +17,19 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
     </View>
   );
 
+  const errorButton = (
+    <View style={style.loadingTaskPanel}>
+      <Text style={style.loadingTaskPanelText}>Error</Text>
+    </View>
+  );
+
   const tasksModuleButton =
     tasks.isLoading || userTasks.isLoading || courses.isLoading ? (
       loadingButton
+    ) : tasks.error !== null ||
+      userTasks.error !== null ||
+      courses.error !== null ? (
+      errorButton
     ) : (
       <TouchableOpacity
         style={style.taskPanel}
@@ -36,6 +41,8 @@ export const HomeScreen: React.FC<Props> = ({ navigation }) => {
 
   const voteOldManModuleButton = students.isLoading ? (
     loadingButton
+  ) : students.error !== null ? (
+    errorButton
   ) : (
     <TouchableOpacity
       style={style.taskPanel}

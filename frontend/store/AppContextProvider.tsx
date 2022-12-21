@@ -38,6 +38,10 @@ const initialFetchedContent = {
   content: null,
 };
 
+interface IStudents {
+  array: IStudent[];
+}
+
 interface IAppContext {
   startLogin: () => void;
   logIn: (loginResponse: ILoginResponse) => void;
@@ -52,11 +56,13 @@ interface IAppContext {
   loginData: FetchedContent<ILoginResponse>;
   tasks: FetchedContent<IGetTasksResponse>;
   courses: FetchedContent<ICourseListResponse>;
-  students: FetchedContent<IStudentsResponse>;
+  students: FetchedContent<IStudents>;
   userTasks: FetchedContent<IGetUserTasksResponse>;
 
   pickedOldman: IStudent | null;
   chosenOldman: IStudent | null;
+
+  pickOldman: (student: IStudent) => void;
 }
 
 const emptyFunction = () => {
@@ -82,6 +88,8 @@ export const AppContext = createContext<IAppContext>({
 
   pickedOldman: null,
   chosenOldman: null,
+
+  pickOldman: emptyFunction,
 });
 
 interface Props {
@@ -98,12 +106,37 @@ export const AppContextProvider: React.FC<Props> = ({ children }) => {
   const [courses, setCourses] = useState<FetchedContent<ICourseListResponse>>(
     initialFetchedContent
   );
-  const [students, setStudents] = useState<FetchedContent<IStudentsResponse>>(
+  const [students, setStudents] = useState<FetchedContent<IStudents>>(
     initialFetchedContent
   );
   const [userTasks, setUserTasks] = useState<
     FetchedContent<IGetUserTasksResponse>
   >(initialFetchedContent);
+  const [pickedOldman, setPickedOldman] = useState<IStudent | null>(null);
+  const [chosenOldman, setChosenOldman] = useState<IStudent | null>(null);
+
+  const pickOldman = (student: IStudent) => {
+    if (students.content !== null) {
+      let newStudents = students.content.array;
+
+      if (pickedOldman !== null) {
+        newStudents = newStudents.map((stud) =>
+          stud.idSluchacza === pickedOldman.idSluchacza
+            ? { ...stud, votes: stud.votes - 1 }
+            : stud
+        );
+      }
+
+      newStudents = newStudents.map((stud) =>
+        stud.idSluchacza === student.idSluchacza
+          ? { ...stud, votes: stud.votes + 1 }
+          : stud
+      );
+
+      setStudents(loadedFetchedContent({ array: newStudents }));
+      setPickedOldman(student);
+    }
+  };
 
   const startLogin = () => {
     setLoginData(loadingFetchedContent);
@@ -201,7 +234,7 @@ export const AppContextProvider: React.FC<Props> = ({ children }) => {
 
       const students = (await studentsResult.json()) as IStudentsResponse;
 
-      setStudents(loadedFetchedContent(students));
+      setStudents(loadedFetchedContent({ array: students }));
     } catch (error) {
       setStudents(errorFetchedContent(error));
     }
@@ -250,10 +283,21 @@ export const AppContextProvider: React.FC<Props> = ({ children }) => {
     }
   }, [loginData]);
 
-  console.log(tasks);
-  console.log(courses);
-  console.log(userTasks);
-  console.log(students);
+  useEffect(() => {
+    if (students.content !== null && students.content.array.length > 0) {
+      let chosenOldman = students.content.array[0];
+      let chosenOldmanVotes = chosenOldman.votes;
+
+      for (const student of students.content.array) {
+        if (student.votes > chosenOldmanVotes) {
+          chosenOldman = student;
+          chosenOldmanVotes = student.votes;
+        }
+      }
+
+      setChosenOldman(chosenOldman);
+    }
+  }, [students, setChosenOldman]);
 
   return (
     <AppContext.Provider
@@ -273,6 +317,11 @@ export const AppContextProvider: React.FC<Props> = ({ children }) => {
         tasks,
         students,
         userTasks,
+
+        chosenOldman,
+        pickedOldman,
+
+        pickOldman,
       }}
     >
       {children}
