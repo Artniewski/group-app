@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Alert, StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import {
   Agenda,
@@ -7,6 +7,10 @@ import {
   AgendaSchedule,
   LocaleConfig,
 } from "react-native-calendars";
+import {
+  getDayMock,
+  AgendaMockContext,
+} from "./../../store/MocksContextProvider";
 
 const testIDs = {
   menu: {
@@ -41,10 +45,11 @@ interface State {
 
 export const CalendarScreen: React.FC = () => {
   const [myState, setMyState] = useState<State>(undefined);
+  const { events } = useContext(AgendaMockContext);
 
   const loadItems = (day: DateData) => {
     const items = myState?.items || {};
-
+    console.log(day);
     setTimeout(() => {
       for (let i = -15; i < 85; i++) {
         const time = day.timestamp + i * 24 * 60 * 60 * 1000;
@@ -52,16 +57,23 @@ export const CalendarScreen: React.FC = () => {
 
         if (!items[strTime]) {
           items[strTime] = [];
+          const courseEntries = getDayMock(
+            new Date(time).getDay() + 1,
+            strTime
+          );
+          if (courseEntries == undefined) {
+            continue;
+          }
+          const numItems = courseEntries.length;
 
-          const numItems = Math.floor(Math.random() * 3 + 1);
           for (let j = 0; j < numItems; j++) {
-            items[strTime].push({
-              name: "Item for " + strTime + " #" + j,
-              height: Math.max(50, Math.floor(Math.random() * 150)),
-              day: strTime,
-            });
+            items[strTime].push(courseEntries[j]);
           }
         }
+      }
+
+      for (let i = 0; i < events.length; i++) {
+        items[events[i].day].push(events[i]);
       }
 
       const newItems: AgendaSchedule = {};
@@ -92,7 +104,7 @@ export const CalendarScreen: React.FC = () => {
   const renderEmptyDate = () => {
     return (
       <View style={styles.emptyDate}>
-        <Text>This is empty date!</Text>
+        <Text>Dzisiaj wolne!</Text>
       </View>
     );
   };
@@ -111,27 +123,11 @@ export const CalendarScreen: React.FC = () => {
       testID={testIDs.agenda.CONTAINER}
       items={myState?.items || {}}
       loadItemsForMonth={loadItems}
-      selected={"2017-05-16"}
+      selected={timeToString(Date.now())}
       renderItem={renderItem}
       renderEmptyDate={renderEmptyDate}
       rowHasChanged={rowHasChanged}
       showClosingKnob={true}
-      // markingType={'period'}
-      // markedDates={{
-      //    '2017-05-08': {textColor: '#43515c'},
-      //    '2017-05-09': {textColor: '#43515c'},
-      //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-      //    '2017-05-21': {startingDay: true, color: 'blue'},
-      //    '2017-05-22': {endingDay: true, color: 'gray'},
-      //    '2017-05-24': {startingDay: true, color: 'gray'},
-      //    '2017-05-25': {color: 'gray'},
-      //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-      // monthFormat={'yyyy'}
-      // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-      //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-      // hideExtraDays={false}
-      // showOnlySelectedDayItems
-      // reservationsKeyExtractor={this.reservationsKeyExtractor}
     />
   );
 };
@@ -160,36 +156,51 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderWidth: 1,
-    borderColor: 'gray',
-  }
+    borderColor: "gray",
+  },
 });
 
 export default CalendarScreen;
 
-
-LocaleConfig.locales['polish'] = {
+LocaleConfig.locales["polish"] = {
   monthNames: [
-    'styczeń',
-    'luty',
-    'marzec',
-    'kwiecień',
-    'maj',
-    'czerwiec',
-    'lipiec',
-    'sierpień',
-    'wrzesień',
-    'październik',
-    'listopad',
-    'grudzień'
+    "styczeń",
+    "luty",
+    "marzec",
+    "kwiecień",
+    "maj",
+    "czerwiec",
+    "lipiec",
+    "sierpień",
+    "wrzesień",
+    "październik",
+    "listopad",
+    "grudzień",
   ],
-  monthNamesShort: ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'],
-  dayNames: ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota', 'niedziela'],
-  dayNamesShort: ['pon.', 'wt.', 'śr.', 'czw.', 'pt.', 'sob.', 'niedz.'],
-  today: "Dzisiaj"
+  monthNamesShort: [
+    "I",
+    "II",
+    "III",
+    "IV",
+    "V",
+    "VI",
+    "VII",
+    "VIII",
+    "IX",
+    "X",
+    "XI",
+    "XII",
+  ],
+  dayNames: [
+    "poniedziałek",
+    "wtorek",
+    "środa",
+    "czwartek",
+    "piątek",
+    "sobota",
+    "niedziela",
+  ],
+  dayNamesShort: ["pon.", "wt.", "śr.", "czw.", "pt.", "sob.", "niedz."],
+  today: "Dzisiaj",
 };
-LocaleConfig.defaultLocale = 'polish';
-
-const calendarTheme = {
-  arrowColor: 'orange',
-  indicatorColor: 'green',
-}
+LocaleConfig.defaultLocale = "polish";

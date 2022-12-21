@@ -1,12 +1,13 @@
 import React, { useState, useContext } from "react";
 import { StyleSheet, Text, View, Button, FlatList } from "react-native";
+import { Form } from "react-native-form-component";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList, SERVER_ADDRESS } from "../../App";
 import { AppContext } from "../../store/AppContextProvider";
-import { IUserData } from "../common/CommonDataTypes";
+import { IStudent } from "../../common/DataTypes";
 
-type Props = NativeStackScreenProps<RootStackParamList, "VoteOldMan">;
+type Props = NativeStackScreenProps<RootStackParamList, "OldMan">;
 
 interface OldmanCandidateData {
   studentId: string;
@@ -15,48 +16,50 @@ interface OldmanCandidateData {
   selected: boolean;
 }
 
-export const VoteOldManScreen: React.FC<Props> = () => {
+export const OldManScreen: React.FC<Props> = () => {
   const myContext = useContext(AppContext);
 
-  const maxVotesId = () => {
-    let maxVotes = 0;
-    let maxId = "";
+  // const maxVotesId = () => {
+  //   let maxVotes = 0;
+  //   let maxId = "";
 
-    for (const user of myContext.votableUsers) {
-      if (user.votes > maxVotes) {
-        maxVotes = user.votes;
-        maxId = user.idSluchacza;
-      }
-    }
+  //   for (const user of myContext.students.content) {
+  //     if (user.votes > maxVotes) {
+  //       maxVotes = user.votes;
+  //       maxId = user.idSluchacza;
+  //     }
+  //   }
 
-    return maxId;
-  };
+  //   return maxId;
+  // };
 
-  const maxId = maxVotesId();
+  // const maxId = maxVotesId();
 
-  console.log(myContext.votableUsers);
+  // const candidates: OldmanCandidateData[] = myContext.students.content.map(
+  //   (user) => {
+  //     return {
+  //       studentId: user.idSluchacza,
+  //       studentName: user.name,
+  //       numberOfVotes: user.votes,
+  //       selected: user.idSluchacza === maxId,
+  //     };
+  //   }
+  // );
 
-  const candidates: OldmanCandidateData[] = myContext.votableUsers.map((user) => {
-    return {
-      studentId: user.idSluchacza,
-      studentName: user.name,
-      numberOfVotes: user.votes,
-      selected: user.idSluchacza === maxId,
-    };
-  });
-
-  console.log(candidates);
+  const candidates = [""];
 
   return (
     <View style={style.container}>
       <CurrentOldMan data={candidates[0]} />
-      <FlatList
-        style={style.candidateList}
-        horizontal={false}
-        numColumns={1}
-        data={candidates}
-        renderItem={({ item }) => <OldmanCandidate data={item} />}
-      />
+      <Form onButtonPress={onSubmit}>
+        <FlatList
+          style={style.candidateList}
+          horizontal={false}
+          numColumns={1}
+          data={candidates}
+          renderItem={({ item }) => <OldmanCandidate data={item} />}
+        />
+      </Form>
     </View>
   );
 };
@@ -77,7 +80,7 @@ interface OldmanCandidateProps {
   data: OldmanCandidateData;
 }
 
-const OldmanCandidate= (props: OldmanCandidateProps) => {
+const OldmanCandidate = (props: OldmanCandidateProps) => {
   const myContext = useContext(AppContext);
 
   console.log(props);
@@ -88,10 +91,17 @@ const OldmanCandidate= (props: OldmanCandidateProps) => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
-    const voteResult = await fetch(SERVER_ADDRESS + "/api/session/" + myContext.jsossessid + "/vote/" + props.data.studentId, {
-      method: "POST",
-      headers,
-    });
+    const voteResult = await fetch(
+      SERVER_ADDRESS +
+        "/api/session/" +
+        myContext.loginData.content.jsossessid +
+        "/vote/" +
+        props.data.studentId,
+      {
+        method: "POST",
+        headers,
+      }
+    );
 
     if (voteResult.ok) {
       console.log("Vote succesfull");
