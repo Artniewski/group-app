@@ -16,7 +16,7 @@ import { AddEventScreen } from "./components/calendar/AddEventScreen";
 import { AppContextProvider } from "./store/AppContextProvider";
 import { AgendaMockContextProvider } from "./store/MocksContextProvider";
 
-export const SERVER_ADDRESS = "http://172.24.83.225:8080";
+export const SERVER_ADDRESS = "http://127.0.1.225:8080";
 
 export type RootStackParamList = {
   Login: undefined;
