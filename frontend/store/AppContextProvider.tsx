@@ -4,158 +4,327 @@ import { SERVER_ADDRESS } from "../App";
 
 import {
   ILoginResponse,
-  ICourseData,
+  IGetTasksResponse,
   ICourseListResponse,
-  IExerciseData,
-  IExercisesReponse,
-  IUsersResponse,
-  IUserData,
-  IUserTasks,
-} from "../app_modules/common/CommonDataTypes";
+  IStudentsResponse,
+  IGetUserTasksResponse,
+} from "../common/HttpDataTypes";
 
-interface IAppContext {
-  jsossessid: string | null;
-  logIn: (loginResponse: ILoginResponse) => void;
-  courseData: ICourseData[] | null;
-  exercises: IExerciseData[] | null;
-  votableUsers: IUserData[] | null;
-  userTasks: IUserTasks | null;
-  isStarosta: boolean;
-  refreshStudentData: () => void;
+import { IStudent } from "../common/DataTypes";
+
+interface FetchedContent<T> {
+  isLoading: boolean;
+  error: string | null;
+  content: T | null;
 }
 
+const loadingFetchedContent = { isLoading: true, error: null, content: null };
+
+const loadedFetchedContent = <T,>(content: T) => {
+  return {
+    isLoading: false,
+    error: null,
+    content: { ...content },
+  };
+};
+
+const errorFetchedContent = (error: string) => {
+  return { isLoading: false, error, content: null };
+};
+
+const initialFetchedContent = {
+  isLoading: false,
+  error: null,
+  content: null,
+};
+
+interface IStudents {
+  array: IStudent[];
+}
+
+interface IAppContext {
+  startLogin: () => void;
+  logIn: (loginResponse: ILoginResponse) => void;
+  errorLogin: (error: string) => void;
+
+  reloadCourses: () => void;
+  reloadTasks: () => void;
+  reloadStudents: () => void;
+  reloadUserTasks: () => void;
+  reloadAll: () => void;
+
+  loginData: FetchedContent<ILoginResponse>;
+  tasks: FetchedContent<IGetTasksResponse>;
+  courses: FetchedContent<ICourseListResponse>;
+  students: FetchedContent<IStudents>;
+  userTasks: FetchedContent<IGetUserTasksResponse>;
+
+  pickedOldman: IStudent | null;
+  chosenOldman: IStudent | null;
+
+  pickOldman: (student: IStudent) => void;
+}
+
+const emptyFunction = () => {
+  return;
+};
+
 export const AppContext = createContext<IAppContext>({
-  jsossessid: null,
-  logIn: () => {
-    return;
-  },
-  courseData: null,
-  exercises: null,
-  votableUsers: null,
-  isStarosta: false,
-  userTasks: null,
-  refreshStudentData: () => {
-    return;
-  },
+  startLogin: emptyFunction,
+  logIn: emptyFunction,
+  errorLogin: emptyFunction,
+
+  reloadCourses: emptyFunction,
+  reloadTasks: emptyFunction,
+  reloadStudents: emptyFunction,
+  reloadUserTasks: emptyFunction,
+  reloadAll: emptyFunction,
+
+  loginData: initialFetchedContent,
+  tasks: initialFetchedContent,
+  courses: initialFetchedContent,
+  students: initialFetchedContent,
+  userTasks: initialFetchedContent,
+
+  pickedOldman: null,
+  chosenOldman: null,
+
+  pickOldman: emptyFunction,
 });
 
 interface Props {
   children?: React.ReactNode;
 }
 
-const AppContextProvider: React.FC<Props> = ({ children }) => {
-  const [jsossessid, setJsossessid] = useState<string | null>(null);
-  const [isStarosta, setIsStarosta] = useState<boolean>(false);
-  const [courseData, setCourseData] = useState<ICourseData[] | null>(null);
-  const [exercises, setExercises] = useState<IExerciseData[] | null>(null);
-  const [userTasks, setUserTasks] = useState<IUserTasks | null>(null);
-  const [votableUsers, setVotableUsers] = useState<IUserData[] | null>(null);
+export const AppContextProvider: React.FC<Props> = ({ children }) => {
+  const [loginData, setLoginData] = useState<FetchedContent<ILoginResponse>>(
+    initialFetchedContent
+  );
+  const [tasks, setTasks] = useState<FetchedContent<IGetTasksResponse>>(
+    initialFetchedContent
+  );
+  const [courses, setCourses] = useState<FetchedContent<ICourseListResponse>>(
+    initialFetchedContent
+  );
+  const [students, setStudents] = useState<FetchedContent<IStudents>>(
+    initialFetchedContent
+  );
+  const [userTasks, setUserTasks] = useState<
+    FetchedContent<IGetUserTasksResponse>
+  >(initialFetchedContent);
+  const [pickedOldman, setPickedOldman] = useState<IStudent | null>(null);
+  const [chosenOldman, setChosenOldman] = useState<IStudent | null>(null);
+
+  const pickOldman = (student: IStudent) => {
+    if (students.content !== null) {
+      let newStudents = students.content.array;
+
+      if (pickedOldman !== null) {
+        newStudents = newStudents.map((stud) =>
+          stud.idSluchacza === pickedOldman.idSluchacza
+            ? { ...stud, votes: stud.votes - 1 }
+            : stud
+        );
+      }
+
+      newStudents = newStudents.map((stud) =>
+        stud.idSluchacza === student.idSluchacza
+          ? { ...stud, votes: stud.votes + 1 }
+          : stud
+      );
+
+      setStudents(loadedFetchedContent({ array: newStudents }));
+      setPickedOldman(student);
+    }
+  };
+
+  const startLogin = () => {
+    setLoginData(loadingFetchedContent);
+  };
 
   const logIn = (loginResponse: ILoginResponse) => {
-    setJsossessid(loginResponse.jsossessid);
-    setIsStarosta(loginResponse.isStarosta);
+    setLoginData(loadedFetchedContent(loginResponse));
   };
 
-  const fetchCourseData = async () => {
-    const headers = new Headers();
-    headers.append("Content-Type", "application/json");
-    const coursesResult = await fetch(
-      SERVER_ADDRESS + "/api/session/" + jsossessid + "/courses",
-      {
-        headers,
-      }
-    );
-
-    const courseList = (await coursesResult.json()) as ICourseListResponse;
-
-    console.log(courseList);
-
-    setCourseData(courseList);
+  const errorLogin = (error: string) => {
+    setLoginData(errorFetchedContent(error));
   };
 
-  const fetchExercises = async () => {
+  const reloadCourses = async () => {
+    if (loginData.content === null) {
+      setCourses(errorFetchedContent("No login data"));
+      return;
+    }
+
+    setCourses(loadingFetchedContent);
+
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
-    const exercisesResult = await fetch(
-      SERVER_ADDRESS + "/api/session/" + jsossessid + "/tasks/all",
-      {
-        headers,
-      }
-    );
+    try {
+      const coursesResult = await fetch(
+        SERVER_ADDRESS +
+          "/api/session/" +
+          loginData.content.jsossessid +
+          "/courses",
+        {
+          headers,
+        }
+      );
 
-    const exerciseList = (await exercisesResult.json()) as IExercisesReponse;
+      const courses = (await coursesResult.json()) as ICourseListResponse;
 
-    console.log(exerciseList);
-
-    setExercises(exerciseList);
+      setCourses(loadedFetchedContent(courses));
+    } catch (error) {
+      setCourses(errorFetchedContent(error));
+    }
   };
 
-  const fetchVotableUsers = async () => {
+  const reloadTasks = async () => {
+    if (loginData.content === null) {
+      setTasks(errorFetchedContent("No login data"));
+      return;
+    }
+
+    setTasks(loadingFetchedContent);
+
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
-    const votableUsersResult = await fetch(
-      SERVER_ADDRESS + "/api/session/" + jsossessid + "/students",
-      {
-        headers,
-      }
-    );
+    try {
+      const tasksResult = await fetch(
+        SERVER_ADDRESS +
+          "/api/session/" +
+          loginData.content.jsossessid +
+          "/tasks/all",
+        {
+          headers,
+        }
+      );
 
-    const votableUsers = (await votableUsersResult.json()) as IUsersResponse;
+      const tasks = (await tasksResult.json()) as IGetTasksResponse;
 
-    console.log(votableUsers);
-
-    setVotableUsers(votableUsers);
+      setTasks(loadedFetchedContent(tasks));
+    } catch (error) {
+      setTasks(errorFetchedContent(error));
+    }
   };
 
-  const fetchUserTasks = async () => {
+  const reloadStudents = async () => {
+    if (loginData.content === null) {
+      setStudents(errorFetchedContent("No login data"));
+      return;
+    }
+
+    setStudents(loadingFetchedContent);
+
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
-    const userTasksResult = await fetch(
-      SERVER_ADDRESS + "/api/session/" + jsossessid + "/tasks",
-      {
-        headers,
-      }
-    );
+    try {
+      const studentsResult = await fetch(
+        SERVER_ADDRESS +
+          "/api/session/" +
+          loginData.content.jsossessid +
+          "/students",
+        {
+          headers,
+        }
+      );
 
-    const userTasks = (await userTasksResult.json()) as IUserTasks;
+      const students = (await studentsResult.json()) as IStudentsResponse;
 
-    console.log(userTasks);
-
-    setUserTasks(userTasks);
+      setStudents(loadedFetchedContent({ array: students }));
+    } catch (error) {
+      setStudents(errorFetchedContent(error));
+    }
   };
 
-  const refreshStudentData = async () => {
-    fetchCourseData();
-    fetchExercises();
-    fetchVotableUsers();
-    fetchUserTasks();
+  const reloadUserTasks = async () => {
+    if (loginData.content === null) {
+      setUserTasks(errorFetchedContent("No login data"));
+      return;
+    }
+
+    setUserTasks(loadingFetchedContent);
+
+    const headers = new Headers();
+    headers.append("Content-Type", "application/json");
+
+    try {
+      const userTasksResult = await fetch(
+        SERVER_ADDRESS +
+          "/api/session/" +
+          loginData.content.jsossessid +
+          "/tasks",
+        {
+          headers,
+        }
+      );
+
+      const userTasks = (await userTasksResult.json()) as IGetUserTasksResponse;
+
+      setUserTasks(loadedFetchedContent(userTasks));
+    } catch (error) {
+      setUserTasks(errorFetchedContent(error));
+    }
+  };
+
+  const reloadAll = async () => {
+    reloadCourses();
+    reloadTasks();
+    reloadStudents();
+    reloadUserTasks();
   };
 
   useEffect(() => {
-    if (jsossessid) {
-      refreshStudentData();
+    if (loginData.content !== null) {
+      reloadAll();
     }
-  }, [jsossessid, setCourseData, setVotableUsers, setUserTasks]);
+  }, [loginData]);
+
+  useEffect(() => {
+    if (students.content !== null && students.content.array.length > 0) {
+      let chosenOldman = students.content.array[0];
+      let chosenOldmanVotes = chosenOldman.votes;
+
+      for (const student of students.content.array) {
+        if (student.votes > chosenOldmanVotes) {
+          chosenOldman = student;
+          chosenOldmanVotes = student.votes;
+        }
+      }
+
+      setChosenOldman(chosenOldman);
+    }
+  }, [students, setChosenOldman]);
 
   return (
     <AppContext.Provider
       value={{
-        jsossessid,
+        startLogin,
         logIn,
-        courseData,
-        exercises,
-        votableUsers,
-        isStarosta,
+        errorLogin,
+
+        reloadCourses,
+        reloadTasks,
+        reloadStudents,
+        reloadUserTasks,
+        reloadAll,
+
+        loginData,
+        courses,
+        tasks,
+        students,
         userTasks,
-        refreshStudentData,
+
+        chosenOldman,
+        pickedOldman,
+
+        pickOldman,
       }}
     >
       {children}
     </AppContext.Provider>
   );
 };
-
-export default AppContextProvider;

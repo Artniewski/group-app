@@ -7,7 +7,10 @@ import {
   AgendaSchedule,
   LocaleConfig,
 } from "react-native-calendars";
-import { getDayMock, AgendaMockContext } from "./Mocks";
+import {
+  getDayMock,
+  AgendaMockContext,
+} from "./../../store/MocksContextProvider";
 
 const testIDs = {
   menu: {
@@ -40,11 +43,9 @@ interface State {
   items?: AgendaSchedule;
 }
 
-
-
 export const CalendarScreen: React.FC = () => {
   const [myState, setMyState] = useState<State>(undefined);
-  const {events} = useContext(AgendaMockContext);
+  const { events } = useContext(AgendaMockContext);
 
   const loadItems = (day: DateData) => {
     const items = myState?.items || {};
@@ -56,7 +57,10 @@ export const CalendarScreen: React.FC = () => {
 
         if (!items[strTime]) {
           items[strTime] = [];
-          const courseEntries = getDayMock(new Date(time).getDay() + 1 ,strTime);
+          const courseEntries = getDayMock(
+            new Date(time).getDay() + 1,
+            strTime
+          );
           if (courseEntries == undefined) {
             continue;
           }
@@ -124,23 +128,6 @@ export const CalendarScreen: React.FC = () => {
       renderEmptyDate={renderEmptyDate}
       rowHasChanged={rowHasChanged}
       showClosingKnob={true}
-      theme={calendarTheme}
-      // markingType={'period'}
-      // markedDates={{
-      //    '2017-05-08': {textColor: '#43515c'},
-      //    '2017-05-09': {textColor: '#43515c'},
-      //    '2017-05-14': {startingDay: true, endingDay: true, color: 'blue'},
-      //    '2017-05-21': {startingDay: true, color: 'blue'},
-      //    '2017-05-22': {endingDay: true, color: 'gray'},
-      //    '2017-05-24': {startingDay: true, color: 'gray'},
-      //    '2017-05-25': {color: 'gray'},
-      //    '2017-05-26': {endingDay: true, color: 'gray'}}}
-      // monthFormat={'yyyy'}
-      // theme={{calendarBackground: 'red', agendaKnobColor: 'green'}}
-      //renderDay={(day, item) => (<Text>{day ? day.day: 'item'}</Text>)}
-      // hideExtraDays={false}
-      // showOnlySelectedDayItems
-      // reservationsKeyExtractor={this.reservationsKeyExtractor}
     />
   );
 };
@@ -169,32 +156,52 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     borderWidth: 1,
-    borderColor: 'gray',
-  }
+    borderColor: "gray",
+  },
 });
 
 export default CalendarScreen;
 
-
-LocaleConfig.locales['polish'] = {
+LocaleConfig.locales["polish"] = {
   monthNames: [
-    'styczeń',
-    'luty',
-    'marzec',
-    'kwiecień',
-    'maj',
-    'czerwiec',
-    'lipiec',
-    'sierpień',
-    'wrzesień',
-    'październik',
-    'listopad',
-    'grudzień'
+    "styczeń",
+    "luty",
+    "marzec",
+    "kwiecień",
+    "maj",
+    "czerwiec",
+    "lipiec",
+    "sierpień",
+    "wrzesień",
+    "październik",
+    "listopad",
+    "grudzień",
   ],
-  monthNamesShort: ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'],
-  dayNames: ['poniedziałek', 'wtorek', 'środa', 'czwartek', 'piątek', 'sobota', 'niedziela'],
-  dayNamesShort: ['pon.', 'wt.', 'śr.', 'czw.', 'pt.', 'sob.', 'niedz.'],
-  today: "Dzisiaj"
+  monthNamesShort: [
+    "I",
+    "II",
+    "III",
+    "IV",
+    "V",
+    "VI",
+    "VII",
+    "VIII",
+    "IX",
+    "X",
+    "XI",
+    "XII",
+  ],
+  dayNames: [
+    "poniedziałek",
+    "wtorek",
+    "środa",
+    "czwartek",
+    "piątek",
+    "sobota",
+    "niedziela",
+  ],
+  dayNamesShort: ["pon.", "wt.", "śr.", "czw.", "pt.", "sob.", "niedz."],
+  today: "Dzisiaj",
 };
 LocaleConfig.defaultLocale = 'polish';
 

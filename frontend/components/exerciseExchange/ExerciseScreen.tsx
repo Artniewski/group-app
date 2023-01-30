@@ -153,8 +153,7 @@ const ExercisePanel = (props: TaskPanelProps) => {
 };
 
 interface TaskListPanelProps {
-  exercises: IExerciseData[];
-}
+  exercises: IExerciseData[]; }
 
 const ExerciseList = (props: TaskListPanelProps) => {
   return (

@@ -5,26 +5,26 @@ import { StatusBar } from "expo-status-bar";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import { HomeScreen } from "./app_modules/home_module.tsx/HomeScreen";
-import { ExerciseSelectionScreen } from "./app_modules/exercise_exchange_module/ExerciseScreen";
-import { ExerciseAddScreen } from "./app_modules/exercise_exchange_module/AddListScreen";
-import { VoteOldManScreen } from "./app_modules/vote_oldman_module/VoteOldManScreen";
-import LoginForm from "./app_modules/login_module/LoginForm";
+import { HomeScreen } from "./components/home/HomeScreen";
+import { ExerciseSelectionScreen } from "./components/exerciseExchange/ExerciseScreen";
+import { ExerciseAddScreen } from "./components/exerciseExchange/AddListScreen";
+import { OldManScreen } from "./components/oldman/OldManScreen";
+import { LoginScreen } from "./components/login/LoginScreen";
+import { CalendarScreen } from "./components/calendar/CalendarScreen";
+import { AddEventScreen } from "./components/calendar/AddEventScreen";
 
-import AppContextProvider from "./store/AppContextProvider";
-import AgendaMockContextProvider from "./app_modules/calendar_module/Mocks";
-import { CalendarScreen } from "./app_modules/calendar_module/CalendarScreen";
-import { AddEventScreen } from "./app_modules/calendar_module/AddEventScreen";
+import { AppContextProvider } from "./store/AppContextProvider";
+import { AgendaMockContextProvider } from "./store/MocksContextProvider";
 
-export const SERVER_ADDRESS = "http://192.168.174.126:8080";
+export const SERVER_ADDRESS = "http://172.24.83.225:8080";
 
 export type RootStackParamList = {
-  LoginForm: undefined;
-  HomeScreen: undefined;
+  Login: undefined;
+  Home: undefined;
   ExerciseSelection: undefined;
   AddExercise: undefined;
-  VoteOldMan: undefined;
-  CalendarScreen: undefined;
+  OldMan: undefined;
+  Calendar: undefined;
   AddEvent: undefined;
 };
 
@@ -36,32 +36,32 @@ const App: React.FC = () => {
       <AgendaMockContextProvider>
         <StatusBar style="auto" />
         <NavigationContainer>
-          <Stack.Navigator initialRouteName="LoginForm">
+          <Stack.Navigator initialRouteName="Login">
             <Stack.Screen
-              name="LoginForm"
-              component={LoginForm}
+              name="Login"
+              component={LoginScreen}
               options={{ title: "Logowanie" }}
             />
             <Stack.Screen
-              name="HomeScreen"
+              name="Home"
               component={HomeScreen}
-              options={{ title: "Wybierz moduł" }}
+              options={{ title: "Moduły" }}
             />
+            {/* <Stack.Screen */}
+            {/*   name="ExerciseSelection" */}
+            {/*   component={ExerciseSelectionScreen} */}
+            {/*   options={({ navigation }) => ({ */}
+            {/*     title: "Zadania", */}
+            {/*     headerRight: () => ( */}
+            {/*       <Button */}
+            {/*         title="Dodaj listę" */}
+            {/*         onPress={() => navigation.navigate("AddExercise")} */}
+            {/*       /> */}
+            {/*     ), */}
+            {/*   })} */}
+            {/* /> */}
             <Stack.Screen
-              name="ExerciseSelection"
-              component={ExerciseSelectionScreen}
-              options={({ navigation }) => ({
-                title: "Wybierz zadanie",
-                headerRight: () => (
-                  <Button
-                    title="Dodaj listę"
-                    onPress={() => navigation.navigate("AddExercise")}
-                  />
-                ),
-              })}
-            />
-            <Stack.Screen
-              name="CalendarScreen"
+              name="Calendar"
               component={CalendarScreen}
               options={({ navigation }) => ({
                 title: "Kalendarz",
@@ -73,19 +73,19 @@ const App: React.FC = () => {
                 ),
               })}
             />
+            {/* <Stack.Screen */}
+            {/*   name="AddEvent" */}
+            {/*   component={AddEventScreen} */}
+            {/*   options={{ title: "Dodaj wydarzenie" }} */}
+            {/* /> */}
+            {/* <Stack.Screen */}
+            {/*   name="AddExercise" */}
+            {/*   component={ExerciseAddScreen} */}
+            {/*   options={{ title: "Dodaj zadanie" }} */}
+            {/* /> */}
             <Stack.Screen
-              name="AddEvent"
-              component={AddEventScreen}
-              options={{title: "Dodaj wydarzenie"}}
-            />
-            <Stack.Screen
-              name="AddExercise"
-              component={ExerciseAddScreen}
-              options={{ title: "Dodaj zadanie" }}
-            />
-            <Stack.Screen
-              name="VoteOldMan"
-              component={VoteOldManScreen}
+              name="OldMan"
+              component={OldManScreen}
               options={{ title: "Wybór starosty" }}
             />
           </Stack.Navigator>
