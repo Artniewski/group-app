@@ -124,6 +124,7 @@ export const CalendarScreen: React.FC = () => {
       renderEmptyDate={renderEmptyDate}
       rowHasChanged={rowHasChanged}
       showClosingKnob={true}
+      theme={calendarTheme}
       // markingType={'period'}
       // markedDates={{
       //    '2017-05-08': {textColor: '#43515c'},
@@ -198,6 +199,32 @@ LocaleConfig.locales['polish'] = {
 LocaleConfig.defaultLocale = 'polish';
 
 const calendarTheme = {
+  backgroundColor: '#0e101c',
+  calendarBackground: '#0e101c',
+  textSectionTitleColor: '#b6c1cd',
+  textSectionTitleDisabledColor: '#d9e1e8',
+  selectedDayBackgroundColor: 'red',
+  selectedDayTextColor: '#ffffff',
+  todayTextColor: '#00adf5',
+  dayTextColor: '#2d4150',
+  textDisabledColor: '#d9e1e8',
+  dotColor: 'red',
+  selectedDotColor: 'red',
   arrowColor: 'orange',
-  indicatorColor: 'green',
+  disabledArrowColor: '#d9e1e8',
+  monthTextColor: 'red',
+  indicatorColor: 'red',
+  textDayFontFamily: 'monospace',
+  textMonthFontFamily: 'monospace',
+  textDayHeaderFontFamily: 'monospace',
+  textDayFontWeight: '300',
+  textMonthFontWeight: 'bold',
+  textDayHeaderFontWeight: '300',
+  textDayFontSize: 16,
+  textMonthFontSize: 16,
+  textDayHeaderFontSize: 16,
+  agendaDayTextColor: 'red',
+  agendaDayNumColor: 'red',
+  agendaTodayColor: 'red',
+  agendaKnobColor: 'red',
 }

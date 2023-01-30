@@ -51,7 +51,7 @@ const ModuleList = (props: ModuleListProps) => {
           style={style.taskPanel}
           onPress={() => navigation.navigate(item.navigationName)}
         >
-          <Text>{item.moduleName}</Text>
+          <Text style={style.buttonText}>{item.moduleName}</Text>
         </TouchableOpacity>
       )}
     />
@@ -61,23 +61,29 @@ const ModuleList = (props: ModuleListProps) => {
 const style = StyleSheet.create({
   taskPanel: {
     flex: 0.5,
-    backgroundColor: "white",
+    backgroundColor: "red",
     borderColor: "black",
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
     margin: 2,
+    borderRadius: 8,
+    padding: 8
   },
   taskListPanel: {
-    height: "100%",
-    width: "100%",
-    backgroundColor: "white",
+    flex: 1.0,
+    backgroundColor: "#0e101c",
+    padding: 8,
   },
   container: {
-    height: "100%",
-    width: "100%",
-    backgroundColor: "#fff",
-    alignItems: "center",
+    flex: 1,
     justifyContent: "center",
+    padding: 8,
+    backgroundColor: "#0e101c",
   },
+  buttonText: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "black"
+  }
 });
