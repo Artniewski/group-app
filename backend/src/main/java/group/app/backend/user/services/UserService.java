@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import group.app.backend.jsos.services.JsosService;
 import group.app.backend.user.repos.VoteRepository;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ public class UserService {
     private final CourseService courseService;
     private final TaskService taskService;
     private final VoteService voteService;
+    private final JsosService jsosService;
 
     public User getUserById(String id) {
         return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
@@ -83,16 +85,16 @@ public class UserService {
         return userRepository.existsById(userId);
     }
     
-    public User getOldMan(String userId) {
-        return voteService.getOldMan(userRepository.findById(userId).get());
+    public User getOldMan(String sessionId) {
+        return voteService.getOldMan(userRepository.findById(jsosService.getUserId(sessionId)).get());
     }
     
-    public User voteForOldman(String userId, String voteId) {
-        voteService.addVote(userId, voteId);
+    public User voteForOldman(String sessionId, String voteId) {
+        voteService.addVote(jsosService.getUserId(sessionId), voteId);
         return getUserById(voteId);
     }
     
-    public Long getVotes(String userId) {
-        return voteService.getVotes(userId);
+    public Long getVotes(String sessionId) {
+        return voteService.getVotes(jsosService.getUserId(sessionId));
     }
 }

@@ -5,6 +5,7 @@ import group.app.backend.jsos.dto.StudentDTO;
 import group.app.backend.jsos.services.LoginService;
 import group.app.backend.jsos.services.SessionService;
 import group.app.backend.user.entity.Task;
+import group.app.backend.user.entity.User;
 import group.app.backend.user.services.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -59,5 +60,20 @@ public class SessionController {
     @PostMapping("/{sessionId}/ontasks")
     public boolean addOwnedAndNeededTasks(@PathVariable("sessionId") String sessionId, @RequestBody TasksDTO tasksDTO) {
         return sessionService.addOwnedAndNeededTasks(sessionId, tasksDTO);
+    }
+    
+    @PostMapping("/{sessionId}/vote/{voteId}")
+    public User voteForOldman(@PathVariable String sessionId, @PathVariable String voteId) {
+        return userService.voteForOldman(sessionId, voteId);
+    }
+    
+    @GetMapping("/{sessionId}/oldman")
+    public User getOldman(@PathVariable String sessionId) {
+        return userService.getOldMan(sessionId);
+    }
+    
+    @GetMapping("/{sessionId}/votes")
+    public Long getVotes(@PathVariable String sessionId) {
+        return userService.getVotes(sessionId);
     }
 }
