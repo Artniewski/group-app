@@ -16,7 +16,7 @@ import { AddEventScreen } from "./components/calendar/AddEventScreen";
 import { AppContextProvider } from "./store/AppContextProvider";
 import { AgendaMockContextProvider } from "./store/MocksContextProvider";
 
-export const SERVER_ADDRESS = "http://172.24.83.225:8080";
+export const SERVER_ADDRESS = "http://localhost:8080";
 
 export type RootStackParamList = {
   Login: undefined;
@@ -47,19 +47,19 @@ const App: React.FC = () => {
               component={HomeScreen}
               options={{ title: "Moduły" }}
             />
-            {/* <Stack.Screen */}
-            {/*   name="ExerciseSelection" */}
-            {/*   component={ExerciseSelectionScreen} */}
-            {/*   options={({ navigation }) => ({ */}
-            {/*     title: "Zadania", */}
-            {/*     headerRight: () => ( */}
-            {/*       <Button */}
-            {/*         title="Dodaj listę" */}
-            {/*         onPress={() => navigation.navigate("AddExercise")} */}
-            {/*       /> */}
-            {/*     ), */}
-            {/*   })} */}
-            {/* /> */}
+            <Stack.Screen
+              name="ExerciseSelection"
+              component={ExerciseSelectionScreen}
+              options={({ navigation }) => ({
+                title: "Zadania",
+                headerRight: () => (
+                  <Button
+                    title="Dodaj listę"
+                    onPress={() => navigation.navigate("AddExercise")}
+                  />
+                ),
+              })}
+            />
             <Stack.Screen
               name="Calendar"
               component={CalendarScreen}
@@ -73,16 +73,16 @@ const App: React.FC = () => {
                 ),
               })}
             />
-            {/* <Stack.Screen */}
-            {/*   name="AddEvent" */}
-            {/*   component={AddEventScreen} */}
-            {/*   options={{ title: "Dodaj wydarzenie" }} */}
-            {/* /> */}
-            {/* <Stack.Screen */}
-            {/*   name="AddExercise" */}
-            {/*   component={ExerciseAddScreen} */}
-            {/*   options={{ title: "Dodaj zadanie" }} */}
-            {/* /> */}
+            <Stack.Screen
+              name="AddEvent"
+              component={AddEventScreen}
+              options={{ title: "Dodaj wydarzenie" }}
+            />
+            <Stack.Screen
+              name="AddExercise"
+              component={ExerciseAddScreen}
+              options={{ title: "Dodaj zadanie" }}
+            />
             <Stack.Screen
               name="OldMan"
               component={OldManScreen}

@@ -6,7 +6,7 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import { IExerciseData, ISendExercisesReq } from "../common/CommonDataTypes";
+import { IGetTask } from "../../common/DataTypes";
 import { StatusBar } from "expo-status-bar";
 
 import { Form } from "react-native-form-component";
@@ -17,14 +17,15 @@ import { AppContext } from "../../store/AppContextProvider";
 type Props = NativeStackScreenProps<RootStackParamList, "ExerciseSelection">;
 
 export const ExerciseSelectionScreen: React.FC<Props> = ({ navigation }) => {
-  const myContext = useContext(AppContext);
+  const { userTasks, loginData, reloadUserTasks, tasks } = useContext(AppContext);
 
   const onSubmit = async () => {
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
+    console.log(userTasks.content);
 
-    const body: ISendExercisesReq = {
-      offeredTasks: myContext.userTasks.offeredTasks.map((task) => {
+    const body = {
+      offeredTasks: userTasks.content.offeredTasks.map((task) => {
         return {
           taskNumber: task.taskNumber,
           taskListNumber: task.taskList.listNumber,
@@ -34,7 +35,7 @@ export const ExerciseSelectionScreen: React.FC<Props> = ({ navigation }) => {
           },
         };
       }),
-      requestedTasks: myContext.userTasks.requestedTasks.map((task) => {
+      requestedTasks: userTasks.content.requestedTasks.map((task) => {
         return {
           taskNumber: task.taskNumber,
           taskListNumber: task.taskList.listNumber,
@@ -47,7 +48,7 @@ export const ExerciseSelectionScreen: React.FC<Props> = ({ navigation }) => {
     };
 
     const addTaskResult = await fetch(
-      SERVER_ADDRESS + "/api/session/" + myContext.jsossessid + "/ontasks",
+      SERVER_ADDRESS + "/api/session/" + loginData.content.jsossessid + "/ontasks",
       {
         method: "POST",
         headers,
@@ -58,8 +59,8 @@ export const ExerciseSelectionScreen: React.FC<Props> = ({ navigation }) => {
     console.log(JSON.stringify(body));
 
     if (addTaskResult.ok) {
-      myContext.refreshStudentData();
-      navigation.navigate("HomeScreen");
+      reloadUserTasks();
+      navigation.navigate("Home");
     } else {
       console.log("Adding list failed");
     }
@@ -68,14 +69,14 @@ export const ExerciseSelectionScreen: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={style.container}>
       <Form onButtonPress={onSubmit}>
-        <ExerciseList exercises={myContext.exercises} />
+        <ExerciseList exercises={tasks.content} />
         <StatusBar style="auto" />
       </Form>
     </View>
   );
 };
 
-type TaskPanelProps = IExerciseData;
+type TaskPanelProps = IGetTask;
 
 const ExercisePanel = (props: TaskPanelProps) => {
   const myContext = useContext(AppContext);
@@ -83,8 +84,8 @@ const ExercisePanel = (props: TaskPanelProps) => {
   const [isOffered, setIsOffered] = useState<boolean>(false);
   const [isRequested, setIsRequested] = useState<boolean>(false);
 
-  const isTaskOffered = (task: IExerciseData) => {
-    for (const offeredTask of myContext.userTasks.offeredTasks) {
+  const isTaskOffered = (task: IGetTask) => {
+    for (const offeredTask of myContext.userTasks.content.offeredTasks) {
       if (task.id === offeredTask.id) {
         return true;
       }
@@ -93,8 +94,8 @@ const ExercisePanel = (props: TaskPanelProps) => {
     return false;
   };
 
-  const isTaskRequested = (task: IExerciseData) => {
-    for (const requestedTask of myContext.userTasks.requestedTasks) {
+  const isTaskRequested = (task: IGetTask) => {
+    for (const requestedTask of myContext.userTasks.content.requestedTasks) {
       if (task.id === requestedTask.id) {
         return true;
       }
@@ -122,19 +123,19 @@ const ExercisePanel = (props: TaskPanelProps) => {
 
   const clickTask = () => {
     if (isTaskOffered(props)) {
-      myContext.userTasks.offeredTasks =
-        myContext.userTasks.offeredTasks.filter((task) => task.id != props.id);
-      myContext.userTasks.requestedTasks.push(props);
+      myContext.userTasks.content.offeredTasks =
+        myContext.userTasks.content.offeredTasks.filter((task) => task.id != props.id);
+      myContext.userTasks.content.requestedTasks.push(props);
       setIsOffered(false);
       setIsRequested(true);
     } else if (isTaskRequested(props)) {
-      myContext.userTasks.requestedTasks =
-        myContext.userTasks.requestedTasks.filter(
+      myContext.userTasks.content.requestedTasks =
+        myContext.userTasks.content.requestedTasks.filter(
           (task) => task.id != props.id
         );
       setIsRequested(false);
     } else {
-      myContext.userTasks.offeredTasks.push(props);
+      myContext.userTasks.content.offeredTasks.push(props);
       setIsOffered(true);
     }
 
@@ -153,7 +154,8 @@ const ExercisePanel = (props: TaskPanelProps) => {
 };
 
 interface TaskListPanelProps {
-  exercises: IExerciseData[]; }
+  exercises: IGetTask[];
+}
 
 const ExerciseList = (props: TaskListPanelProps) => {
   return (

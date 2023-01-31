@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { StyleSheet, View, Text } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { Form, FormItem, Picker } from "react-native-form-component";
-import { IAddTasksRequest } from "../common/CommonDataTypes";
+import { IAddTasksRequest } from "../../common/HttpDataTypes";
 
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { RootStackParamList, SERVER_ADDRESS } from "../../App";
@@ -11,7 +11,8 @@ import { AppContext } from "../../store/AppContextProvider";
 type Props = NativeStackScreenProps<RootStackParamList, "AddExercise">;
 
 export const ExerciseAddScreen: React.FC<Props> = ({ navigation }) => {
-  const myContext = useContext(AppContext);
+  const { loginData, reloadUserTasks, courses } =
+    useContext(AppContext);
 
   const [taskListNumber, setTaskListNumber] = useState<number>(1);
   const [taskCount, setTaskCount] = useState<number>(1);
@@ -28,7 +29,7 @@ export const ExerciseAddScreen: React.FC<Props> = ({ navigation }) => {
     };
 
     const addTaskResult = await fetch(
-      SERVER_ADDRESS + "/api/session/" + myContext.jsossessid + "/tasks",
+      SERVER_ADDRESS + "/api/session/" + loginData.content.jsossessid + "/tasks",
       {
         method: "POST",
         headers,
@@ -37,7 +38,7 @@ export const ExerciseAddScreen: React.FC<Props> = ({ navigation }) => {
     );
 
     if (addTaskResult.ok) {
-      myContext.refreshStudentData();
+      reloadUserTasks();
       navigation.navigate("ExerciseSelection");
     } else {
       console.log("Adding list failed");
@@ -46,8 +47,8 @@ export const ExerciseAddScreen: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      {myContext.courseData == null && <Text>Loading data...</Text>}
-      {myContext.courseData != null && (
+      {courses.isLoading && <Text>Loading data...</Text>}
+      {!courses.isLoading != null && (
         <Form onButtonPress={onSubmit}>
           <FormItem
             label="Numer listy"
@@ -64,7 +65,7 @@ export const ExerciseAddScreen: React.FC<Props> = ({ navigation }) => {
             value={taskCount.toString()}
           />
           <Picker
-            items={myContext.courseData.map((data) => {
+            items={courses.content.map((data) => {
               return { label: data.courseName, value: data.courseCode };
             })}
             label="Kurs"
