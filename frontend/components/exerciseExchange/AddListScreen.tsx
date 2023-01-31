@@ -11,14 +11,17 @@ import { AppContext } from "../../store/AppContextProvider";
 type Props = NativeStackScreenProps<RootStackParamList, "AddExercise">;
 
 export const ExerciseAddScreen: React.FC<Props> = ({ navigation }) => {
-  const { loginData, reloadUserTasks, courses } =
+  const { loginData, reloadUserTasks, reloadTasks, courses } =
     useContext(AppContext);
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [taskListNumber, setTaskListNumber] = useState<number>(1);
   const [taskCount, setTaskCount] = useState<number>(1);
   const [courseCode, setCourseCode] = useState<string>("");
 
   const onSubmit = async () => {
+    setIsLoading(true);
+
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
 
@@ -29,7 +32,10 @@ export const ExerciseAddScreen: React.FC<Props> = ({ navigation }) => {
     };
 
     const addTaskResult = await fetch(
-      SERVER_ADDRESS + "/api/session/" + loginData.content.jsossessid + "/tasks",
+      SERVER_ADDRESS +
+        "/api/session/" +
+        loginData.content.jsossessid +
+        "/tasks",
       {
         method: "POST",
         headers,
@@ -37,19 +43,25 @@ export const ExerciseAddScreen: React.FC<Props> = ({ navigation }) => {
       }
     );
 
+    setIsLoading(false);
+
     if (addTaskResult.ok) {
-      reloadUserTasks();
+      reloadTasks();
       navigation.navigate("ExerciseSelection");
     } else {
       console.log("Adding list failed");
     }
   };
 
+  const buttonText = isLoading
+    ? "Wysłanie listy..."
+    : "Dodaj listę";
+
   return (
     <View style={styles.container}>
       {courses.isLoading && <Text>Loading data...</Text>}
       {!courses.isLoading != null && (
-        <Form onButtonPress={onSubmit}>
+        <Form onButtonPress={onSubmit} buttonText={buttonText}>
           <FormItem
             label="Numer listy"
             textInputStyle={styles.input}
@@ -65,7 +77,7 @@ export const ExerciseAddScreen: React.FC<Props> = ({ navigation }) => {
             value={taskCount.toString()}
           />
           <Picker
-            items={courses.content.map((data) => {
+            items={courses.content.array.map((data) => {
               return { label: data.courseName, value: data.courseCode };
             })}
             label="Kurs"

@@ -42,6 +42,14 @@ interface IStudents {
   array: IStudent[];
 }
 
+interface ICourses {
+  array: ICourseListResponse;
+}
+
+interface ITasks {
+  array: IGetTasksResponse;
+}
+
 interface IAppContext {
   startLogin: () => void;
   logIn: (loginResponse: ILoginResponse) => void;
@@ -54,8 +62,8 @@ interface IAppContext {
   reloadAll: () => void;
 
   loginData: FetchedContent<ILoginResponse>;
-  tasks: FetchedContent<IGetTasksResponse>;
-  courses: FetchedContent<ICourseListResponse>;
+  tasks: FetchedContent<ITasks>;
+  courses: FetchedContent<ICourses>;
   students: FetchedContent<IStudents>;
   userTasks: FetchedContent<IGetUserTasksResponse>;
 
@@ -100,10 +108,10 @@ export const AppContextProvider: React.FC<Props> = ({ children }) => {
   const [loginData, setLoginData] = useState<FetchedContent<ILoginResponse>>(
     initialFetchedContent
   );
-  const [tasks, setTasks] = useState<FetchedContent<IGetTasksResponse>>(
+  const [tasks, setTasks] = useState<FetchedContent<ITasks>>(
     initialFetchedContent
   );
-  const [courses, setCourses] = useState<FetchedContent<ICourseListResponse>>(
+  const [courses, setCourses] = useState<FetchedContent<ICourses>>(
     initialFetchedContent
   );
   const [students, setStudents] = useState<FetchedContent<IStudents>>(
@@ -174,7 +182,7 @@ export const AppContextProvider: React.FC<Props> = ({ children }) => {
 
       const courses = (await coursesResult.json()) as ICourseListResponse;
 
-      setCourses(loadedFetchedContent(courses));
+      setCourses(loadedFetchedContent({ array: courses }));
     } catch (error) {
       setCourses(errorFetchedContent(error));
     }
@@ -202,9 +210,11 @@ export const AppContextProvider: React.FC<Props> = ({ children }) => {
         }
       );
 
+      console.log(tasksResult);
+
       const tasks = (await tasksResult.json()) as IGetTasksResponse;
 
-      setTasks(loadedFetchedContent(tasks));
+      setTasks(loadedFetchedContent({array: tasks}));
     } catch (error) {
       setTasks(errorFetchedContent(error));
     }

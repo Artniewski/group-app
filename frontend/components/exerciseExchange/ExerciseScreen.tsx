@@ -17,12 +17,16 @@ import { AppContext } from "../../store/AppContextProvider";
 type Props = NativeStackScreenProps<RootStackParamList, "ExerciseSelection">;
 
 export const ExerciseSelectionScreen: React.FC<Props> = ({ navigation }) => {
-  const { userTasks, loginData, reloadUserTasks, tasks } = useContext(AppContext);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { userTasks, loginData, reloadUserTasks, tasks } =
+    useContext(AppContext);
 
   const onSubmit = async () => {
+    setIsLoading(true);
+
     const headers = new Headers();
     headers.append("Content-Type", "application/json");
-    console.log(userTasks.content);
 
     const body = {
       offeredTasks: userTasks.content.offeredTasks.map((task) => {
@@ -48,7 +52,10 @@ export const ExerciseSelectionScreen: React.FC<Props> = ({ navigation }) => {
     };
 
     const addTaskResult = await fetch(
-      SERVER_ADDRESS + "/api/session/" + loginData.content.jsossessid + "/ontasks",
+      SERVER_ADDRESS +
+        "/api/session/" +
+        loginData.content.jsossessid +
+        "/ontasks",
       {
         method: "POST",
         headers,
@@ -56,7 +63,7 @@ export const ExerciseSelectionScreen: React.FC<Props> = ({ navigation }) => {
       }
     );
 
-    console.log(JSON.stringify(body));
+    setIsLoading(false);
 
     if (addTaskResult.ok) {
       reloadUserTasks();
@@ -66,10 +73,19 @@ export const ExerciseSelectionScreen: React.FC<Props> = ({ navigation }) => {
     }
   };
 
+  const buttonText = isLoading
+    ? "Wysyłanie zadań..."
+    : "Zapisz zadania";
+
   return (
     <View style={style.container}>
-      <Form onButtonPress={onSubmit}>
-        <ExerciseList exercises={tasks.content} />
+      <Form onButtonPress={onSubmit} buttonText={buttonText}>
+        {(tasks.isLoading || userTasks.isLoading) && (
+          <Text>Loading data...</Text>
+        )}
+        {!(tasks.isLoading || userTasks.isLoading) && (
+          <ExerciseList exercises={tasks.content.array} />
+        )}
         <StatusBar style="auto" />
       </Form>
     </View>
@@ -124,7 +140,9 @@ const ExercisePanel = (props: TaskPanelProps) => {
   const clickTask = () => {
     if (isTaskOffered(props)) {
       myContext.userTasks.content.offeredTasks =
-        myContext.userTasks.content.offeredTasks.filter((task) => task.id != props.id);
+        myContext.userTasks.content.offeredTasks.filter(
+          (task) => task.id != props.id
+        );
       myContext.userTasks.content.requestedTasks.push(props);
       setIsOffered(false);
       setIsRequested(true);
@@ -142,6 +160,8 @@ const ExercisePanel = (props: TaskPanelProps) => {
     myContext.userTasks = { ...myContext.userTasks };
   };
 
+  console.log(taskPanelStyle);
+
   return (
     <TouchableOpacity style={taskPanelStyle} onPress={clickTask}>
       <Text style={style.taskName}>Kurs: {props.taskList.course.name}</Text>
@@ -158,6 +178,8 @@ interface TaskListPanelProps {
 }
 
 const ExerciseList = (props: TaskListPanelProps) => {
+  console.log(props.exercises);
+
   return (
     <FlatList
       style={style.taskListPanel}
